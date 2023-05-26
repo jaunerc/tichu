@@ -1,0 +1,33 @@
+openapi: 3.0.3
+info:
+  title: Tichu backend api
+  description: Api for the Tichu backend
+  version: 0.0.1
+
+servers:
+  - url: /api
+
+paths:
+  /players:
+    get:
+      tags:
+        - Players
+      summary: Gets a player
+      operationId: getPlayer
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+
+components:
+  schemas:
+    Player:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string

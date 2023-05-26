@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>ch.jaunerc.tichu</groupId>
+        <artifactId>backend</artifactId>
+        <relativePath>../pom.xml</relativePath>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <groupId>ch.jaunerc.tichu.backend</groupId>
+    <artifactId>api</artifactId>
+
+    <properties>
+        <java.version>17</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-core</artifactId>
+            <version>2.2.10</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>6.4.0</version>
+                <configuration>
+                    <inputSpec>${project.basedir}/src/main/resources/openapi-spec.yaml</inputSpec>
+                    <generatorName>spring</generatorName>
+                    <modelNameSuffix>Dto</modelNameSuffix>
+                    <generateSupportingFiles>true</generateSupportingFiles>
+                    <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+                    <configOptions>
+                        <sourceFolder>src/gen/java/main</sourceFolder>
+                        <title>${project.artifactId}</title>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>${project.artifactId}</artifactId>
+                        <basePackage>${project.groupId}.web.api</basePackage>
+                        <apiPackage>${project.groupId}.web.api.controller</apiPackage>
+                        <modelPackage>${project.groupId}.web.api.model</modelPackage>
+                        <invokerPackage>${project.groupId}.web.api.invoker</invokerPackage>
+                        <dateLibrary>java8</dateLibrary>
+                        <useSpringBoot3>true</useSpringBoot3>
+                        <delegatePattern>true</delegatePattern>
+                        <useTags>true</useTags>
+                        <openApiNullable>false</openApiNullable>
+                        <swaggerDocketConfig>false</swaggerDocketConfig>
+                    </configOptions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
