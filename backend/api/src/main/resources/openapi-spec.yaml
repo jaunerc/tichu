@@ -8,12 +8,19 @@ servers:
   - url: /api
 
 paths:
-  /players:
-    get:
+  /players/{player-name}:
+    post:
       tags:
         - Players
-      summary: Gets a player
-      operationId: getPlayer
+      summary: Creates a player
+      operationId: createPlayer
+      parameters:
+        - name: player-name
+          in: path
+          description: The name of the player
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: 'Successful operation'
@@ -31,3 +38,6 @@ components:
           type: string
         name:
           type: string
+      required:
+        - id
+        - name

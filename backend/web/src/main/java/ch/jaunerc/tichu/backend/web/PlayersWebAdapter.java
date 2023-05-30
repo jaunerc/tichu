@@ -18,8 +18,6 @@ public class PlayersWebAdapter implements PlayersApiDelegate {
     @Override
     public ResponseEntity<PlayerDto> createPlayer(String playerName) {
         var player = createPlayerUseCase.createPlayer(playerName);
-        return ResponseEntity.ok(new PlayerDto()
-                .id(player.id().toString())
-                .name(player.name()));
+        return ResponseEntity.ok(new PlayerDto(player.id().toString(), player.name()));
     }
 }
