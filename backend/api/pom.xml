@@ -32,7 +32,7 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>6.4.0</version>
+                <version>6.6.0</version>
                 <configuration>
                     <inputSpec>${project.basedir}/src/main/resources/openapi-spec.yaml</inputSpec>
                     <generatorName>spring</generatorName>
@@ -54,9 +54,6 @@
                         <useTags>true</useTags>
                         <openApiNullable>false</openApiNullable>
                         <swaggerDocketConfig>false</swaggerDocketConfig>
-                        <!--suppress UnresolvedMavenProperty -->
-                        <additionalModelTypeAnnotations>@lombok.NoArgsConstructor;@lombok.AllArgsConstructor
-                        </additionalModelTypeAnnotations>
                     </configOptions>
                 </configuration>
                 <executions>
