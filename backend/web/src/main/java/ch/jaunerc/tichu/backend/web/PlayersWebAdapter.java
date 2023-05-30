@@ -7,13 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PlayersWebAdapter implements PlayersApiDelegate {
-
-    private final CreatePlayerUseCase createPlayerUseCase;
-
-    public PlayersWebAdapter(CreatePlayerUseCase createPlayerUseCase) {
-        this.createPlayerUseCase = createPlayerUseCase;
-    }
+public record PlayersWebAdapter(CreatePlayerUseCase createPlayerUseCase) implements PlayersApiDelegate {
 
     @Override
     public ResponseEntity<PlayerDto> createPlayer(String playerName) {
