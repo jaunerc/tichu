@@ -6,7 +6,7 @@ import {AppComponent} from './app.component'
 import {ApiModule, Configuration, ConfigurationParameters} from './tichu/api'
 import {HttpClientModule} from '@angular/common/http'
 
-export function apiConfiguration(): Configuration {
+export function apiConfiguration (): Configuration {
   const params: ConfigurationParameters = {
     basePath: 'http://localhost:8080/api'
   }
