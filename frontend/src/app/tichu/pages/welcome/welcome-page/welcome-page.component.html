@@ -1,1 +1,2 @@
 <p>welcome-page works!</p>
+<p *ngIf="player$ | async as player">UUID: {{ player.id }}, NAME: {{ player.name }}</p>
