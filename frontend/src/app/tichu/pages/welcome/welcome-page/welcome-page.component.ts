@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core'
-import {Player, PlayersService} from '../../../api'
-import {Observable} from 'rxjs'
+import { Component, OnInit } from '@angular/core'
+import { Player, PlayersService } from '../../../api'
+import { Observable } from 'rxjs'
 
 @Component({
   selector: 'app-welcome-page',

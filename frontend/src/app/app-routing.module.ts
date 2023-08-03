@@ -1,6 +1,6 @@
-import {NgModule, Type} from '@angular/core'
-import {Route, RouterModule} from '@angular/router'
-import {WelcomeModule} from './tichu/pages/welcome/welcome.module'
+import { NgModule, Type } from '@angular/core'
+import { Route, RouterModule } from '@angular/router'
+import { WelcomeModule } from './tichu/pages/welcome/welcome.module'
 
 export type RoutePath =
   | ''
