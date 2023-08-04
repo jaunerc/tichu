@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { WelcomePageComponent } from './welcome-page/welcome-page.component'
 import { WelcomeRoutingModule } from './welcome-routing.module'
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 @NgModule({
   declarations: [
@@ -9,7 +10,8 @@ import { WelcomeRoutingModule } from './welcome-routing.module'
   ],
   imports: [
     CommonModule,
-    WelcomeRoutingModule
+    WelcomeRoutingModule,
+    MatToolbarModule
   ]
 })
 export class WelcomeModule {
