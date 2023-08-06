@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { ApiModule, Configuration, ConfigurationParameters } from './tichu/api'
 import { HttpClientModule } from '@angular/common/http'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 export function apiConfiguration (): Configuration {
   const params: ConfigurationParameters = {
@@ -21,7 +22,8 @@ export function apiConfiguration (): Configuration {
     BrowserModule,
     AppRoutingModule,
     ApiModule.forRoot(apiConfiguration),
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
