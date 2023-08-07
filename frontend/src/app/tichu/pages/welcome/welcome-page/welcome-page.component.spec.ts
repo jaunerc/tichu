@@ -3,10 +3,10 @@ import { WelcomePageComponent } from './welcome-page.component'
 import { provideMockStore } from '@ngrx/store/testing'
 import { PlayersService } from '../../../api'
 import { anyString, instance, mock, verify, when } from 'ts-mockito'
-import {Component, NO_ERRORS_SCHEMA} from '@angular/core'
+import { Component } from '@angular/core'
 import { of } from 'rxjs'
 import { getUsername } from '../../../states/app/app.selector'
-import {ReactiveFormsModule} from "@angular/forms";
+import { ReactiveFormsModule } from '@angular/forms'
 
 @Component({
   selector: 'mat-toolbar',

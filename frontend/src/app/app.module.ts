@@ -9,7 +9,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { StoreModule } from '@ngrx/store'
 import { initialState, reducers } from './reducers'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
-import {ReactiveFormsModule} from "@angular/forms";
 
 export function apiConfiguration (): Configuration {
   const params: ConfigurationParameters = {
