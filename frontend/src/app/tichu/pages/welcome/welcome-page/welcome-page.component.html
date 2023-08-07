@@ -14,4 +14,4 @@
   mat-raised-button
   (click)="submitUsername()"
 >Submit</button>
-<p *ngIf="player$ | async as player">UUID: {{ player.id }}, NAME: {{ player.name }}</p>
+<p *ngIf="username$ | async as username">username from store: {{ username }}</p>
