@@ -6,6 +6,8 @@ import { AppComponent } from './app.component'
 import { ApiModule, Configuration, ConfigurationParameters } from './tichu/api'
 import { HttpClientModule } from '@angular/common/http'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import {StoreModule} from "@ngrx/store";
+import {reducers} from "./reducers";
 
 export function apiConfiguration (): Configuration {
   const params: ConfigurationParameters = {
@@ -23,7 +25,10 @@ export function apiConfiguration (): Configuration {
     AppRoutingModule,
     ApiModule.forRoot(apiConfiguration),
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    StoreModule.forRoot(reducers, {
+      initialState: { app: { username: undefined } }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
