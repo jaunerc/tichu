@@ -6,7 +6,7 @@ import { saveUsername } from '../../../states/app/app.actions'
 import { Router } from '@angular/router'
 
 @Component({
-  selector: 'app-welcome-page',
+  selector: 'tichu-welcome-page',
   templateUrl: './welcome-page.component.html',
   styleUrls: ['./welcome-page.component.scss']
 })
