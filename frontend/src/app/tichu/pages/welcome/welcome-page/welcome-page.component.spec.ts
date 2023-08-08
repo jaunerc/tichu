@@ -7,6 +7,7 @@ import { Component } from '@angular/core'
 import { of } from 'rxjs'
 import { getUsername } from '../../../states/app/app.selector'
 import { ReactiveFormsModule } from '@angular/forms'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'mat-toolbar',
@@ -30,9 +31,11 @@ describe('WelcomePageComponent', () => {
   let component: WelcomePageComponent
   let fixture: ComponentFixture<WelcomePageComponent>
   let playersService: PlayersService
+  let router: Router
 
   beforeEach(() => {
     playersService = mock(PlayersService)
+    router = mock(Router)
 
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
@@ -43,7 +46,8 @@ describe('WelcomePageComponent', () => {
             { selector: getUsername, value: 'Arthur' }
           ]
         }),
-        { provide: PlayersService, useValue: instance(playersService) }
+        { provide: PlayersService, useValue: instance(playersService) },
+        { provide: Router, useValue: instance(router) }
       ]
     })
 
