@@ -5,6 +5,7 @@ import { FormControl, Validators } from '@angular/forms'
 import { Store } from '@ngrx/store'
 import { saveUsername } from '../../../states/app/app.actions'
 import { getUsername } from '../../../states/app/app.selector'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-welcome-page',
@@ -21,6 +22,7 @@ export class WelcomePageComponent implements OnInit {
 
   constructor (
     private readonly store: Store,
+    private readonly router: Router,
     private readonly playersService: PlayersService
   ) {
   }
@@ -36,6 +38,7 @@ export class WelcomePageComponent implements OnInit {
         .createPlayer(this.usernameControl.value)
         .subscribe(player => {
           this.store.dispatch(saveUsername({ username: player.name }))
+          void this.router.navigate(['lobby'])
         })
     }
   }
