@@ -4,7 +4,7 @@ import { Observable } from 'rxjs'
 import { getUsername } from '../../../states/app/app.selector'
 
 @Component({
-  selector: 'app-lobby-page',
+  selector: 'tichu-lobby-page',
   templateUrl: './lobby-page.component.html',
   styleUrls: ['./lobby-page.component.scss']
 })

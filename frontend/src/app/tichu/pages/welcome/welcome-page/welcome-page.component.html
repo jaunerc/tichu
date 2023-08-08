@@ -1,17 +1,16 @@
-<mat-toolbar>
-  <span>Tichu App</span>
-</mat-toolbar>
-
-<h1>Hi and welcome to the Tichu app</h1>
-<p>Please enter a username</p>
-<form class="welcome-form">
-  <mat-form-field>
-    <mat-label>Your username</mat-label>
-    <input matInput placeholder="Arthur" [formControl]="usernameControl">
-  </mat-form-field>
-</form>
-<button
-  mat-raised-button
-  (click)="submitUsername()"
->Submit</button>
-<p *ngIf="username$ | async as username">username from store: {{ username }}</p>
+<tichu-app-layout>
+  <h1>Hi and welcome to the Tichu app</h1>
+  <p>Please enter a username</p>
+  <form class="welcome-form">
+    <mat-form-field>
+      <mat-label>Your username</mat-label>
+      <input matInput placeholder="Arthur" [formControl]="usernameControl">
+    </mat-form-field>
+  </form>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="submitUsername()"
+  >Submit
+  </button>
+</tichu-app-layout>
