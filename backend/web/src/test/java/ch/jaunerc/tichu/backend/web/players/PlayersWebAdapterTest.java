@@ -1,4 +1,4 @@
-package ch.jaunerc.tichu.backend.web;
+package ch.jaunerc.tichu.backend.web.players;
 
 import ch.jaunerc.tichu.backend.domain.player.model.Player;
 import ch.jaunerc.tichu.backend.domain.player.port.CreatePlayerUseCase;
