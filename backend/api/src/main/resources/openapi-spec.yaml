@@ -30,10 +30,22 @@ paths:
                 $ref: '#/components/schemas/Player'
 
   /games:
+    get:
+      tags:
+        - Games
+      summary: Get a list of all games
+      operationId: getGames
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Games'
     post:
       tags:
         - Games
-      summary: Creates a new game
+      summary: Creates a game
       operationId: createGame
       responses:
         '200':
@@ -63,3 +75,11 @@ components:
           type: string
       required:
         - id
+
+    Games:
+      type: object
+      properties:
+        games:
+          type: array
+          items:
+            $ref: '#/components/schemas/Game'

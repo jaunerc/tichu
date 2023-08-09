@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class GamePersistenceAdapter implements CreateGamePort {
+public class CreateGamePersistenceAdapter implements CreateGamePort {
 
     private final GameRepository gameRepository;
 
     @Override
     public Game createGame(GamePhase gamePhase) {
         var savedEntity = gameRepository.save(GameEntityMapper.map(gamePhase));
-        return new Game(savedEntity.getId(), null, null, savedEntity.getGamePhase());
+        return GameEntityMapper.toDomain(savedEntity);
     }
 }
