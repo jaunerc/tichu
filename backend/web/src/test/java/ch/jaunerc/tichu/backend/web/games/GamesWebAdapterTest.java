@@ -1,7 +1,7 @@
-package ch.jaunerc.tichu.backend.web;
+package ch.jaunerc.tichu.backend.web.games;
 
-import ch.jaunerc.tichu.backend.domain.player.model.Player;
-import ch.jaunerc.tichu.backend.domain.player.port.CreatePlayerUseCase;
+import ch.jaunerc.tichu.backend.domain.game.model.Game;
+import ch.jaunerc.tichu.backend.domain.game.port.CreateGameUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,31 +12,27 @@ import org.springframework.http.HttpStatus;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class PlayersWebAdapterTest {
+class GamesWebAdapterTest {
 
     @Mock
-    private CreatePlayerUseCase createPlayerUseCase;
-
+    private CreateGameUseCase createGameUseCase;
     @InjectMocks
-    private PlayersWebAdapter playersWebAdapter;
+    private GamesWebAdapter gamesWebAdapter;
 
     @Test
-    void createPlayer() {
+    void createGame() {
         var uuid = "00000000-0000-0000-0000-000000000000";
-        var playerName = "The captain";
-        when(createPlayerUseCase.createPlayer(anyString()))
-                .thenReturn(new Player(UUID.fromString(uuid), playerName));
+        when(createGameUseCase.createGame())
+                .thenReturn(new Game(UUID.fromString(uuid), null, null, null));
 
         // act
-        var responseEntity = playersWebAdapter.createPlayer(playerName);
+        var responseEntity = gamesWebAdapter.createGame();
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isNotNull();
         assertThat(responseEntity.getBody().getId()).isEqualTo(uuid);
-        assertThat(responseEntity.getBody().getName()).isEqualTo(playerName);
     }
 }
