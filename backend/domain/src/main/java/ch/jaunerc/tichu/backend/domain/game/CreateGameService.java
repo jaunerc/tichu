@@ -2,15 +2,19 @@ package ch.jaunerc.tichu.backend.domain.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.GamePhase;
+import ch.jaunerc.tichu.backend.domain.game.port.CreateGamePort;
 import ch.jaunerc.tichu.backend.domain.game.port.CreateGameUseCase;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
+@RequiredArgsConstructor
 public class CreateGameService implements CreateGameUseCase {
+
+    private final CreateGamePort createGamePort;
+
     @Override
     public Game createGame() {
-        return new Game(UUID.randomUUID(), null, null, GamePhase.DEALING_CARDS);
+        return createGamePort.createGame(GamePhase.DEALING_CARDS);
     }
 }
