@@ -15,7 +15,6 @@ public class GamesWebAdapter implements GamesApiDelegate {
 
     @Override
     public ResponseEntity<GameDto> createGame() {
-        var game = createGameUseCase.createGame();
-        return ResponseEntity.ok(GameDtoMapper.map(game));
+        return ResponseEntity.ok(GameDtoMapper.map(createGameUseCase.createGame()));
     }
 }
