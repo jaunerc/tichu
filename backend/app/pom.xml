@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>web</artifactId>
+            <artifactId>input-web</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
