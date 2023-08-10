@@ -20,10 +20,10 @@
 
     <modules>
         <module>api</module>
-        <module>web</module>
+        <module>input-web</module>
         <module>app</module>
         <module>domain</module>
-        <module>persistence</module>
+        <module>output-persistence</module>
     </modules>
 
     <build>
