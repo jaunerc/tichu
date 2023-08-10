@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { StoreModule } from '@ngrx/store'
 import { initialState, reducers } from './reducers'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
+import { StompService } from './tichu/stomp/stomp.service'
+import { StompFactory } from './tichu/stomp/stomp.factory'
 
 export function apiConfiguration (): Configuration {
   const params: ConfigurationParameters = {
@@ -34,7 +36,12 @@ export function apiConfiguration (): Configuration {
       name: 'NgRx Tichu DevTools'
     })
   ],
-  providers: [],
+  providers: [
+    {
+      provide: StompService,
+      useFactory: StompFactory
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
