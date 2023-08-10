@@ -1,4 +1,6 @@
 <tichu-app-layout>
   <h1>This is the lobby</h1>
   <p *ngIf="username$ | async as username">Hello {{ username }}</p>
+
+  <p *ngIf="games$ | async as games">There are {{ games.games?.length }} games at the moment</p>
 </tichu-app-layout>

@@ -13,21 +13,26 @@ import {HttpHeaders} from '@angular/common/http';
 
 import {Observable} from 'rxjs';
 
-import {Player} from '../model/models';
+import {Game, Games} from '../model/models';
 
 
 import {Configuration} from '../configuration';
 
 
-export interface PlayersServiceInterface {
+export interface GamesServiceInterface {
     defaultHeaders: HttpHeaders;
     configuration: Configuration;
 
     /**
-     * Creates a player
+     * Creates a game
      *
-     * @param playerName The name of the player
      */
-    createPlayer(playerName: string, extraHttpRequestParams?: any): Observable<Player>;
+    createGame(extraHttpRequestParams?: any): Observable<Game>;
+
+    /**
+     * Get a list of all games
+     *
+     */
+    getGames(extraHttpRequestParams?: any): Observable<Games>;
 
 }
