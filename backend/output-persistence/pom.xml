@@ -7,7 +7,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <groupId>ch.jaunerc.tichu.backend</groupId>
-    <artifactId>persistence</artifactId>
+    <artifactId>output-persistence</artifactId>
 
     <dependencies>
         <dependency>
