@@ -11,8 +11,7 @@
  */
 
 
-export interface Player { 
+export interface Game { 
     id: string;
-    name: string;
 }
 
