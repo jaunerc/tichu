@@ -13,6 +13,6 @@ import {Game} from './game';
 
 
 export interface Games {
-    games?: Array<Game>;
+    games: Array<Game>;
 }
 

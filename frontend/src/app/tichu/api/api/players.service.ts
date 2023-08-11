@@ -13,13 +13,13 @@
 
 import {Inject, Injectable, Optional} from '@angular/core';
 import {
-  HttpClient,
-  HttpContext,
-  HttpEvent,
-  HttpHeaders,
-  HttpParameterCodec,
-  HttpParams,
-  HttpResponse
+    HttpClient,
+    HttpContext,
+    HttpEvent,
+    HttpHeaders,
+    HttpParameterCodec,
+    HttpParams,
+    HttpResponse
 } from '@angular/common/http';
 import {CustomHttpParameterCodec} from '../encoder';
 import {Observable} from 'rxjs';
