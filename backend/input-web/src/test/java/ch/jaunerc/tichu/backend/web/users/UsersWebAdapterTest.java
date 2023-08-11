@@ -1,7 +1,7 @@
-package ch.jaunerc.tichu.backend.web.players;
+package ch.jaunerc.tichu.backend.web.users;
 
-import ch.jaunerc.tichu.backend.domain.player.model.Player;
-import ch.jaunerc.tichu.backend.domain.player.port.CreatePlayerUseCase;
+import ch.jaunerc.tichu.backend.domain.user.model.User;
+import ch.jaunerc.tichu.backend.domain.user.port.CreateUserUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,27 +16,27 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class PlayersWebAdapterTest {
+class UsersWebAdapterTest {
 
     @Mock
-    private CreatePlayerUseCase createPlayerUseCase;
+    private CreateUserUseCase createUserUseCase;
 
     @InjectMocks
-    private PlayersWebAdapter playersWebAdapter;
+    private UsersWebAdapter usersWebAdapter;
 
     @Test
     void createPlayer() {
         var uuid = "00000000-0000-0000-0000-000000000000";
-        var playerName = "The captain";
-        when(createPlayerUseCase.createPlayer(anyString()))
-                .thenReturn(new Player(UUID.fromString(uuid), playerName));
+        var userName = "The captain";
+        when(createUserUseCase.createUser(anyString()))
+                .thenReturn(new User(UUID.fromString(uuid), userName));
 
         // act
-        var responseEntity = playersWebAdapter.createPlayer(playerName);
+        var responseEntity = usersWebAdapter.createUser(userName);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isNotNull();
         assertThat(responseEntity.getBody().getId()).isEqualTo(uuid);
-        assertThat(responseEntity.getBody().getName()).isEqualTo(playerName);
+        assertThat(responseEntity.getBody().getName()).isEqualTo(userName);
     }
 }

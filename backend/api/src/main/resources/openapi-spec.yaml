@@ -8,16 +8,16 @@ servers:
   - url: /api
 
 paths:
-  /players/{player-name}:
+  /users/{user-name}:
     post:
       tags:
-        - Players
-      summary: Creates a player
-      operationId: createPlayer
+        - Users
+      summary: Creates a user
+      operationId: createUser
       parameters:
-        - name: player-name
+        - name: user-name
           in: path
-          description: The name of the player
+          description: The name of the user
           required: true
           schema:
             type: string
@@ -27,7 +27,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Player'
+                $ref: '#/components/schemas/User'
 
   /games:
     get:
@@ -57,7 +57,7 @@ paths:
 
 components:
   schemas:
-    Player:
+    User:
       type: object
       properties:
         id:

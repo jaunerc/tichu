@@ -3,8 +3,8 @@ api.module.ts
 api/api.ts
 api/games.service.ts
 api/games.serviceInterface.ts
-api/players.service.ts
-api/players.serviceInterface.ts
+api/users.service.ts
+api/users.serviceInterface.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -12,6 +12,6 @@ index.ts
 model/game.ts
 model/games.ts
 model/models.ts
-model/player.ts
+model/user.ts
 param.ts
 variables.ts
