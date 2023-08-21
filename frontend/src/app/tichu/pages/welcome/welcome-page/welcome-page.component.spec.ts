@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { WelcomePageComponent } from './welcome-page.component'
 import { provideMockStore } from '@ngrx/store/testing'
-import { PlayersService } from '../../../api'
+import { UsersService } from '../../../api'
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito'
 import { Component } from '@angular/core'
 import { of } from 'rxjs'
@@ -27,26 +27,32 @@ class MockMatFormField {}
 })
 class MockMatLabel {}
 
+@Component({
+  selector: 'tichu-app-layout',
+  template: ''
+})
+class MockTichuAppLayout {}
+
 describe('WelcomePageComponent', () => {
   let component: WelcomePageComponent
   let fixture: ComponentFixture<WelcomePageComponent>
-  let playersService: PlayersService
+  let usersService: UsersService
   let router: Router
 
   beforeEach(() => {
-    playersService = mock(PlayersService)
+    usersService = mock(UsersService)
     router = mock(Router)
 
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
-      declarations: [WelcomePageComponent, MockMatToolbar, MockMatFormField, MockMatLabel],
+      declarations: [WelcomePageComponent, MockMatToolbar, MockMatFormField, MockMatLabel, MockTichuAppLayout],
       providers: [
         provideMockStore({
           selectors: [
             { selector: getUsername, value: 'Arthur' }
           ]
         }),
-        { provide: PlayersService, useValue: instance(playersService) },
+        { provide: UsersService, useValue: instance(usersService) },
         { provide: Router, useValue: instance(router) }
       ]
     })
@@ -58,17 +64,17 @@ describe('WelcomePageComponent', () => {
 
   it('should send a create player request when the name is submitted and navigate', () => {
     component.usernameControl.setValue('Arthur')
-    when(playersService.createPlayer(anyString())).thenReturn(of({ name: 'Arthur', id: '00000000-0000-0000-0000-000000000000' }))
+    when(usersService.createUser(anyString())).thenReturn(of({ name: 'Arthur', id: '00000000-0000-0000-0000-000000000000' }))
 
     component.submitUsername()
 
-    verify(playersService.createPlayer(anyString())).once()
+    verify(usersService.createUser(anyString())).once()
     verify(router.navigate(anything())).once()
   })
 
   it('should not send a create player request when no name is entered', () => {
     component.submitUsername()
 
-    verify(playersService.createPlayer(anyString())).never()
+    verify(usersService.createUser(anyString())).never()
   })
 })

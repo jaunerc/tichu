@@ -1,7 +1,7 @@
-package ch.jaunerc.tichu.backend.domain.player;
+package ch.jaunerc.tichu.backend.domain.user;
 
-import ch.jaunerc.tichu.backend.domain.player.model.Player;
-import ch.jaunerc.tichu.backend.domain.player.port.CreatePlayerPort;
+import ch.jaunerc.tichu.backend.domain.user.model.User;
+import ch.jaunerc.tichu.backend.domain.user.port.CreateUserPort;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,19 +15,19 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CreatePlayerServiceTest {
+class CreateUserServiceTest {
 
     @Mock
-    private CreatePlayerPort createPlayerPort;
+    private CreateUserPort createUserPort;
     @InjectMocks
-    private CreatePlayerService createPlayerService;
+    private CreateUserService createPlayerService;
 
     @Test
     void createPlayer() {
         var playerName = "The chosen one";
-        when(createPlayerPort.createPlayer(anyString())).thenReturn(new Player(UUID.randomUUID(), playerName));
+        when(createUserPort.createUser(anyString())).thenReturn(new User(UUID.randomUUID(), playerName));
 
-        var player = createPlayerService.createPlayer(playerName);
+        var player = createPlayerService.createUser(playerName);
 
         assertThat(player.id()).isNotNull();
         assertThat(player.name()).isEqualTo(playerName);

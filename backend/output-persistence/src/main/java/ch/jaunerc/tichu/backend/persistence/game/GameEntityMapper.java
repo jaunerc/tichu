@@ -2,6 +2,7 @@ package ch.jaunerc.tichu.backend.persistence.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.GamePhase;
+import ch.jaunerc.tichu.backend.persistence.game.team.TeamEntityMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +16,10 @@ public class GameEntityMapper {
     }
 
     static Game toDomain(GameEntity gameEntity) {
-        return new Game(gameEntity.getId(), null, null, gameEntity.getGamePhase());
+        return new Game(
+                gameEntity.getId(),
+                TeamEntityMapper.toDomain(gameEntity.getFirstTeam()),
+                TeamEntityMapper.toDomain(gameEntity.getSecondTeam()),
+                gameEntity.getGamePhase());
     }
 }

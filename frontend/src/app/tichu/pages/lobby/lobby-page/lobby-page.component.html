@@ -1,6 +1,15 @@
 <tichu-app-layout>
-  <h1>This is the lobby</h1>
-  <p *ngIf="username$ | async as username">Hello {{ username }}</p>
+  <ng-container *ngIf="username$ | async as username">
+    <h1>Hello {{ username }} you are in the lobby</h1>
 
-  <p *ngIf="games$ | async as games">There are {{ games.games?.length }} games at the moment</p>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>Id</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['id']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['id']"></tr>
+    </table>
+  </ng-container>
 </tichu-app-layout>

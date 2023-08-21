@@ -1,4 +1,4 @@
-package ch.jaunerc.tichu.backend.persistence.player;
+package ch.jaunerc.tichu.backend.persistence.user;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,12 +11,12 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Entity(name = "Player")
+@Entity(name = "Tichu_User")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlayerEntity {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

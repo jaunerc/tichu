@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { PlayersService } from '../../../api'
+import { UsersService } from '../../../api'
 import { FormControl, Validators } from '@angular/forms'
 import { Store } from '@ngrx/store'
 import { saveUsername } from '../../../states/app/app.actions'
@@ -19,16 +19,16 @@ export class WelcomePageComponent {
   constructor (
     private readonly store: Store,
     private readonly router: Router,
-    private readonly playersService: PlayersService
+    private readonly usersService: UsersService
   ) {
   }
 
   submitUsername (): void {
     if (this.usernameControl.valid) {
-      this.playersService
-        .createPlayer(this.usernameControl.value)
-        .subscribe(player => {
-          this.store.dispatch(saveUsername({ username: player.name }))
+      this.usersService
+        .createUser(this.usernameControl.value)
+        .subscribe(user => {
+          this.store.dispatch(saveUsername({ username: user.name }))
           void this.router.navigate(['lobby'])
         })
     }

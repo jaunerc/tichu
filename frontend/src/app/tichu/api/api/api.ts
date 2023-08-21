@@ -1,8 +1,8 @@
 export * from './games.service';
 import {GamesService} from './games.service';
-import {PlayersService} from './players.service';
+import {UsersService} from './users.service';
 
 export * from './games.serviceInterface';
-export * from './players.service';
-export * from './players.serviceInterface';
-export const APIS = [GamesService, PlayersService];
+export * from './users.service';
+export * from './users.serviceInterface';
+export const APIS = [GamesService, UsersService];

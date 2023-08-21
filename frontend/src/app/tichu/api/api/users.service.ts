@@ -13,30 +13,30 @@
 
 import {Inject, Injectable, Optional} from '@angular/core';
 import {
-    HttpClient,
-    HttpContext,
-    HttpEvent,
-    HttpHeaders,
-    HttpParameterCodec,
-    HttpParams,
-    HttpResponse
+  HttpClient,
+  HttpContext,
+  HttpEvent,
+  HttpHeaders,
+  HttpParameterCodec,
+  HttpParams,
+  HttpResponse
 } from '@angular/common/http';
 import {CustomHttpParameterCodec} from '../encoder';
 import {Observable} from 'rxjs';
 
 // @ts-ignore
-import {Player} from '../model/player';
+import {User} from '../model/user';
 
 // @ts-ignore
 import {BASE_PATH, COLLECTION_FORMATS} from '../variables';
 import {Configuration} from '../configuration';
-import {PlayersServiceInterface} from './players.serviceInterface';
+import {UsersServiceInterface} from './users.serviceInterface';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class PlayersService implements PlayersServiceInterface {
+export class UsersService implements UsersServiceInterface {
 
     protected basePath = '/api';
     public defaultHeaders = new HttpHeaders();
@@ -98,17 +98,17 @@ export class PlayersService implements PlayersServiceInterface {
     }
 
     /**
-     * Creates a player
-     * @param playerName The name of the player
+     * Creates a user
+     * @param userName The name of the user
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createPlayer(playerName: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Player>;
-    public createPlayer(playerName: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Player>>;
-    public createPlayer(playerName: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Player>>;
-    public createPlayer(playerName: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (playerName === null || playerName === undefined) {
-            throw new Error('Required parameter playerName was null or undefined when calling createPlayer.');
+    public createUser(userName: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<User>;
+    public createUser(userName: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<User>>;
+    public createUser(userName: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<User>>;
+    public createUser(userName: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (userName === null || userName === undefined) {
+            throw new Error('Required parameter userName was null or undefined when calling createUser.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -142,8 +142,8 @@ export class PlayersService implements PlayersServiceInterface {
             }
         }
 
-        let localVarPath = `/players/${this.configuration.encodeParam({name: "playerName", value: playerName, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<Player>('post', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/users/${this.configuration.encodeParam({name: "userName", value: userName, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        return this.httpClient.request<User>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
