@@ -35,6 +35,21 @@ class GameEntityMapperTest {
         assertThat(result.secondTeam()).isNotNull();
     }
 
+    @Test
+    void toDomain_nullTeams() {
+        var uuid = UUID.randomUUID();
+        var gameEntity = createGameEntity(uuid);
+        gameEntity.setFirstTeam(null);
+        gameEntity.setSecondTeam(null);
+
+        var result = GameEntityMapper.toDomain(gameEntity);
+
+        assertThat(result.gameId()).isEqualTo(uuid);
+        assertThat(result.gamePhase()).isEqualTo(GAME_IS_RUNNING);
+        assertThat(result.firstTeam()).isNull();
+        assertThat(result.secondTeam()).isNull();
+    }
+
     private static GameEntity createGameEntity(UUID uuid) {
         var gameEntity = new GameEntity();
         gameEntity.setId(uuid);
