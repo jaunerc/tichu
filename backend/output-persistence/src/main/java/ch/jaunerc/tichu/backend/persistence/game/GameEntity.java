@@ -1,10 +1,8 @@
 package ch.jaunerc.tichu.backend.persistence.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.GamePhase;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import ch.jaunerc.tichu.backend.persistence.game.team.TeamEntity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,4 +21,12 @@ public class GameEntity {
     private UUID id;
 
     private GamePhase gamePhase;
+
+    @OneToOne
+    @JoinColumn(name = "firstTeamId", referencedColumnName = "id")
+    private TeamEntity firstTeam;
+
+    @OneToOne
+    @JoinColumn(name = "secondTeamId", referencedColumnName = "id")
+    private TeamEntity secondTeam;
 }
