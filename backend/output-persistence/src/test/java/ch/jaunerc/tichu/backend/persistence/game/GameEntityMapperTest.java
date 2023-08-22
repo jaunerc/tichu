@@ -54,11 +54,11 @@ class GameEntityMapperTest {
         var gameEntity = new GameEntity();
         gameEntity.setId(uuid);
         gameEntity.setGamePhase(GAME_IS_RUNNING);
-        TeamEntity firstTeam = new TeamEntity();
+        var firstTeam = new TeamEntity();
         firstTeam.setFirstPlayer(new PlayerEntity());
         firstTeam.setSecondPlayer(new PlayerEntity());
         gameEntity.setFirstTeam(firstTeam);
-        TeamEntity secondTeam = new TeamEntity();
+        var secondTeam = new TeamEntity();
         secondTeam.setFirstPlayer(new PlayerEntity());
         secondTeam.setSecondPlayer(new PlayerEntity());
         gameEntity.setSecondTeam(secondTeam);
