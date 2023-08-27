@@ -2,7 +2,7 @@ import { Component } from '@angular/core'
 import { UsersService } from '../../../api'
 import { FormControl, Validators } from '@angular/forms'
 import { Store } from '@ngrx/store'
-import { saveUsername } from '../../../states/app/app.actions'
+import { saveUserId, saveUsername } from '../../../states/app/app.actions'
 import { Router } from '@angular/router'
 
 @Component({
@@ -29,6 +29,7 @@ export class WelcomePageComponent {
         .createUser(this.usernameControl.value)
         .subscribe(user => {
           this.store.dispatch(saveUsername({ username: user.name }))
+          this.store.dispatch(saveUserId({ userId: user.id }))
           void this.router.navigate(['lobby'])
         })
     }
