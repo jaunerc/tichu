@@ -5,6 +5,7 @@ import { LobbyRoutingModule } from './lobby-routing.module'
 import { SharedModule } from '../../shared/shared.module'
 import { MatCardModule } from '@angular/material/card'
 import { MatTableModule } from '@angular/material/table'
+import { MatButtonModule } from '@angular/material/button'
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { MatTableModule } from '@angular/material/table'
     LobbyRoutingModule,
     SharedModule,
     MatCardModule,
-    MatTableModule
+    MatTableModule,
+    MatButtonModule
   ]
 })
 export class LobbyModule { }

@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store'
-import { Observable } from 'rxjs'
+import { Observable, Subject } from 'rxjs'
 import { getUsername } from '../../../states/app/app.selector'
 import { Games, GamesService } from '../../../api'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 
 export interface GameElement {
   id: string
 }
 
+@UntilDestroy()
 @Component({
   selector: 'tichu-lobby-page',
   templateUrl: './lobby-page.component.html',
@@ -15,7 +17,7 @@ export interface GameElement {
 })
 export class LobbyPageComponent implements OnInit {
   public username$?: Observable<string | undefined>
-  public games$?: Observable<Games>
+  private readonly gamesSubject$: Subject<Games> = new Subject<Games>()
 
   public dataSource: GameElement[] = []
 
@@ -24,15 +26,32 @@ export class LobbyPageComponent implements OnInit {
     private readonly gamesService: GamesService
   ) {}
 
-  ngOnInit (): void {
+  public ngOnInit (): void {
     this.username$ = this.store.select(getUsername)
-    this.games$ = this.gamesService.getGames()
+    this.updateGames()
 
-    this.games$.subscribe(games => {
-      this.dataSource = games.games
-        ?.map(game => {
-          return { id: game.id } satisfies GameElement
-        })
-    })
+    this.gamesSubject$
+      .pipe(untilDestroyed(this))
+      .subscribe(games => {
+        this.dataSource = games.games
+          ?.map(game => {
+            return { id: game.id } satisfies GameElement
+          })
+      })
+  }
+
+  public createGame (): void {
+    this.gamesService.createGame()
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {
+        this.updateGames()
+      })
+  }
+
+  private updateGames (): void {
+    void this.gamesService.getGames()
+      .forEach(games => {
+        this.gamesSubject$.next(games)
+      })
   }
 }
