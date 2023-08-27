@@ -2,6 +2,13 @@
   <ng-container *ngIf="username$ | async as username">
     <h1>Hello {{ username }} you are in the lobby</h1>
 
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="createGame()"
+    >Create a new game
+    </button>
+
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>Id</th>

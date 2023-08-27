@@ -18,8 +18,8 @@ public class GameEntityMapper {
     static Game toDomain(GameEntity gameEntity) {
         return new Game(
                 gameEntity.getId(),
-                TeamEntityMapper.toDomain(gameEntity.getFirstTeam()),
-                TeamEntityMapper.toDomain(gameEntity.getSecondTeam()),
+                gameEntity.getFirstTeam() != null ? TeamEntityMapper.toDomain(gameEntity.getFirstTeam()) : null,
+                gameEntity.getSecondTeam() != null ? TeamEntityMapper.toDomain(gameEntity.getSecondTeam()) : null,
                 gameEntity.getGamePhase());
     }
 }

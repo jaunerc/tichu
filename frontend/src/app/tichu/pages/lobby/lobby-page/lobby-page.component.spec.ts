@@ -3,15 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { LobbyPageComponent } from './lobby-page.component'
 import { provideMockStore } from '@ngrx/store/testing'
 import { getUsername } from '../../../states/app/app.selector'
-import { GamesService } from '../../../api'
-import { instance, mock } from 'ts-mockito'
-import { Component } from '@angular/core'
-
-@Component({
-  selector: 'tichu-app-layout',
-  template: ''
-})
-class TichuAppLayout {}
+import { Game, GamesService } from '../../../api'
+import { instance, mock, verify, when } from 'ts-mockito'
+import { of } from 'rxjs'
+import { MatTableModule } from '@angular/material/table'
+import { SharedModule } from '../../../shared/shared.module'
 
 describe('LobbyPageComponent', () => {
   let component: LobbyPageComponent
@@ -20,9 +16,11 @@ describe('LobbyPageComponent', () => {
 
   beforeEach(() => {
     gamesService = mock(GamesService)
+    when(gamesService.getGames()).thenReturn(of({ games: [] }))
 
     TestBed.configureTestingModule({
-      declarations: [LobbyPageComponent, TichuAppLayout],
+      imports: [MatTableModule, SharedModule],
+      declarations: [LobbyPageComponent],
       providers: [
         provideMockStore({
           selectors: [
@@ -37,7 +35,20 @@ describe('LobbyPageComponent', () => {
     fixture.detectChanges()
   })
 
-  it('should create', () => {
-    expect(component).toBeTruthy()
+  it('should show the username in the title', () => {
+    const html: HTMLElement = fixture.nativeElement
+    const header: HTMLHeadingElement | null = html.querySelector('h1')
+
+    expect(header?.textContent).toContain('Arthur')
+  })
+
+  it('should update the components game list again when creating a new game', () => {
+    when(gamesService.createGame()).thenReturn(of({ id: '1' } satisfies Game))
+    when(gamesService.getGames()).thenReturn(of({ games: [{ id: '1' }, { id: '2' }] }))
+
+    component.createGame()
+
+    verify(gamesService.createGame()).once()
+    verify(gamesService.getGames()).twice()
   })
 })
