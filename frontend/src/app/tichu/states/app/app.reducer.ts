@@ -1,15 +1,20 @@
 import { Action, ActionCreator, createReducer, on, ReducerTypes } from '@ngrx/store'
-import { saveUsername } from './app.actions'
+import { saveUserId, saveUsername } from './app.actions'
 import { AppState } from './app.state'
 
 export const initialAppState: AppState = {
-  username: undefined
+  username: undefined,
+  userId: undefined
 }
 
 export const generalAppReducers: Array<ReducerTypes<AppState, ActionCreator[]>> = [
   on(saveUsername, (appState, payload) => ({
     ...appState,
     username: payload.username
+  })),
+  on(saveUserId, (appState, payload) => ({
+    ...appState,
+    userId: payload.userId
   }))
 ]
 
