@@ -34,8 +34,7 @@ class CreateTeamPersistenceAdapterTest {
     @DisplayName("should set the given player as first player")
     void createTeam() {
         when(teamRepository.save(any())).thenReturn(new TeamEntity());
-        var playerId = UUID.randomUUID();
-        var player = new Player(playerId, List.of());
+        var player = new Player(UUID.randomUUID(), List.of());
 
         createTeamPersistenceAdapter.createTeam(player);
 
