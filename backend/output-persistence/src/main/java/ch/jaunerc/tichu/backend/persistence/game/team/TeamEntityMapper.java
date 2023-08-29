@@ -17,8 +17,9 @@ public class TeamEntityMapper {
 
     public static Team toDomain(TeamEntity teamEntity) {
         return new Team(
-                PlayerEntityMapper.toDomain(teamEntity.getFirstPlayer()),
-                PlayerEntityMapper.toDomain(teamEntity.getSecondPlayer()),
+                teamEntity.getId(),
+                teamEntity.getFirstPlayer() != null ? PlayerEntityMapper.toDomain(teamEntity.getFirstPlayer()) : null,
+                teamEntity.getSecondPlayer() != null ? PlayerEntityMapper.toDomain(teamEntity.getSecondPlayer()) : null,
                 0 // TODO store points in the entity
         );
     }
