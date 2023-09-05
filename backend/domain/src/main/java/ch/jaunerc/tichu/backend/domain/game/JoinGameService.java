@@ -34,9 +34,13 @@ public class JoinGameService implements JoinGameUseCase {
 
     private Game tryToJoinTheGame(Game game, Player player) {
         if (game.firstTeam() == null) {
-            return Game.updateFirstTeam(game, createTeamPort.createTeam(player));
+            return Game.Builder.of(game)
+                    .firstTeam(createTeamPort.createTeam(player))
+                    .build();
         } else if (game.secondTeam() == null) {
-            return Game.updateSecondTeam(game, createTeamPort.createTeam(player));
+            return Game.Builder.of(game)
+                    .secondTeam(createTeamPort.createTeam(player))
+                    .build();
         }
 
         return joinFirstOrSecondTeam(game, player);

@@ -7,17 +7,30 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class TeamJoiner {
 
     public static Game joinFirstOrSecondTeam(Game game, Player player) {
         return tryToAddThePlayerToTheTeam(game.firstTeam(), player)
-                .map(team -> Game.updateFirstTeam(game, team))
+                .map(updateFirstTeamOf(game))
                 .or(() -> tryToAddThePlayerToTheTeam(game.secondTeam(), player)
-                        .map(team -> Game.updateSecondTeam(game, team)))
+                        .map(updateSecondTeamOf(game)))
                 .orElseThrow(() -> new IllegalStateException("Unable to join the game with the id=" + game.gameId()));
 
+    }
+
+    private static Function<Team, Game> updateFirstTeamOf(Game game) {
+        return team -> Game.Builder.of(game)
+                .firstTeam(team)
+                .build();
+    }
+
+    private static Function<Team, Game> updateSecondTeamOf(Game game) {
+        return team -> Game.Builder.of(game)
+                .secondTeam(team)
+                .build();
     }
 
     private static Optional<Team> tryToAddThePlayerToTheTeam(Team team, Player player) {

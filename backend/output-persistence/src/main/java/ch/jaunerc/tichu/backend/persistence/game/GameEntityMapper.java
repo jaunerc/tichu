@@ -25,10 +25,16 @@ public class GameEntityMapper {
     }
 
     static Game toDomain(GameEntity gameEntity) {
-        return new Game(
-                gameEntity.getId(),
-                gameEntity.getFirstTeam() != null ? TeamEntityMapper.toDomain(gameEntity.getFirstTeam()) : null,
-                gameEntity.getSecondTeam() != null ? TeamEntityMapper.toDomain(gameEntity.getSecondTeam()) : null,
-                gameEntity.getGamePhase());
+        var gameBuilder = new Game.Builder(gameEntity.getId(), gameEntity.getGamePhase());
+
+        if (gameEntity.getFirstTeam() != null) {
+            gameBuilder.firstTeam(TeamEntityMapper.toDomain(gameEntity.getFirstTeam()));
+        }
+
+        if (gameEntity.getSecondTeam() != null) {
+            gameBuilder.secondTeam(TeamEntityMapper.toDomain(gameEntity.getSecondTeam()));
+        }
+
+        return gameBuilder.build();
     }
 }

@@ -29,7 +29,7 @@ class GameEntityMapperTest {
     @Test
     void map_teamNull() {
         var gameId = UUID.randomUUID();
-        var game = new Game(gameId, null, null, DEALING_CARDS);
+        var game = new Game.Builder(gameId, DEALING_CARDS).build();
 
         var result = GameEntityMapper.map(game);
 
@@ -45,7 +45,9 @@ class GameEntityMapperTest {
         var firstPlayer = new Player(UUID.randomUUID(), List.of());
         var secondPlayer = new Player(UUID.randomUUID(), List.of());
         var firstTeam = new Team(UUID.randomUUID(), firstPlayer, secondPlayer, 0);
-        var game = new Game(gameId, firstTeam, null, DEALING_CARDS);
+        var game = new Game.Builder(gameId, DEALING_CARDS)
+                .firstTeam(firstTeam)
+                .build();
 
         var result = GameEntityMapper.map(game);
 
