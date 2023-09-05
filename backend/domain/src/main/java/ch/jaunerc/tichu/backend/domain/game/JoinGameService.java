@@ -1,22 +1,45 @@
 package ch.jaunerc.tichu.backend.domain.game;
 
+import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.JoinGame;
-import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
-import ch.jaunerc.tichu.backend.domain.game.port.JoinGameUseCase;
+import ch.jaunerc.tichu.backend.domain.game.model.Player;
+import ch.jaunerc.tichu.backend.domain.game.port.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+
+import static ch.jaunerc.tichu.backend.domain.game.TeamJoiner.joinFirstOrSecondTeam;
 
 @Service
 @RequiredArgsConstructor
 public class JoinGameService implements JoinGameUseCase {
 
     private final FindGameByIdPort findGameByIdPort;
+    private final CreatePlayerPort createPlayerPort;
+    private final CreateTeamPort createTeamPort;
+    private final SaveGamePort saveGamePort;
 
     @Override
     public JoinGame joinGame(String gameId, String userId) {
-        var game = findGameByIdPort.findGameById(UUID.fromString(gameId)); // TODO could be invalid uuid input
-        return null;
+        var game = findGameByIdPort.findGameById(UUID.fromString(gameId));
+        var player = createPlayerPort.createPlayer();
+
+        var gameJoined = tryToJoinTheGame(game, player);
+
+        saveGamePort.saveGame(gameJoined);
+
+        return new JoinGame(player.uuid());
     }
+
+    private Game tryToJoinTheGame(Game game, Player player) {
+        if (game.firstTeam() == null) {
+            return Game.updateFirstTeam(game, createTeamPort.createTeam(player));
+        } else if (game.secondTeam() == null) {
+            return Game.updateSecondTeam(game, createTeamPort.createTeam(player));
+        }
+
+        return joinFirstOrSecondTeam(game, player);
+    }
+
 }

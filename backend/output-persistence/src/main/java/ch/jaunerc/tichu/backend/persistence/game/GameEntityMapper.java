@@ -15,6 +15,15 @@ public class GameEntityMapper {
         return gameEntity;
     }
 
+    static GameEntity map(Game game) {
+        return new GameEntity(
+                game.gameId(),
+                game.gamePhase(),
+                game.firstTeam() != null ? TeamEntityMapper.map(game.firstTeam()) : null,
+                game.secondTeam() != null ? TeamEntityMapper.map(game.secondTeam()) : null
+        );
+    }
+
     static Game toDomain(GameEntity gameEntity) {
         return new Game(
                 gameEntity.getId(),

@@ -1,10 +1,14 @@
 package ch.jaunerc.tichu.backend.persistence.game;
 
+import ch.jaunerc.tichu.backend.domain.game.model.Game;
+import ch.jaunerc.tichu.backend.domain.game.model.Player;
+import ch.jaunerc.tichu.backend.domain.game.model.Team;
 import ch.jaunerc.tichu.backend.persistence.game.player.PlayerEntity;
 import ch.jaunerc.tichu.backend.persistence.game.team.TeamEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.UUID;
 
 import static ch.jaunerc.tichu.backend.domain.game.model.GamePhase.DEALING_CARDS;
@@ -20,6 +24,35 @@ class GameEntityMapperTest {
 
         assertThat(result.getGamePhase()).isEqualTo(DEALING_CARDS);
         assertThat(result.getId()).isNull();
+    }
+
+    @Test
+    void map_teamNull() {
+        var gameId = UUID.randomUUID();
+        var game = new Game(gameId, null, null, DEALING_CARDS);
+
+        var result = GameEntityMapper.map(game);
+
+        assertThat(result.getId()).isEqualTo(gameId);
+        assertThat(result.getGamePhase()).isEqualTo(DEALING_CARDS);
+        assertThat(result.getFirstTeam()).isNull();
+        assertThat(result.getSecondTeam()).isNull();
+    }
+
+    @Test
+    void map_game() {
+        var gameId = UUID.randomUUID();
+        var firstPlayer = new Player(UUID.randomUUID(), List.of());
+        var secondPlayer = new Player(UUID.randomUUID(), List.of());
+        var firstTeam = new Team(UUID.randomUUID(), firstPlayer, secondPlayer, 0);
+        var game = new Game(gameId, firstTeam, null, DEALING_CARDS);
+
+        var result = GameEntityMapper.map(game);
+
+        assertThat(result.getId()).isEqualTo(gameId);
+        assertThat(result.getGamePhase()).isEqualTo(DEALING_CARDS);
+        assertThat(result.getFirstTeam()).isNotNull();
+        assertThat(result.getSecondTeam()).isNull();
     }
 
     @Test
