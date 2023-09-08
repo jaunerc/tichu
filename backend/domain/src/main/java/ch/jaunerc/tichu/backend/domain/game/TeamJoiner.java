@@ -39,10 +39,14 @@ public class TeamJoiner {
 
     private static Team addPlayer(Team team, Player player) {
         if (team.firstPlayer() == null) {
-            return Team.withFirstPlayer(team, player);
+            return Team.Builder.of(team)
+                    .firstPlayer(player)
+                    .build();
         }
 
-        return Team.withSecondPlayer(team, player);
+        return Team.Builder.of(team)
+                .secondPlayer(player)
+                .build();
     }
 
     private static boolean teamHasCapacity(Team team) {

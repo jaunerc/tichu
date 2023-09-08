@@ -16,11 +16,17 @@ public class TeamEntityMapper {
     }
 
     public static Team toDomain(TeamEntity teamEntity) {
-        return new Team(
-                teamEntity.getId(),
-                teamEntity.getFirstPlayer() != null ? PlayerEntityMapper.toDomain(teamEntity.getFirstPlayer()) : null,
-                teamEntity.getSecondPlayer() != null ? PlayerEntityMapper.toDomain(teamEntity.getSecondPlayer()) : null,
-                0 // TODO store points in the entity
-        );
+        var teamBuilder = new Team.Builder(teamEntity.getId());
+
+        if (teamEntity.getFirstPlayer() != null) {
+            teamBuilder.firstPlayer(PlayerEntityMapper.toDomain(teamEntity.getFirstPlayer()));
+        }
+
+        if (teamEntity.getSecondPlayer() != null) {
+            teamBuilder.secondPlayer(PlayerEntityMapper.toDomain(teamEntity.getSecondPlayer()));
+        }
+
+        teamBuilder.points(0); // TODO store points in the entity
+        return teamBuilder.build();
     }
 }
