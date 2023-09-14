@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core'
-import { Store } from '@ngrx/store'
-import { Observable, Subject } from 'rxjs'
-import { getUsername } from '../../../states/app/app.selector'
-import { Games, GamesService } from '../../../api'
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import {Component, OnInit} from '@angular/core'
+import {Store} from '@ngrx/store'
+import {Observable, Subject} from 'rxjs'
+import {getUsername} from '../../../states/app/app.selector'
+import {Games, GamesService} from '../../../api'
+import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy'
 
 export interface GameElement {
   id: string
@@ -18,7 +18,7 @@ export interface GameElement {
 export class LobbyPageComponent implements OnInit {
   public username$?: Observable<string | undefined>
   private readonly gamesSubject$: Subject<Games> = new Subject<Games>()
-
+  private selectedGameRow?: GameElement
   public dataSource: GameElement[] = []
 
   constructor (
@@ -46,6 +46,25 @@ export class LobbyPageComponent implements OnInit {
       .subscribe(() => {
         this.updateGames()
       })
+  }
+
+  public selectRow(row: GameElement): void {
+    this.selectedGameRow = row
+  }
+
+  public isNoRowSelected(): boolean {
+    return this.selectedGameRow === undefined
+  }
+
+  public joinGame(): void {
+    if (this.selectedGameRow) {
+      void this.gamesService.joinGame(
+        this.selectedGameRow.id,
+        ''
+      ).forEach(joinGame => {
+        console.log(joinGame.playerId)
+      })
+    }
   }
 
   private updateGames (): void {
