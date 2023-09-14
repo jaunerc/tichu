@@ -19,11 +19,11 @@ public class TeamEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "firstPlayerId", referencedColumnName = "id")
     private PlayerEntity firstPlayer;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "secondPlayerId", referencedColumnName = "id")
     private PlayerEntity secondPlayer;
 }

@@ -22,11 +22,11 @@ public class GameEntity {
 
     private GamePhase gamePhase;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "firstTeamId", referencedColumnName = "id")
     private TeamEntity firstTeam;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "secondTeamId", referencedColumnName = "id")
     private TeamEntity secondTeam;
 }

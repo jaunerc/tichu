@@ -3,9 +3,11 @@ package ch.jaunerc.tichu.backend.domain.game;
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.JoinGame;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
+import ch.jaunerc.tichu.backend.domain.game.model.Team;
 import ch.jaunerc.tichu.backend.domain.game.port.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -17,7 +19,6 @@ public class JoinGameService implements JoinGameUseCase {
 
     private final FindGameByIdPort findGameByIdPort;
     private final CreatePlayerPort createPlayerPort;
-    private final CreateTeamPort createTeamPort;
     private final SaveGamePort saveGamePort;
 
     @Override
@@ -35,11 +36,11 @@ public class JoinGameService implements JoinGameUseCase {
     private Game tryToJoinTheGame(Game game, Player player) {
         if (game.firstTeam() == null) {
             return Game.Builder.of(game)
-                    .firstTeam(createTeamPort.createTeam(player))
+                    .firstTeam(new Team(null, player, null, 0))
                     .build();
         } else if (game.secondTeam() == null) {
             return Game.Builder.of(game)
-                    .secondTeam(createTeamPort.createTeam(player))
+                    .secondTeam(new Team(null, player, null, 0))
                     .build();
         }
 

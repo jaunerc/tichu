@@ -32,8 +32,6 @@ class JoinGameServiceTest {
     @Mock
     private CreatePlayerPort createPlayerPort;
     @Mock
-    private CreateTeamPort createTeamPort;
-    @Mock
     private SaveGamePort saveGamePort;
 
     @InjectMocks
@@ -63,7 +61,6 @@ class JoinGameServiceTest {
         var playerId = UUID.randomUUID();
         var player = new Player(playerId, List.of());
         when(findGameByIdPort.findGameById(any())).thenReturn(gameWithNoCapacity);
-        when(createTeamPort.createTeam(any())).thenReturn(new Team(null, new Player(null, List.of()), null, 0));
         when(createPlayerPort.createPlayer()).thenReturn(player);
 
         var result = joinGameService.joinGame(UUID.randomUUID().toString(), null);

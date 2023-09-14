@@ -10,8 +10,15 @@ public class TeamEntityMapper {
 
     public static TeamEntity map(Team team) {
         var teamEntity = new TeamEntity();
-        teamEntity.setFirstPlayer(PlayerEntityMapper.map(team.firstPlayer()));
-        teamEntity.setSecondPlayer(PlayerEntityMapper.map(team.secondPlayer()));
+
+        if (team.firstPlayer() != null) {
+            teamEntity.setFirstPlayer(PlayerEntityMapper.map(team.firstPlayer()));
+        }
+
+        if (team.secondPlayer() != null) {
+            teamEntity.setSecondPlayer(PlayerEntityMapper.map(team.secondPlayer()));
+        }
+
         return teamEntity;
     }
 
