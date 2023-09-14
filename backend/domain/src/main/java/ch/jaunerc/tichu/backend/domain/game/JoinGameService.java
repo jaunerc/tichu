@@ -22,6 +22,7 @@ public class JoinGameService implements JoinGameUseCase {
     private final SaveGamePort saveGamePort;
 
     @Override
+    @Transactional
     public JoinGame joinGame(String gameId, String userId) {
         var game = findGameByIdPort.findGameById(UUID.fromString(gameId));
         var player = createPlayerPort.createPlayer();

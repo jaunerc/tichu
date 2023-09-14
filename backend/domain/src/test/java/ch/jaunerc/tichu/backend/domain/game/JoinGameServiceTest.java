@@ -4,7 +4,6 @@ import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.Team;
 import ch.jaunerc.tichu.backend.domain.game.port.CreatePlayerPort;
-import ch.jaunerc.tichu.backend.domain.game.port.CreateTeamPort;
 import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
 import ch.jaunerc.tichu.backend.domain.game.port.SaveGamePort;
 import org.junit.jupiter.api.DisplayName;
