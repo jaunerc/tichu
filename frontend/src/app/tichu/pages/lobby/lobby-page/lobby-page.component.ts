@@ -56,13 +56,17 @@ export class LobbyPageComponent implements OnInit {
     return this.selectedGameRow === undefined
   }
 
+  public isCurrentRowSelected(row: GameElement): boolean {
+    return row.id === this.selectedGameRow?.id;
+  }
+
   public joinGame(): void {
     if (this.selectedGameRow) {
       void this.gamesService.joinGame(
         this.selectedGameRow.id,
         ''
       ).forEach(joinGame => {
-        console.log(joinGame.playerId)
+        console.log(joinGame.playerId) // TODO implement action for the join game result
       })
     }
   }

@@ -2,3 +2,7 @@
 button {
   margin-bottom: 1rem;
 }
+
+.selected-row .mdc-data-table__cell {
+  font-weight: bold;
+}

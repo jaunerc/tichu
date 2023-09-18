@@ -27,6 +27,7 @@
       <tr
         mat-row
         (click)="selectRow(row)"
+        [class.selected-row]="isCurrentRowSelected(row)"
         *matRowDef="let row; columns: ['id']"></tr>
     </table>
   </ng-container>
