@@ -4,6 +4,7 @@ import {Observable, Subject} from 'rxjs'
 import {getUserId, getUsername} from '../../../states/app/app.selector'
 import {Games, GamesService} from '../../../api'
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy'
+import {saveGameId, savePlayerId} from "../../../states/app/app.actions";
 
 export interface GameElement {
   id: string
@@ -64,11 +65,13 @@ export class LobbyPageComponent implements OnInit {
 
   public joinGame(userId: string): void {
     if (this.selectedGameRow) {
+      const selectedGameId = this.selectedGameRow.id
       void this.gamesService.joinGame(
-        this.selectedGameRow.id,
+        selectedGameId,
         userId
       ).forEach(joinGame => {
-        console.log(joinGame.playerId) // TODO implement action for the join game result
+        this.store.dispatch(saveGameId({ gameId: selectedGameId}))
+        this.store.dispatch(savePlayerId(({ playerId: joinGame.playerId })))
       })
     }
   }
