@@ -1,6 +1,7 @@
 package ch.jaunerc.tichu.backend.persistence.game.player;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
+import ch.jaunerc.tichu.backend.persistence.user.UserEntityMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -9,6 +10,7 @@ public class PlayerEntityMapper {
 
     public static PlayerEntity map(Player player) {
         var playerEntity =  new PlayerEntity();
+        playerEntity.setUser(UserEntityMapper.map(player.user()));
         playerEntity.setCards(player.cards());
         return playerEntity;
     }
@@ -16,6 +18,7 @@ public class PlayerEntityMapper {
     public static Player toDomain(PlayerEntity playerEntity) {
         return new Player(
                 playerEntity.getId(),
+                UserEntityMapper.toDomain(playerEntity.getUser()),
                 playerEntity.getCards()
         );
     }

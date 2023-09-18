@@ -1,11 +1,16 @@
 package ch.jaunerc.tichu.backend.persistence.game.player;
 
+import ch.jaunerc.tichu.backend.domain.user.model.User;
+import ch.jaunerc.tichu.backend.persistence.user.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -20,8 +25,21 @@ class CreatePlayerPersistenceAdapterTest {
 
     @Test
     void createPlayer() {
-        when(playerRepository.save(any())).thenReturn(new PlayerEntity());
+        var userId = UUID.randomUUID();
+        var user = new User(userId, "Adam");
+        var playerEntity = createPlayerEntity(userId);
+        when(playerRepository.save(any())).thenReturn(playerEntity);
 
-        createPlayerPersistenceAdapter.createPlayer();
+        var result = createPlayerPersistenceAdapter.createPlayer(user);
+
+        assertThat(result.user().id()).isEqualTo(userId);
+    }
+
+    private static PlayerEntity createPlayerEntity(UUID userId) {
+        var userEntity = new UserEntity();
+        userEntity.setId(userId);
+        var playerEntity = new PlayerEntity();
+        playerEntity.setUser(userEntity);
+        return playerEntity;
     }
 }

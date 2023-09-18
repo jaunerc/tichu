@@ -23,7 +23,7 @@ class TeamJoinerTest {
                 new Team(UUID.randomUUID(), null, null, 0),
                 new Team(UUID.randomUUID(), null, null, 0),
                 DEALING_CARDS);
-        var player = new Player(UUID.randomUUID(), List.of());
+        var player = new Player(UUID.randomUUID(), null, List.of());
 
         var result = TeamJoiner.joinFirstOrSecondTeam(game, player);
 
@@ -35,10 +35,10 @@ class TeamJoinerTest {
     void joinFirstOrSecondTeam_firstTeamIsPartiallyEmpty_secondPlayerInFirstTeam() {
         var game = new Game(
                 UUID.randomUUID(),
-                new Team(UUID.randomUUID(), new Player(UUID.randomUUID(), List.of()), null, 0),
+                new Team(UUID.randomUUID(), new Player(UUID.randomUUID(), null, List.of()), null, 0),
                 new Team(UUID.randomUUID(), null, null, 0),
                 DEALING_CARDS);
-        var player = new Player(UUID.randomUUID(), List.of());
+        var player = new Player(UUID.randomUUID(), null, List.of());
 
         var result = TeamJoiner.joinFirstOrSecondTeam(game, player);
 
@@ -50,10 +50,10 @@ class TeamJoinerTest {
     void joinFirstOrSecondTeam_onlySecondTeamHasCapacity_firstPositionInSecondTeam() {
         var game = new Game(
                 UUID.randomUUID(),
-                new Team(UUID.randomUUID(), new Player(UUID.randomUUID(), List.of()), new Player(UUID.randomUUID(), List.of()), 0),
+                new Team(UUID.randomUUID(), new Player(UUID.randomUUID(), null, List.of()), new Player(UUID.randomUUID(), null, List.of()), 0),
                 new Team(UUID.randomUUID(), null, null, 0),
                 DEALING_CARDS);
-        var player = new Player(UUID.randomUUID(), List.of());
+        var player = new Player(UUID.randomUUID(), null, List.of());
 
         var result = TeamJoiner.joinFirstOrSecondTeam(game, player);
 
@@ -65,10 +65,10 @@ class TeamJoinerTest {
     void joinFirstOrSecondTeam_onlySecondTeamIsPartiallyOccupied_secondPositionInSecondTeam() {
         var game = new Game(
                 UUID.randomUUID(),
-                new Team(UUID.randomUUID(), new Player(UUID.randomUUID(), List.of()), new Player(UUID.randomUUID(), List.of()), 0),
-                new Team(UUID.randomUUID(), new Player(UUID.randomUUID(), List.of()), null, 0),
+                new Team(UUID.randomUUID(), new Player(UUID.randomUUID(), null, List.of()), new Player(UUID.randomUUID(), null, List.of()), 0),
+                new Team(UUID.randomUUID(), new Player(UUID.randomUUID(), null, List.of()), null, 0),
                 DEALING_CARDS);
-        var player = new Player(UUID.randomUUID(), List.of());
+        var player = new Player(UUID.randomUUID(), null, List.of());
 
         var result = TeamJoiner.joinFirstOrSecondTeam(game, player);
 
@@ -80,10 +80,10 @@ class TeamJoinerTest {
     void joinFirstOrSecondTeam_noCapacity_exception() {
         var game = new Game(
                 UUID.randomUUID(),
-                new Team(UUID.randomUUID(), new Player(UUID.randomUUID(), List.of()), new Player(UUID.randomUUID(), List.of()), 0),
-                new Team(UUID.randomUUID(), new Player(UUID.randomUUID(), List.of()), new Player(UUID.randomUUID(), List.of()), 0),
+                new Team(UUID.randomUUID(), new Player(UUID.randomUUID(), null, List.of()), new Player(UUID.randomUUID(), null, List.of()), 0),
+                new Team(UUID.randomUUID(), new Player(UUID.randomUUID(), null, List.of()), new Player(UUID.randomUUID(), null, List.of()), 0),
                 DEALING_CARDS);
-        var player = new Player(UUID.randomUUID(), List.of());
+        var player = new Player(UUID.randomUUID(), null, List.of());
 
         assertThrows(IllegalStateException.class, () -> TeamJoiner.joinFirstOrSecondTeam(game, player));
     }

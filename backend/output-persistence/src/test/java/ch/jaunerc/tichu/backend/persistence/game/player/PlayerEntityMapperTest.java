@@ -1,6 +1,8 @@
 package ch.jaunerc.tichu.backend.persistence.game.player;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
+import ch.jaunerc.tichu.backend.domain.user.model.User;
+import ch.jaunerc.tichu.backend.persistence.user.UserEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +17,8 @@ class PlayerEntityMapperTest {
     @Test
     @DisplayName("should create a player entity without setting the id")
     void map() {
-        var domainPlayer = new Player(UUID.randomUUID(), List.of(EIGHT_JADE, NINE_PAGODAS));
+        var user = new User(UUID.randomUUID(), null);
+        var domainPlayer = new Player(UUID.randomUUID(), user, List.of(EIGHT_JADE, NINE_PAGODAS));
         var player = PlayerEntityMapper.map(domainPlayer);
 
         assertThat(player.getCards()).containsExactly(EIGHT_JADE, NINE_PAGODAS);
@@ -26,7 +29,9 @@ class PlayerEntityMapperTest {
     void toDomain() {
         var uuid = UUID.randomUUID();
         var cards = List.of(JACK_JADE, JACK_SWORDS);
-        var playerEntity = new PlayerEntity(uuid, cards);
+        var user = new UserEntity();
+        user.setId(UUID.randomUUID());
+        var playerEntity = new PlayerEntity(uuid, user, cards);
 
         var result = PlayerEntityMapper.toDomain(playerEntity);
 

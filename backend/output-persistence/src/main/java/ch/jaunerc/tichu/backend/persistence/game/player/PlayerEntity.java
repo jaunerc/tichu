@@ -2,6 +2,7 @@ package ch.jaunerc.tichu.backend.persistence.game.player;
 
 
 import ch.jaunerc.tichu.backend.domain.game.model.card.Card;
+import ch.jaunerc.tichu.backend.persistence.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +21,11 @@ public class PlayerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private UserEntity user;
+
     @Convert(converter = CardsConverter.class)
     private List<Card> cards;
 }

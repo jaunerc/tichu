@@ -4,10 +4,7 @@ import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.JoinGame;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.Team;
-import ch.jaunerc.tichu.backend.domain.game.port.CreatePlayerPort;
-import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
-import ch.jaunerc.tichu.backend.domain.game.port.JoinGameUseCase;
-import ch.jaunerc.tichu.backend.domain.game.port.SaveGamePort;
+import ch.jaunerc.tichu.backend.domain.game.port.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +18,7 @@ import static ch.jaunerc.tichu.backend.domain.game.TeamJoiner.joinFirstOrSecondT
 public class JoinGameService implements JoinGameUseCase {
 
     private final FindGameByIdPort findGameByIdPort;
+    private final FindUserByIdPort findUserByIdPort;
     private final CreatePlayerPort createPlayerPort;
     private final SaveGamePort saveGamePort;
 
@@ -28,13 +26,13 @@ public class JoinGameService implements JoinGameUseCase {
     @Transactional
     public JoinGame joinGame(String gameId, String userId) {
         var game = findGameByIdPort.findGameById(UUID.fromString(gameId));
-        var player = createPlayerPort.createPlayer();
+        var user = findUserByIdPort.findUserById(UUID.fromString(userId));
+        var player = createPlayerPort.createPlayer(user);
 
         var gameJoined = tryToJoinTheGame(game, player);
+        var persistedGame = saveGamePort.saveGame(gameJoined);
 
-        saveGamePort.saveGame(gameJoined);
-
-        return new JoinGame(gameJoined.gameId(), player.uuid());
+        return new JoinGame(persistedGame.gameId(), player.uuid());
     }
 
     private Game tryToJoinTheGame(Game game, Player player) {

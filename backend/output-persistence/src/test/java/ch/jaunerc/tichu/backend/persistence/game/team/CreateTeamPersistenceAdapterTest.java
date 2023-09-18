@@ -1,6 +1,7 @@
 package ch.jaunerc.tichu.backend.persistence.game.team;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
+import ch.jaunerc.tichu.backend.domain.user.model.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +35,8 @@ class CreateTeamPersistenceAdapterTest {
     @DisplayName("should set the given player as first player")
     void createTeam() {
         when(teamRepository.save(any())).thenReturn(new TeamEntity());
-        var player = new Player(UUID.randomUUID(), List.of());
+        var user = new User(UUID.randomUUID(), "Eve");
+        var player = new Player(UUID.randomUUID(), user, List.of());
 
         createTeamPersistenceAdapter.createTeam(player);
 

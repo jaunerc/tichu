@@ -5,7 +5,10 @@ import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.Team;
 import ch.jaunerc.tichu.backend.domain.game.port.CreatePlayerPort;
 import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
+import ch.jaunerc.tichu.backend.domain.game.port.FindUserByIdPort;
 import ch.jaunerc.tichu.backend.domain.game.port.SaveGamePort;
+import ch.jaunerc.tichu.backend.domain.user.model.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +32,8 @@ class JoinGameServiceTest {
     @Mock
     private FindGameByIdPort findGameByIdPort;
     @Mock
+    private FindUserByIdPort findUserByIdPort;
+    @Mock
     private CreatePlayerPort createPlayerPort;
     @Mock
     private SaveGamePort saveGamePort;
@@ -36,17 +41,22 @@ class JoinGameServiceTest {
     @InjectMocks
     private JoinGameService joinGameService;
 
+    @BeforeEach
+    void setup() {
+        when(findUserByIdPort.findUserById(any())).thenReturn(new User(UUID.randomUUID(), "Adam"));
+    }
+
     @Test
     @DisplayName("should throw an exception when the requested game has no free capacity")
     void joinGame_noFreeCapacity_exception() {
         var gameWithNoCapacity = new Game(
                 null,
-                new Team(null, new Player(null, List.of()), new Player(null, List.of()), 0),
-                new Team(null, new Player(null, List.of()), new Player(null, List.of()), 0),
+                new Team(null, createEmptyPlayer(), createEmptyPlayer(), 0),
+                new Team(null, createEmptyPlayer(), createEmptyPlayer(), 0),
                 GAME_IS_RUNNING);
         when(findGameByIdPort.findGameById(any())).thenReturn(gameWithNoCapacity);
 
-        assertThrows(IllegalStateException.class, () -> joinGameService.joinGame(UUID.randomUUID().toString(), null));
+        assertThrows(IllegalStateException.class, () -> joinGameService.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString()));
     }
 
     @Test
@@ -55,16 +65,16 @@ class JoinGameServiceTest {
         var gameWithNoCapacity = new Game(
                 null,
                 null,
-                new Team(null, new Player(null, List.of()), new Player(null, List.of()), 0),
+                new Team(null, createEmptyPlayer(), createEmptyPlayer(), 0),
                 GAME_IS_RUNNING);
         var playerId = UUID.randomUUID();
-        var player = new Player(playerId, List.of());
+        var player = new Player(playerId, null, List.of());
         when(findGameByIdPort.findGameById(any())).thenReturn(gameWithNoCapacity);
-        when(createPlayerPort.createPlayer()).thenReturn(player);
+        when(createPlayerPort.createPlayer(any())).thenReturn(player);
+        when(saveGamePort.saveGame(any())).thenReturn(new Game(UUID.randomUUID(), null, null,  GAME_IS_RUNNING));
 
-        var result = joinGameService.joinGame(UUID.randomUUID().toString(), null);
+        var result = joinGameService.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString());
 
-        verify(saveGamePort).saveGame(any());
         assertThat(result.playerId()).isEqualTo(playerId);
     }
 
@@ -73,17 +83,22 @@ class JoinGameServiceTest {
     void joinGame_teamHasCapacity_saveGame() {
         var gameWithNoCapacity = new Game(
                 null,
-                new Team(null, null, new Player(null, List.of()), 0),
-                new Team(null, new Player(null, List.of()), new Player(null, List.of()), 0),
+                new Team(null, null, createEmptyPlayer(), 0),
+                new Team(null, createEmptyPlayer(), createEmptyPlayer(), 0),
                 GAME_IS_RUNNING);
         var playerId = UUID.randomUUID();
-        var player = new Player(playerId, List.of());
+        var player = new Player(playerId, null, List.of());
         when(findGameByIdPort.findGameById(any())).thenReturn(gameWithNoCapacity);
-        when(createPlayerPort.createPlayer()).thenReturn(player);
+        when(createPlayerPort.createPlayer(any())).thenReturn(player);
+        when(saveGamePort.saveGame(any())).thenReturn(new Game(UUID.randomUUID(), null, null,  GAME_IS_RUNNING));
 
-        var result = joinGameService.joinGame(UUID.randomUUID().toString(), null);
+        var result = joinGameService.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString());
 
         verify(saveGamePort).saveGame(any());
         assertThat(result.playerId()).isEqualTo(playerId);
+    }
+
+    private static Player createEmptyPlayer() {
+        return new Player(null, null, List.of());
     }
 }

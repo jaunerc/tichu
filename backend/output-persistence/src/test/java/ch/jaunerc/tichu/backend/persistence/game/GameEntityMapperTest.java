@@ -3,8 +3,10 @@ package ch.jaunerc.tichu.backend.persistence.game;
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.Team;
+import ch.jaunerc.tichu.backend.domain.user.model.User;
 import ch.jaunerc.tichu.backend.persistence.game.player.PlayerEntity;
 import ch.jaunerc.tichu.backend.persistence.game.team.TeamEntity;
+import ch.jaunerc.tichu.backend.persistence.user.UserEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -42,8 +44,8 @@ class GameEntityMapperTest {
     @Test
     void map_game() {
         var gameId = UUID.randomUUID();
-        var firstPlayer = new Player(UUID.randomUUID(), List.of());
-        var secondPlayer = new Player(UUID.randomUUID(), List.of());
+        var firstPlayer = new Player(UUID.randomUUID(), new User(UUID.randomUUID(), null), List.of());
+        var secondPlayer = new Player(UUID.randomUUID(), new User(UUID.randomUUID(), null), List.of());
         var firstTeam = new Team(UUID.randomUUID(), firstPlayer, secondPlayer, 0);
         var game = new Game.Builder(gameId, DEALING_CARDS)
                 .firstTeam(firstTeam)
@@ -86,17 +88,29 @@ class GameEntityMapperTest {
     }
 
     private static GameEntity createGameEntity(UUID uuid) {
+        var mockPlayer = createMockPlayer();
         var gameEntity = new GameEntity();
         gameEntity.setId(uuid);
         gameEntity.setGamePhase(GAME_IS_RUNNING);
+
         var firstTeam = new TeamEntity();
-        firstTeam.setFirstPlayer(new PlayerEntity());
-        firstTeam.setSecondPlayer(new PlayerEntity());
+        firstTeam.setFirstPlayer(mockPlayer);
+        firstTeam.setSecondPlayer(mockPlayer);
         gameEntity.setFirstTeam(firstTeam);
+
         var secondTeam = new TeamEntity();
-        secondTeam.setFirstPlayer(new PlayerEntity());
-        secondTeam.setSecondPlayer(new PlayerEntity());
+        secondTeam.setFirstPlayer(mockPlayer);
+        secondTeam.setSecondPlayer(mockPlayer);
         gameEntity.setSecondTeam(secondTeam);
+
         return gameEntity;
+    }
+
+    private static PlayerEntity createMockPlayer() {
+        var mockUser = new UserEntity();
+        mockUser.setId(UUID.randomUUID());
+        var mockPlayer = new PlayerEntity();
+        mockPlayer.setUser(mockUser);
+        return mockPlayer;
     }
 }
