@@ -4,7 +4,10 @@ import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.JoinGame;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.Team;
-import ch.jaunerc.tichu.backend.domain.game.port.*;
+import ch.jaunerc.tichu.backend.domain.game.port.CreatePlayerPort;
+import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
+import ch.jaunerc.tichu.backend.domain.game.port.JoinGameUseCase;
+import ch.jaunerc.tichu.backend.domain.game.port.SaveGamePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +34,7 @@ public class JoinGameService implements JoinGameUseCase {
 
         saveGamePort.saveGame(gameJoined);
 
-        return new JoinGame(player.uuid());
+        return new JoinGame(gameJoined.gameId(), player.uuid());
     }
 
     private Game tryToJoinTheGame(Game game, Player player) {

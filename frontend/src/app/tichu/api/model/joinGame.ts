@@ -12,6 +12,7 @@
 
 
 export interface JoinGame { 
+    gameId: string;
     playerId: string;
 }
 

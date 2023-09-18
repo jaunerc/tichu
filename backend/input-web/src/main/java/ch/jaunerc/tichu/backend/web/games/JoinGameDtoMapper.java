@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 public class JoinGameDtoMapper {
 
     static JoinGameDto map(JoinGame joinGame) {
-        return new JoinGameDto(joinGame.playerId().toString());
+        return new JoinGameDto(
+                joinGame.gameId().toString(),
+                joinGame.playerId().toString());
     }
 }

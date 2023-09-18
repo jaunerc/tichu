@@ -11,11 +11,15 @@ class JoinGameDtoMapperTest {
 
     @Test
     void map() {
-        var uuid = "00000000-0000-0000-0000-000000000000";
-        var joinGame = new JoinGame(UUID.fromString(uuid));
+        var gameId = "00000000-0000-0000-0000-000000000000";
+        var playerId = "00000000-0000-0000-0000-000000000001";
+        var joinGame = new JoinGame(
+                UUID.fromString(gameId),
+                UUID.fromString(playerId));
 
         var result = JoinGameDtoMapper.map(joinGame);
 
-        assertThat(result.getPlayerId()).isEqualTo(uuid);
+        assertThat(result.getGameId()).isEqualTo(gameId);
+        assertThat(result.getPlayerId()).isEqualTo(playerId);
     }
 }
