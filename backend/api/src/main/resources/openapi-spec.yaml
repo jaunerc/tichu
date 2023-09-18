@@ -55,6 +55,34 @@ paths:
               schema:
                 $ref: '#/components/schemas/Game'
 
+  /games/{game-id}:
+    post:
+      tags:
+        - Games
+      summary: Joins a game
+      operationId: joinGame
+      parameters:
+        - name: game-id
+          in: path
+          description: The id of the game
+          required: true
+          schema:
+            type: string
+        - name: user-id
+          in: query
+          description: The id of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JoinGame'
+
+
 components:
   schemas:
     User:
@@ -85,3 +113,14 @@ components:
             $ref: '#/components/schemas/Game'
       required:
         - games
+
+    JoinGame:
+      type: object
+      properties:
+        gameId:
+          type: string
+        playerId:
+          type: string
+      required:
+        - gameId
+        - playerId

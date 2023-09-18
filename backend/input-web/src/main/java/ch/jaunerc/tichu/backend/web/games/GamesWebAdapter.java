@@ -2,9 +2,11 @@ package ch.jaunerc.tichu.backend.web.games;
 
 import ch.jaunerc.tichu.backend.domain.game.port.CreateGameUseCase;
 import ch.jaunerc.tichu.backend.domain.game.port.FindAllGamesUseCase;
+import ch.jaunerc.tichu.backend.domain.game.port.JoinGameUseCase;
 import ch.jaunerc.tichu.backend.web.api.controller.GamesApiDelegate;
 import ch.jaunerc.tichu.backend.web.api.model.GameDto;
 import ch.jaunerc.tichu.backend.web.api.model.GamesDto;
+import ch.jaunerc.tichu.backend.web.api.model.JoinGameDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ public class GamesWebAdapter implements GamesApiDelegate {
 
     private final CreateGameUseCase createGameUseCase;
     private final FindAllGamesUseCase findAllGamesUseCase;
+    private final JoinGameUseCase joinGameUseCase;
 
     @Override
     public ResponseEntity<GameDto> createGame() {
@@ -24,5 +27,10 @@ public class GamesWebAdapter implements GamesApiDelegate {
     @Override
     public ResponseEntity<GamesDto> getGames() {
         return ResponseEntity.ok(GamesDtoMapper.map(findAllGamesUseCase.findAllGames()));
+    }
+
+    @Override
+    public ResponseEntity<JoinGameDto> joinGame(String gameId, String userId) {
+        return ResponseEntity.ok(JoinGameDtoMapper.map(joinGameUseCase.joinGame(gameId, userId)));
     }
 }

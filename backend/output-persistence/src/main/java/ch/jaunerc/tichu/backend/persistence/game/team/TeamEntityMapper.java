@@ -10,16 +10,30 @@ public class TeamEntityMapper {
 
     public static TeamEntity map(Team team) {
         var teamEntity = new TeamEntity();
-        teamEntity.setFirstPlayer(PlayerEntityMapper.map(team.firstPlayer()));
-        teamEntity.setSecondPlayer(PlayerEntityMapper.map(team.secondPlayer()));
+
+        if (team.firstPlayer() != null) {
+            teamEntity.setFirstPlayer(PlayerEntityMapper.map(team.firstPlayer()));
+        }
+
+        if (team.secondPlayer() != null) {
+            teamEntity.setSecondPlayer(PlayerEntityMapper.map(team.secondPlayer()));
+        }
+
         return teamEntity;
     }
 
     public static Team toDomain(TeamEntity teamEntity) {
-        return new Team(
-                PlayerEntityMapper.toDomain(teamEntity.getFirstPlayer()),
-                PlayerEntityMapper.toDomain(teamEntity.getSecondPlayer()),
-                0 // TODO store points in the entity
-        );
+        var teamBuilder = new Team.Builder(teamEntity.getId());
+
+        if (teamEntity.getFirstPlayer() != null) {
+            teamBuilder.firstPlayer(PlayerEntityMapper.toDomain(teamEntity.getFirstPlayer()));
+        }
+
+        if (teamEntity.getSecondPlayer() != null) {
+            teamBuilder.secondPlayer(PlayerEntityMapper.toDomain(teamEntity.getSecondPlayer()));
+        }
+
+        teamBuilder.points(0); // TODO store points in the entity
+        return teamBuilder.build();
     }
 }

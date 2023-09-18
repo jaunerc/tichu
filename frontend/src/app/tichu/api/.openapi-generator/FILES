@@ -11,6 +11,7 @@ git_push.sh
 index.ts
 model/game.ts
 model/games.ts
+model/joinGame.ts
 model/models.ts
 model/user.ts
 param.ts

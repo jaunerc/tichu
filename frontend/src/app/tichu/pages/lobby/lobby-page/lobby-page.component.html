@@ -9,6 +9,15 @@
     >Create a new game
     </button>
 
+    <button
+      *ngIf="userId$ | async as userId"
+      mat-raised-button
+      color="primary"
+      [disabled]="isNoRowSelected()"
+      (click)="joinGame(userId)"
+    >Join the game
+    </button>
+
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>Id</th>
@@ -16,7 +25,11 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="['id']"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['id']"></tr>
+      <tr
+        mat-row
+        (click)="selectRow(row)"
+        [class.selected-row]="isCurrentRowSelected(row)"
+        *matRowDef="let row; columns: ['id']"></tr>
     </table>
   </ng-container>
 </tichu-app-layout>

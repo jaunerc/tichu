@@ -13,7 +13,7 @@ import {HttpHeaders} from '@angular/common/http';
 
 import {Observable} from 'rxjs';
 
-import {Game, Games} from '../model/models';
+import {Game, Games, JoinGame} from '../model/models';
 
 
 import {Configuration} from '../configuration';
@@ -34,5 +34,13 @@ export interface GamesServiceInterface {
      *
      */
     getGames(extraHttpRequestParams?: any): Observable<Games>;
+
+    /**
+     * Joins a game
+     *
+     * @param gameId The id of the game
+     * @param userId The id of the user
+     */
+    joinGame(gameId: string, userId: string, extraHttpRequestParams?: any): Observable<JoinGame>;
 
 }
