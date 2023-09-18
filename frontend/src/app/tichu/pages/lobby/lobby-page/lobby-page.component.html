@@ -10,10 +10,11 @@
     </button>
 
     <button
+      *ngIf="userId$ | async as userId"
       mat-raised-button
       color="primary"
       [disabled]="isNoRowSelected()"
-      (click)="joinGame()"
+      (click)="joinGame(userId)"
     >Join the game
     </button>
 

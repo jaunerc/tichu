@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core'
 import {Store} from '@ngrx/store'
 import {Observable, Subject} from 'rxjs'
-import {getUsername} from '../../../states/app/app.selector'
+import {getUserId, getUsername} from '../../../states/app/app.selector'
 import {Games, GamesService} from '../../../api'
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy'
 
@@ -17,6 +17,7 @@ export interface GameElement {
 })
 export class LobbyPageComponent implements OnInit {
   public username$?: Observable<string | undefined>
+  public userId$?: Observable<string | undefined>
   private readonly gamesSubject$: Subject<Games> = new Subject<Games>()
   private selectedGameRow?: GameElement
   public dataSource: GameElement[] = []
@@ -28,6 +29,7 @@ export class LobbyPageComponent implements OnInit {
 
   public ngOnInit (): void {
     this.username$ = this.store.select(getUsername)
+    this.userId$ = this.store.select(getUserId)
     this.updateGames()
 
     this.gamesSubject$
@@ -60,11 +62,11 @@ export class LobbyPageComponent implements OnInit {
     return row.id === this.selectedGameRow?.id;
   }
 
-  public joinGame(): void {
+  public joinGame(userId: string): void {
     if (this.selectedGameRow) {
       void this.gamesService.joinGame(
         this.selectedGameRow.id,
-        ''
+        userId
       ).forEach(joinGame => {
         console.log(joinGame.playerId) // TODO implement action for the join game result
       })
