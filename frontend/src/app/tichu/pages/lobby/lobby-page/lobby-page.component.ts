@@ -20,7 +20,7 @@ export class LobbyPageComponent implements OnInit {
   public username$?: Observable<string | undefined>
   public userId$?: Observable<string | undefined>
   private readonly gamesSubject$: Subject<Games> = new Subject<Games>()
-  private selectedGameRow?: GameElement
+  private selectedGame?: GameElement
   public dataSource: GameElement[] = []
 
   constructor (
@@ -50,22 +50,16 @@ export class LobbyPageComponent implements OnInit {
         this.updateGames()
       })
   }
-
-  public selectRow(row: GameElement): void {
-    this.selectedGameRow = row
+  public isNoGameSelected(): boolean {
+    return this.selectedGame === undefined
   }
-
-  public isNoRowSelected(): boolean {
-    return this.selectedGameRow === undefined
-  }
-
-  public isCurrentRowSelected(row: GameElement): boolean {
-    return row.id === this.selectedGameRow?.id;
+  public onGameSelected(selectedGame: GameElement): void {
+    this.selectedGame = selectedGame
   }
 
   public joinGame(userId: string): void {
-    if (this.selectedGameRow) {
-      const selectedGameId = this.selectedGameRow.id
+    if (this.selectedGame) {
+      const selectedGameId = this.selectedGame.id
       void this.gamesService.joinGame(
         selectedGameId,
         userId

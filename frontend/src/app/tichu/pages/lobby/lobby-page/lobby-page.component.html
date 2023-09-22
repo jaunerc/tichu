@@ -13,23 +13,14 @@
       *ngIf="userId$ | async as userId"
       mat-raised-button
       color="primary"
-      [disabled]="isNoRowSelected()"
+      [disabled]="isNoGameSelected()"
       (click)="joinGame(userId)"
     >Join the game
     </button>
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>Id</th>
-        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="['id']"></tr>
-      <tr
-        mat-row
-        (click)="selectRow(row)"
-        [class.selected-row]="isCurrentRowSelected(row)"
-        *matRowDef="let row; columns: ['id']"></tr>
-    </table>
+    <tichu-lobby-game-overview
+      [gamesDataSource]="dataSource"
+      (gameSelected)="onGameSelected($event)"
+    ></tichu-lobby-game-overview>
   </ng-container>
 </tichu-app-layout>
