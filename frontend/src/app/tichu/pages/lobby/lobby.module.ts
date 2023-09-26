@@ -6,12 +6,14 @@ import {SharedModule} from '../../shared/shared.module'
 import {MatCardModule} from '@angular/material/card'
 import {MatTableModule} from '@angular/material/table'
 import {MatButtonModule} from '@angular/material/button';
-import {LobbyGameOverviewComponent} from './lobby-page/lobby-game-overview/lobby-game-overview.component'
+import {LobbyGameOverviewComponent} from './lobby-page/lobby-game-overview/lobby-game-overview.component';
+import {LobbyControlPaneComponent} from './lobby-page/lobby-control-pane/lobby-control-pane.component'
 
 @NgModule({
   declarations: [
     LobbyPageComponent,
-    LobbyGameOverviewComponent
+    LobbyGameOverviewComponent,
+    LobbyControlPaneComponent
   ],
   imports: [
     CommonModule,

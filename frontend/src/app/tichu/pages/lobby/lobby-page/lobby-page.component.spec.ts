@@ -1,13 +1,21 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {ComponentFixture, TestBed} from '@angular/core/testing'
 
-import { LobbyPageComponent } from './lobby-page.component'
-import { provideMockStore } from '@ngrx/store/testing'
-import { getUsername } from '../../../states/app/app.selector'
-import { Game, GamesService } from '../../../api'
-import { instance, mock, verify, when } from 'ts-mockito'
-import { of } from 'rxjs'
-import { MatTableModule } from '@angular/material/table'
-import { SharedModule } from '../../../shared/shared.module'
+import {GameElement, LobbyPageComponent} from './lobby-page.component'
+import {provideMockStore} from '@ngrx/store/testing'
+import {getUsername} from '../../../states/app/app.selector'
+import {Game, GamesService} from '../../../api'
+import {instance, mock, verify, when} from 'ts-mockito'
+import {of} from 'rxjs'
+import {SharedModule} from '../../../shared/shared.module'
+import {Component, Input} from "@angular/core";
+
+@Component({
+  selector: 'tichu-lobby-game-overview',
+  template: '',
+})
+class MockLobbyGameOverview {
+  @Input() gamesDataSource: GameElement[] = []
+}
 
 describe('LobbyPageComponent', () => {
   let component: LobbyPageComponent
@@ -19,8 +27,8 @@ describe('LobbyPageComponent', () => {
     when(gamesService.getGames()).thenReturn(of({ games: [] }))
 
     TestBed.configureTestingModule({
-      imports: [MatTableModule, SharedModule],
-      declarations: [LobbyPageComponent],
+      imports: [SharedModule],
+      declarations: [LobbyPageComponent, MockLobbyGameOverview],
       providers: [
         provideMockStore({
           selectors: [
@@ -46,7 +54,7 @@ describe('LobbyPageComponent', () => {
     when(gamesService.createGame()).thenReturn(of({ id: '1' } satisfies Game))
     when(gamesService.getGames()).thenReturn(of({ games: [{ id: '1' }, { id: '2' }] }))
 
-    component.createGame()
+    component.onCreateGame()
 
     verify(gamesService.createGame()).once()
     verify(gamesService.getGames()).twice()

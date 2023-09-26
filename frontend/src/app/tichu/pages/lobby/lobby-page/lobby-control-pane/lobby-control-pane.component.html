@@ -1,0 +1,16 @@
+<div class="lobby-controls">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="createGame.emit()"
+  >Create a new game
+  </button>
+
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="isNoGameSelected()"
+    (click)="joinGame.emit()"
+  >Join the game
+  </button>
+</div>

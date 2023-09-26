@@ -2,21 +2,11 @@
   <ng-container *ngIf="username$ | async as username">
     <h1>Hello {{ username }} you are in the lobby</h1>
 
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="createGame()"
-    >Create a new game
-    </button>
-
-    <button
-      *ngIf="userId$ | async as userId"
-      mat-raised-button
-      color="primary"
-      [disabled]="isNoGameSelected()"
-      (click)="joinGame(userId)"
-    >Join the game
-    </button>
+    <tichu-lobby-control-pane
+      [selectedGameId]="selectedGame?.id"
+      (createGame)="onCreateGame()"
+      (joinGame)="onJoinGame()"
+    ></tichu-lobby-control-pane>
 
     <tichu-lobby-game-overview
       [gamesDataSource]="dataSource"
