@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core'
-import {Store} from '@ngrx/store'
-import {first, Observable, Subject} from 'rxjs'
-import {getUserId, getUsername} from '../../../states/app/app.selector'
-import {Games, GamesService} from '../../../api'
-import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy'
-import {saveGameId, savePlayerId} from "../../../states/app/app.actions";
+import { Component, OnInit } from '@angular/core'
+import { Store } from '@ngrx/store'
+import { first, Observable, Subject } from 'rxjs'
+import { getUserId, getUsername } from '../../../states/app/app.selector'
+import { Games, GamesService } from '../../../api'
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
+import { saveGameId, savePlayerId } from '../../../states/app/app.actions'
+import { Router } from '@angular/router'
 
 export interface GameElement {
   id: string
@@ -23,13 +24,14 @@ export class LobbyPageComponent implements OnInit {
   public selectedGame?: GameElement
   public dataSource: GameElement[] = []
 
-  constructor(
+  constructor (
     private readonly store: Store,
-    private readonly gamesService: GamesService
+    private readonly gamesService: GamesService,
+    private readonly router: Router
   ) {
   }
 
-  public ngOnInit(): void {
+  public ngOnInit (): void {
     this.username$ = this.store.select(getUsername)
     this.userId$ = this.store.select(getUserId)
     this.updateGames()
@@ -39,12 +41,12 @@ export class LobbyPageComponent implements OnInit {
       .subscribe(games => {
         this.dataSource = games.games
           ?.map(game => {
-            return {id: game.id} satisfies GameElement
+            return { id: game.id } satisfies GameElement
           })
       })
   }
 
-  public onCreateGame(): void {
+  public onCreateGame (): void {
     this.gamesService.createGame()
       .pipe(first(), untilDestroyed(this))
       .subscribe(() => {
@@ -52,28 +54,29 @@ export class LobbyPageComponent implements OnInit {
       })
   }
 
-  public onGameSelected(selectedGame: GameElement): void {
+  public onGameSelected (selectedGame: GameElement): void {
     this.selectedGame = selectedGame
   }
 
-  public onJoinGame(): void {
+  public onJoinGame (): void {
     this.userId$
       .pipe(first(), untilDestroyed(this))
       .subscribe(userId => {
-        if (this.selectedGame && userId) {
+        if ((this.selectedGame != null) && (userId != null)) {
           const selectedGameId = this.selectedGame.id
           void this.gamesService.joinGame(
             selectedGameId,
             userId
           ).forEach(joinGame => {
-            this.store.dispatch(saveGameId({gameId: selectedGameId}))
-            this.store.dispatch(savePlayerId(({playerId: joinGame.playerId})))
+            this.store.dispatch(saveGameId({ gameId: selectedGameId }))
+            this.store.dispatch(savePlayerId(({ playerId: joinGame.playerId })))
+            void this.router.navigate(['game-loader'])
           })
         }
       })
   }
 
-  private updateGames(): void {
+  private updateGames (): void {
     void this.gamesService.getGames()
       .forEach(games => {
         this.gamesSubject$.next(games)
