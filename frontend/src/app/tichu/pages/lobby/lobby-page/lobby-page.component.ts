@@ -56,6 +56,7 @@ export class LobbyPageComponent implements OnInit {
 
   public onGameSelected (selectedGame: GameElement): void {
     this.selectedGame = selectedGame
+    // void this.stompService.watch('/topic/game-update-' + selectedGame.id).subscribe(message => { console.log(message) })
   }
 
   public onJoinGame (): void {
