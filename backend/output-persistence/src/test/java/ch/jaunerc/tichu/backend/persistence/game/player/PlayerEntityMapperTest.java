@@ -15,10 +15,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PlayerEntityMapperTest {
 
     @Test
-    @DisplayName("should create a player entity without setting the id")
+    @DisplayName("should create a player entity and setting the id if present")
     void map() {
         var user = new User(UUID.randomUUID(), null);
         var domainPlayer = new Player(UUID.randomUUID(), user, List.of(EIGHT_JADE, NINE_PAGODAS));
+        var player = PlayerEntityMapper.map(domainPlayer);
+
+        assertThat(player.getCards()).containsExactly(EIGHT_JADE, NINE_PAGODAS);
+        assertThat(player.getId()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("should create a player entity without setting the id")
+    void map_nullUserId() {
+        var user = new User(UUID.randomUUID(), null);
+        var domainPlayer = new Player(null, user, List.of(EIGHT_JADE, NINE_PAGODAS));
         var player = PlayerEntityMapper.map(domainPlayer);
 
         assertThat(player.getCards()).containsExactly(EIGHT_JADE, NINE_PAGODAS);

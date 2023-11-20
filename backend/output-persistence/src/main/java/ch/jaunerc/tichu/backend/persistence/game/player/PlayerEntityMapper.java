@@ -10,6 +10,11 @@ public class PlayerEntityMapper {
 
     public static PlayerEntity map(Player player) {
         var playerEntity =  new PlayerEntity();
+
+        if (player.uuid() != null) {
+            playerEntity.setId(player.uuid());
+        }
+
         playerEntity.setUser(UserEntityMapper.map(player.user()));
         playerEntity.setCards(player.cards());
         return playerEntity;
