@@ -1,3 +1,4 @@
 <tichu-app-layout>
   <h1>Waiting for other players to join...</h1>
+  <p *ngIf="readyPlayers$ | async as playerCount">{{playerCount}} players have joined</p>
 </tichu-app-layout>
