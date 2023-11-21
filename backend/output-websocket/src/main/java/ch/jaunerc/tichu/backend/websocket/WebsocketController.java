@@ -1,6 +1,6 @@
 package ch.jaunerc.tichu.backend.websocket;
 
-import ch.jaunerc.tichu.backend.domain.game.CountReadyPlayersService;
+import ch.jaunerc.tichu.backend.domain.game.port.ReadyPlayerUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -14,11 +14,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class WebsocketController {
 
-    private final CountReadyPlayersService countReadyPlayersService;
+    private final ReadyPlayerUseCase readyPlayerUseCase;
 
-    @MessageMapping("/ready-players-{gameId}")
-    @SendTo("/topic/ready-players-{gameId}")
-    public ReadyStatusDto readyPlayersInGame(@DestinationVariable("gameId") String gameId, @Payload ReadyRequestDto message) {
-        return new ReadyStatusDto(countReadyPlayersService.countReadyPlayers(UUID.fromString(gameId)));
+    @MessageMapping("/player-ready-{gameId}")
+    @SendTo("/topic/player-ready-{gameId}")
+    public ReadyStatusDto playerIsReady(@DestinationVariable("gameId") String gameId, @Payload ReadyRequestDto message) {
+        return new ReadyStatusDto(readyPlayerUseCase.updateReadyPlayers(UUID.fromString(gameId)));
     }
 }

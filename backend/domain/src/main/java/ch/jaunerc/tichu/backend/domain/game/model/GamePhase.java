@@ -1,6 +1,7 @@
 package ch.jaunerc.tichu.backend.domain.game.model;
 
 public enum GamePhase {
+    PLAYERS_JOINING,
     DEALING_CARDS,
     FIRST_EIGHT_CARDS_ARE_DEALT,
     ALL_CARDS_ARE_DEALT,

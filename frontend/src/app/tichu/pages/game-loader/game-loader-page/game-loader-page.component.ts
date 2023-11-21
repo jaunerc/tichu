@@ -38,7 +38,7 @@ export class GameLoaderPageComponent implements OnInit {
         untilDestroyed(this),
         mergeMap(gameId => {
           if (gameId != null) {
-            return this.stompService.watch('/topic/ready-players-' + gameId)
+            return this.stompService.watch('/topic/player-ready-' + gameId)
           }
           return of()
         }))
@@ -54,7 +54,7 @@ export class GameLoaderPageComponent implements OnInit {
       .subscribe(([gameId, playerId]) => {
         if (gameId != null && playerId != null) {
           this.stompService.publish({
-            destination: '/app/ready-players-' + gameId,
+            destination: '/app/player-ready-' + gameId,
             body: JSON.stringify({ playerId })
           })
         }

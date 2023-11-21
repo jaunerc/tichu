@@ -6,7 +6,7 @@ public record Game(UUID gameId, Team firstTeam, Team secondTeam, GamePhase gameP
 
     public static final class Builder {
         private final UUID gameId;
-        private final GamePhase gamePhase;
+        private GamePhase gamePhase;
         private Team firstTeam;
         private Team secondTeam;
 
@@ -28,6 +28,11 @@ public record Game(UUID gameId, Team firstTeam, Team secondTeam, GamePhase gameP
 
         public Builder secondTeam(Team secondTeam) {
             this.secondTeam = secondTeam;
+            return this;
+        }
+
+        public Builder gamePhase(GamePhase gamePhase) {
+            this.gamePhase = gamePhase;
             return this;
         }
 

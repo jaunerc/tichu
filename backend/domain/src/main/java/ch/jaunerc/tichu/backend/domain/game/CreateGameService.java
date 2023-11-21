@@ -15,6 +15,6 @@ public class CreateGameService implements CreateGameUseCase {
 
     @Override
     public Game createGame() {
-        return createGamePort.createGame(GamePhase.DEALING_CARDS);
+        return createGamePort.createGame(GamePhase.PLAYERS_JOINING);
     }
 }
