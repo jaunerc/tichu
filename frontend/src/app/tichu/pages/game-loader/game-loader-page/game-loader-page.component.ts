@@ -5,6 +5,7 @@ import { getGameId, getPlayerId } from '../../../states/app/app.selector'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { combineLatest, first, mergeMap, Observable, of, Subject } from 'rxjs'
 import { ReadyStatusDto } from '../../../websocket-api/websocket.api'
+import { Router } from '@angular/router'
 
 @UntilDestroy()
 @Component({
@@ -20,7 +21,8 @@ export class GameLoaderPageComponent implements OnInit {
   readyPlayers$: Observable<number> = this.readyPlayersSubject$.asObservable()
 
   constructor (private readonly stompService: StompService,
-    private readonly store: Store) {
+    private readonly store: Store,
+    private readonly router: Router) {
   }
 
   ngOnInit (): void {
@@ -43,8 +45,13 @@ export class GameLoaderPageComponent implements OnInit {
           return of()
         }))
       .subscribe(message => {
-        const playersCount: ReadyStatusDto = JSON.parse(message.body)
-        this.readyPlayersSubject$.next(playersCount.readyPlayers)
+        const readyStatusDto: ReadyStatusDto = JSON.parse(message.body)
+        const playerCount = readyStatusDto.readyPlayers
+        this.readyPlayersSubject$.next(playerCount)
+
+        if (playerCount === 4) {
+          void this.router.navigate(['game-board'])
+        }
       })
   }
 

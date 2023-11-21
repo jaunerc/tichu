@@ -1,6 +1,6 @@
-import {RouterModule, Routes} from "@angular/router";
-import {NgModule} from "@angular/core";
-import {GameLoaderPageComponent} from "./game-loader-page/game-loader-page.component";
+import { RouterModule, Routes } from '@angular/router'
+import { NgModule } from '@angular/core'
+import { GameLoaderPageComponent } from './game-loader-page/game-loader-page.component'
 
 const routes: Routes = [
   {
