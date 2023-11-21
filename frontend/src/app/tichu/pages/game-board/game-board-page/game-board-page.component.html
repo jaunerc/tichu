@@ -1,1 +1,4 @@
-<p>game-board-page works!</p>
+<tichu-app-layout>
+  <h1>Game</h1>
+  <p *ngIf="cards$ | async as cards">{{ cards }}</p>
+</tichu-app-layout>

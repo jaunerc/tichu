@@ -1,8 +1,6 @@
 package ch.jaunerc.tichu.backend.domain.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
-import ch.jaunerc.tichu.backend.domain.game.model.Player;
-import ch.jaunerc.tichu.backend.domain.game.model.Team;
 import ch.jaunerc.tichu.backend.domain.game.port.ChangeGamePhaseUseCase;
 import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
 import ch.jaunerc.tichu.backend.domain.game.port.ReadyPlayerUseCase;
@@ -13,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Stream;
+
+import static ch.jaunerc.tichu.backend.domain.game.PlayerCollector.streamOfPlayersBy;
 
 @Service
 @RequiredArgsConstructor
@@ -38,12 +38,5 @@ public class ReadyPlayerService implements ReadyPlayerUseCase {
         return (int) Stream.concat(streamOfPlayersBy(game.firstTeam()), streamOfPlayersBy(game.secondTeam()))
                 .filter(Objects::nonNull)
                 .count();
-    }
-
-    private static Stream<Player> streamOfPlayersBy(Team team) {
-        if (team == null) {
-            return Stream.of();
-        }
-        return Stream.of(team.firstPlayer(), team.secondPlayer());
     }
 }

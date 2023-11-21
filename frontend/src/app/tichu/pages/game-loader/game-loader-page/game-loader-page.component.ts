@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store'
 import { getGameId, getPlayerId } from '../../../states/app/app.selector'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { combineLatest, first, mergeMap, Observable, of, Subject } from 'rxjs'
-import { ReadyStatusDto } from '../../../websocket-api/websocket.api'
+import { ReadyStatusMessage } from '../../../websocket-api/websocket.api'
 import { Router } from '@angular/router'
 
 @UntilDestroy()
@@ -45,7 +45,7 @@ export class GameLoaderPageComponent implements OnInit {
           return of()
         }))
       .subscribe(message => {
-        const readyStatusDto: ReadyStatusDto = JSON.parse(message.body)
+        const readyStatusDto: ReadyStatusMessage = JSON.parse(message.body)
         const playerCount = readyStatusDto.readyPlayers
         this.readyPlayersSubject$.next(playerCount)
 
