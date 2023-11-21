@@ -6,6 +6,7 @@ import ch.jaunerc.tichu.backend.domain.game.model.Team;
 import ch.jaunerc.tichu.backend.domain.game.port.ChangeGamePhaseUseCase;
 import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
 import ch.jaunerc.tichu.backend.domain.game.port.ReadyPlayerUseCase;
+import ch.jaunerc.tichu.backend.domain.game.port.ShuffleDeckUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +19,17 @@ import java.util.stream.Stream;
 public class ReadyPlayerService implements ReadyPlayerUseCase {
 
     public static final int ALL_PLAYERS_READY_COUNT = 4;
+
     private final FindGameByIdPort findGameByIdPort;
     private final ChangeGamePhaseUseCase changeGamePhaseUseCase;
+    private final ShuffleDeckUseCase shuffleDeckUseCase;
 
     @Override
     public int updateReadyPlayers(UUID gameId) {
         int readyPlayerCount = countNonNullPlayers(findGameByIdPort.findGameById(gameId));
         if (readyPlayerCount == ALL_PLAYERS_READY_COUNT) {
             changeGamePhaseUseCase.changeGamePhase(gameId);
+            shuffleDeckUseCase.shuffleDeck(gameId);
         }
         return readyPlayerCount;
     }
