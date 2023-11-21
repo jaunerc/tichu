@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 import { StompService } from '../../../stomp/stomp.service'
 import { Store } from '@ngrx/store'
-import { getGameId } from '../../../states/app/app.selector'
+import { getGameId, getPlayerId } from '../../../states/app/app.selector'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { first, mergeMap, Observable, of, Subject } from 'rxjs'
+import { combineLatest, first, mergeMap, Observable, of, Subject } from 'rxjs'
 import { ReadyStatusDto } from '../../../websocket-api/websocket.api'
 
 @UntilDestroy()
@@ -14,6 +14,7 @@ import { ReadyStatusDto } from '../../../websocket-api/websocket.api'
 })
 export class GameLoaderPageComponent implements OnInit {
   private gameId$!: Observable<string | undefined>
+  private playerId$!: Observable<string | undefined>
   private readonly readyPlayersSubject$: Subject<number> = new Subject<number>()
 
   readyPlayers$: Observable<number> = this.readyPlayersSubject$.asObservable()
@@ -24,9 +25,9 @@ export class GameLoaderPageComponent implements OnInit {
 
   ngOnInit (): void {
     this.gameId$ = this.store.select(getGameId)
+    this.playerId$ = this.store.select(getPlayerId)
 
     this.sendReadyMessage()
-
     this.onReadyMessage()
   }
 
@@ -37,7 +38,7 @@ export class GameLoaderPageComponent implements OnInit {
         untilDestroyed(this),
         mergeMap(gameId => {
           if (gameId != null) {
-            return this.stompService.watch('/topic/game-player-ready-' + gameId)
+            return this.stompService.watch('/topic/ready-players-' + gameId)
           }
           return of()
         }))
@@ -48,13 +49,13 @@ export class GameLoaderPageComponent implements OnInit {
   }
 
   private sendReadyMessage (): void {
-    this.gameId$
+    combineLatest([this.gameId$, this.playerId$])
       .pipe(first(), untilDestroyed(this))
-      .subscribe(gameId => {
-        if (gameId != null) {
+      .subscribe(([gameId, playerId]) => {
+        if (gameId != null && playerId != null) {
           this.stompService.publish({
-            destination: '/app/game-player-ready-' + gameId,
-            body: JSON.stringify({ playerId: '175f99fc-3e47-4970-aa8a-fb3333956503' })
+            destination: '/app/ready-players-' + gameId,
+            body: JSON.stringify({ playerId })
           })
         }
       })

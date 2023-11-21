@@ -17,3 +17,8 @@ export const getGameId = createSelector(
   getAppState,
   (state) => state.gameId
 )
+
+export const getPlayerId = createSelector(
+  getAppState,
+  (state) => state.playerId
+)

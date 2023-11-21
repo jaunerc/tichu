@@ -16,9 +16,9 @@ public class WebsocketController {
 
     private final CountReadyPlayersService countReadyPlayersService;
 
-    @MessageMapping("/game-player-ready-{gameId}")
-    @SendTo("/topic/game-player-ready-{gameId}")
-    public ReadyStatusDto playerReady(@DestinationVariable("gameId") String gameId, @Payload ReadyRequestDto message) {
+    @MessageMapping("/ready-players-{gameId}")
+    @SendTo("/topic/ready-players-{gameId}")
+    public ReadyStatusDto readyPlayersInGame(@DestinationVariable("gameId") String gameId, @Payload ReadyRequestDto message) {
         return new ReadyStatusDto(countReadyPlayersService.countReadyPlayers(UUID.fromString(gameId)));
     }
 }
