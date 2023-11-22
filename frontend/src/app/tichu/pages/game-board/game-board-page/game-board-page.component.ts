@@ -29,11 +29,11 @@ export class GameBoardPageComponent implements OnInit {
     this.gameId$ = this.store.select(getGameId)
     this.playerId$ = this.store.select(getPlayerId)
 
-    this.onCardResponse()
-    this.requestCards()
+    this.onDealCardsResponse()
+    this.requestDealCards()
   }
 
-  private requestCards (): void {
+  private requestDealCards (): void {
     combineLatest([this.gameId$, this.playerId$])
       .pipe(
         first(),
@@ -47,7 +47,7 @@ export class GameBoardPageComponent implements OnInit {
       })
   }
 
-  private onCardResponse (): void {
+  private onDealCardsResponse (): void {
     combineLatest([this.gameId$, this.playerId$])
       .pipe(
         first(),
