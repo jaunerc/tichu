@@ -16,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.UUID;
 
 import static ch.jaunerc.tichu.backend.domain.game.model.GamePhase.GAME_IS_RUNNING;
@@ -68,7 +67,7 @@ class JoinGameServiceTest {
                 new Team(null, createEmptyPlayer(), createEmptyPlayer(), 0),
                 GAME_IS_RUNNING);
         var playerId = UUID.randomUUID();
-        var player = new Player(playerId, null, List.of());
+        var player = new Player.Builder(playerId).build();
         when(findGameByIdPort.findGameById(any())).thenReturn(gameWithNoCapacity);
         when(createPlayerPort.createPlayer(any())).thenReturn(player);
         when(saveGamePort.saveGame(any())).thenReturn(new Game(UUID.randomUUID(), null, null,  GAME_IS_RUNNING));
@@ -87,7 +86,7 @@ class JoinGameServiceTest {
                 new Team(null, createEmptyPlayer(), createEmptyPlayer(), 0),
                 GAME_IS_RUNNING);
         var playerId = UUID.randomUUID();
-        var player = new Player(playerId, null, List.of());
+        var player = new Player.Builder(playerId).build();
         when(findGameByIdPort.findGameById(any())).thenReturn(gameWithNoCapacity);
         when(createPlayerPort.createPlayer(any())).thenReturn(player);
         when(saveGamePort.saveGame(any())).thenReturn(new Game(UUID.randomUUID(), null, null,  GAME_IS_RUNNING));
@@ -99,6 +98,6 @@ class JoinGameServiceTest {
     }
 
     private static Player createEmptyPlayer() {
-        return new Player(null, null, List.of());
+        return new Player.Builder(null).build();
     }
 }

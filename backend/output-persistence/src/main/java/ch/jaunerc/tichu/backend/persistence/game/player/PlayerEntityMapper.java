@@ -21,10 +21,11 @@ public class PlayerEntityMapper {
     }
 
     public static Player toDomain(PlayerEntity playerEntity) {
-        return new Player(
-                playerEntity.getId(),
-                UserEntityMapper.toDomain(playerEntity.getUser()),
-                playerEntity.getCards()
-        );
+        return new Player.Builder(playerEntity.getId())
+                .user(UserEntityMapper.toDomain(playerEntity.getUser()))
+                .grandTichuCalled(playerEntity.isGrandTichuCalled())
+                .smallTichuCalled(playerEntity.isSmallTichuCalled())
+                .cards(playerEntity.getCards())
+                .build();
     }
 }

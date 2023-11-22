@@ -26,6 +26,10 @@ public class PlayerEntity {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
 
+    private boolean grandTichuCalled;
+
+    private boolean smallTichuCalled;
+
     @Convert(converter = CardsConverter.class)
     private List<Card> cards;
 }

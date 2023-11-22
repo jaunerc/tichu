@@ -6,11 +6,13 @@ import ch.jaunerc.tichu.backend.domain.user.model.User;
 import java.util.List;
 import java.util.UUID;
 
-public record Player(UUID uuid, User user, List<Card> cards) {
+public record Player(UUID uuid, User user, boolean grandTichuCalled, boolean smallTichuCalled, List<Card> cards) {
 
     public final static class Builder {
         private final UUID playerId;
         private User user;
+        private boolean grandTichuCalled;
+        private boolean smallTichuCalled;
         private List<Card> cards;
 
         public Builder(UUID playerId) {
@@ -33,10 +35,22 @@ public record Player(UUID uuid, User user, List<Card> cards) {
             return this;
         }
 
+        public Builder grandTichuCalled(boolean grandTichuCalled) {
+            this.grandTichuCalled = grandTichuCalled;
+            return this;
+        }
+
+        public Builder smallTichuCalled(boolean smallTichuCalled) {
+            this.smallTichuCalled = smallTichuCalled;
+            return this;
+        }
+
         public Player build() {
             return new Player(
                     this.playerId,
                     this.user,
+                    this.grandTichuCalled,
+                    this.smallTichuCalled,
                     this.cards
             );
         }
