@@ -1,4 +1,4 @@
-package ch.jaunerc.tichu.backend.domain.game.port;
+package ch.jaunerc.tichu.backend.domain.game.usecase;
 
 import ch.jaunerc.tichu.backend.domain.game.model.JoinGame;
 

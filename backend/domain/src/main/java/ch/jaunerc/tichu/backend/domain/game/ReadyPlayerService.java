@@ -1,10 +1,10 @@
 package ch.jaunerc.tichu.backend.domain.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
-import ch.jaunerc.tichu.backend.domain.game.port.ChangeGamePhaseUseCase;
 import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
-import ch.jaunerc.tichu.backend.domain.game.port.ReadyPlayerUseCase;
-import ch.jaunerc.tichu.backend.domain.game.port.ShuffleDeckUseCase;
+import ch.jaunerc.tichu.backend.domain.game.usecase.ChangeGamePhaseUseCase;
+import ch.jaunerc.tichu.backend.domain.game.usecase.ReadyPlayerUseCase;
+import ch.jaunerc.tichu.backend.domain.game.usecase.ShuffleDeckUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

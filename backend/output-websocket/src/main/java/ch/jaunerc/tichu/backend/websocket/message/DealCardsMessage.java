@@ -1,4 +1,4 @@
-package ch.jaunerc.tichu.backend.websocket;
+package ch.jaunerc.tichu.backend.websocket.message;
 
 import ch.jaunerc.tichu.backend.domain.game.model.card.Card;
 

@@ -1,7 +1,10 @@
 package ch.jaunerc.tichu.backend.websocket;
 
-import ch.jaunerc.tichu.backend.domain.game.port.DealCardsUseCase;
-import ch.jaunerc.tichu.backend.domain.game.port.ReadyPlayerUseCase;
+import ch.jaunerc.tichu.backend.domain.game.usecase.DealCardsUseCase;
+import ch.jaunerc.tichu.backend.domain.game.usecase.ReadyPlayerUseCase;
+import ch.jaunerc.tichu.backend.websocket.message.DealCardsMessage;
+import ch.jaunerc.tichu.backend.websocket.message.PushCardToPlayerMessage;
+import ch.jaunerc.tichu.backend.websocket.message.ReadyStatusMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;

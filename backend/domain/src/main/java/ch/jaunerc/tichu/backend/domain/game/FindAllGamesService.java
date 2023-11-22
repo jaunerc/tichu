@@ -2,7 +2,7 @@ package ch.jaunerc.tichu.backend.domain.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.port.FindAllGamesPort;
-import ch.jaunerc.tichu.backend.domain.game.port.FindAllGamesUseCase;
+import ch.jaunerc.tichu.backend.domain.game.usecase.FindAllGamesUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

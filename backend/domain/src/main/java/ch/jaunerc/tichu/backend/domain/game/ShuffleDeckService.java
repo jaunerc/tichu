@@ -4,7 +4,7 @@ import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.card.Card;
 import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
 import ch.jaunerc.tichu.backend.domain.game.port.SavePlayerPort;
-import ch.jaunerc.tichu.backend.domain.game.port.ShuffleDeckUseCase;
+import ch.jaunerc.tichu.backend.domain.game.usecase.ShuffleDeckUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package ch.jaunerc.tichu.backend.web.games;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
-import ch.jaunerc.tichu.backend.domain.game.port.CreateGameUseCase;
+import ch.jaunerc.tichu.backend.domain.game.usecase.CreateGameUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
