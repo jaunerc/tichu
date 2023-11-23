@@ -1,10 +1,9 @@
 package ch.jaunerc.tichu.backend.websocket;
 
+import ch.jaunerc.tichu.backend.domain.game.GrandTichuService;
 import ch.jaunerc.tichu.backend.domain.game.usecase.DealCardsUseCase;
 import ch.jaunerc.tichu.backend.domain.game.usecase.ReadyPlayerUseCase;
-import ch.jaunerc.tichu.backend.websocket.message.DealCardsServerMessage;
-import ch.jaunerc.tichu.backend.websocket.message.PushCardPlayerMessage;
-import ch.jaunerc.tichu.backend.websocket.message.ReadyStatusServerMessage;
+import ch.jaunerc.tichu.backend.websocket.message.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -20,6 +19,7 @@ public class WebsocketController {
 
     private final ReadyPlayerUseCase readyPlayerUseCase;
     private final DealCardsUseCase dealCardsUseCase;
+    private final GrandTichuService grandTichuService;
 
     @MessageMapping("/player-ready-{gameId}")
     @SendTo("/topic/player-ready-{gameId}")
@@ -38,9 +38,15 @@ public class WebsocketController {
 
     @MessageMapping("/{gameId}/grand-tichu/{playerId}")
     @SendTo("/topic/{gameId}/grand-tichu")
-    public void grandTichu(@DestinationVariable("gameId") String gameId,
-                           @DestinationVariable("playerId") String playerId) {
-
+    public GrandTichuServerMessage grandTichu(@DestinationVariable("gameId") String gameId,
+                                              @DestinationVariable("playerId") String playerId,
+                                              @Payload GrandTichuPlayerMessage grandTichuPlayerMessage) {
+        var grandTichuCall = grandTichuService.grandTichuByPlayer(
+                UUID.fromString(gameId),
+                UUID.fromString(playerId),
+                grandTichuPlayerMessage.callGrandTichu()
+        );
+        return new GrandTichuServerMessage(grandTichuCall.playerNumber(), grandTichuCall.grandTichuCalled());
     }
 
     @MessageMapping("/{gameId}/small-tichu/{playerId}")
