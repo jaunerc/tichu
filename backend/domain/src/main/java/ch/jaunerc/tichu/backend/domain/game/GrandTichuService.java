@@ -37,10 +37,14 @@ public class GrandTichuService implements GrandTichuUseCase {
         return listOfPlayersBy(game).stream()
                 .filter(player -> player.uuid().equals(playerId))
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(IllegalArgumentException::new);
     }
 
-    private int getPlayerNumber(Game game, UUID playerId) {
+    private static int getPlayerNumber(Game game, UUID playerId) {
+        return getPlayerIndex(game, playerId) + 1; // TODO better use an enum to determine the players seat position
+    }
+
+    private static int getPlayerIndex(Game game, UUID playerId) {
         return listOfPlayersOrderedBySeatPosition(game).stream()
                 .map(Player::uuid)
                 .toList()
