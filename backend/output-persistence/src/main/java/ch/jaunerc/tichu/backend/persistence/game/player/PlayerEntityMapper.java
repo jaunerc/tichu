@@ -15,6 +15,14 @@ public class PlayerEntityMapper {
             playerEntity.setId(player.uuid());
         }
 
+        if (player.pushedCards() != null) {
+            playerEntity.setPushedCards(player.pushedCards());
+        }
+
+        if (player.receivedCards() != null) {
+            playerEntity.setReceivedCards(player.receivedCards());
+        }
+
         playerEntity.setUser(UserEntityMapper.map(player.user()));
         playerEntity.setCards(player.cards());
         return playerEntity;
@@ -26,6 +34,8 @@ public class PlayerEntityMapper {
                 .grandTichuCalled(playerEntity.isGrandTichuCalled())
                 .smallTichuCalled(playerEntity.isSmallTichuCalled())
                 .cards(playerEntity.getCards())
+                .pushedCards(playerEntity.getPushedCards())
+                .receivedCards(playerEntity.getReceivedCards())
                 .build();
     }
 }

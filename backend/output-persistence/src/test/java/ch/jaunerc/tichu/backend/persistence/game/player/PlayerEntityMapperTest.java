@@ -18,7 +18,10 @@ class PlayerEntityMapperTest {
     @DisplayName("should create a player entity and setting the id if present")
     void map() {
         var user = new User(UUID.randomUUID(), null);
-        var domainPlayer = new Player(UUID.randomUUID(), user, List.of(EIGHT_JADE, NINE_PAGODAS));
+        var domainPlayer = new Player.Builder(UUID.randomUUID())
+                .user(user)
+                .cards(List.of(EIGHT_JADE, NINE_PAGODAS))
+                .build();
         var player = PlayerEntityMapper.map(domainPlayer);
 
         assertThat(player.getCards()).containsExactly(EIGHT_JADE, NINE_PAGODAS);
@@ -29,7 +32,10 @@ class PlayerEntityMapperTest {
     @DisplayName("should create a player entity without setting the id")
     void map_nullUserId() {
         var user = new User(UUID.randomUUID(), null);
-        var domainPlayer = new Player(null, user, List.of(EIGHT_JADE, NINE_PAGODAS));
+        var domainPlayer = new Player.Builder(UUID.randomUUID())
+                .user(user)
+                .cards(List.of(EIGHT_JADE, NINE_PAGODAS))
+                .build();
         var player = PlayerEntityMapper.map(domainPlayer);
 
         assertThat(player.getCards()).containsExactly(EIGHT_JADE, NINE_PAGODAS);
@@ -40,13 +46,17 @@ class PlayerEntityMapperTest {
     void toDomain() {
         var uuid = UUID.randomUUID();
         var cards = List.of(JACK_JADE, JACK_SWORDS);
+        var pushedCards = List.of(JACK_SWORDS, NINE_PAGODAS);
+        var receivedCards = List.of(KING_STARS, TWO_SWORDS);
         var user = new UserEntity();
         user.setId(UUID.randomUUID());
-        var playerEntity = new PlayerEntity(uuid, user, cards);
+        var playerEntity = new PlayerEntity(uuid, user, false, false, cards, pushedCards, receivedCards);
 
         var result = PlayerEntityMapper.toDomain(playerEntity);
 
         assertThat(result.uuid()).isEqualTo(uuid);
         assertThat(result.cards()).containsExactly(JACK_JADE, JACK_SWORDS);
+        assertThat(result.pushedCards()).containsExactly(JACK_SWORDS, NINE_PAGODAS);
+        assertThat(result.receivedCards()).containsExactly(KING_STARS, TWO_SWORDS);
     }
 }

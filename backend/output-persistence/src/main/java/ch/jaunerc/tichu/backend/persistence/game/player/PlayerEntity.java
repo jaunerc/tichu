@@ -32,4 +32,10 @@ public class PlayerEntity {
 
     @Convert(converter = CardsConverter.class)
     private List<Card> cards;
+
+    @Convert(converter = CardsConverter.class)
+    private List<Card> pushedCards;
+
+    @Convert(converter = CardsConverter.class)
+    private List<Card> receivedCards;
 }
