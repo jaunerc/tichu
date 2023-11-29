@@ -11,6 +11,7 @@ public record Player(
         User user,
         boolean grandTichuCalled,
         boolean smallTichuCalled,
+        boolean firstEightCardsReceived,
         List<Card> pushedCards,
 
         List<Card> receivedCards,
@@ -21,6 +22,7 @@ public record Player(
         private User user;
         private boolean grandTichuCalled;
         private boolean smallTichuCalled;
+        private boolean firstEightCardsReceived;
         private List<Card> pushedCards;
         private List<Card> receivedCards;
         private List<Card> cards;
@@ -34,6 +36,7 @@ public record Player(
                     .user(player.user)
                     .grandTichuCalled(player.grandTichuCalled)
                     .smallTichuCalled(player.smallTichuCalled)
+                    .firstEightCardsReceived(player.firstEightCardsReceived)
                     .pushedCards(player.pushedCards)
                     .receivedCards(player.receivedCards)
                     .cards(player.cards);
@@ -51,6 +54,11 @@ public record Player(
 
         public Builder smallTichuCalled(boolean smallTichuCalled) {
             this.smallTichuCalled = smallTichuCalled;
+            return this;
+        }
+
+        public Builder firstEightCardsReceived(boolean firstEightCardsReceived) {
+            this.firstEightCardsReceived = firstEightCardsReceived;
             return this;
         }
 
@@ -75,6 +83,7 @@ public record Player(
                     this.user,
                     this.grandTichuCalled,
                     this.smallTichuCalled,
+                    this.firstEightCardsReceived,
                     this.pushedCards,
                     this.receivedCards,
                     this.cards

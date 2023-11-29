@@ -30,6 +30,8 @@ public class PlayerEntity {
 
     private boolean smallTichuCalled;
 
+    private boolean firstEightCardsReceived;
+
     @Convert(converter = CardsConverter.class)
     private List<Card> cards;
 

@@ -4,11 +4,11 @@ import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.card.Card;
 import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
+import ch.jaunerc.tichu.backend.domain.game.port.SavePlayerPort;
 import ch.jaunerc.tichu.backend.domain.game.usecase.DealCardsUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,35 +21,35 @@ public class DealCardsService implements DealCardsUseCase {
     private static final int FIRST_CARD_DEAL_LIMIT = 8;
 
     private final FindGameByIdPort findGameByIdPort;
+    private final SavePlayerPort savePlayerPort;
 
     @Override
     public List<Card> dealCards(UUID gameId, UUID playerId) {
-        return cardsForPlayer(
-                findGameByIdPort.findGameById(gameId),
-                playerId);
+        var game = findGameByIdPort.findGameById(gameId);
+        var player = findPlayerById(game, playerId);
+
+        var updatedPlayer = Player.Builder.of(player)
+                .firstEightCardsReceived(true)
+                .build();
+
+        savePlayerPort.savePlayer(updatedPlayer);
+
+        return cardsForPlayer(player);
     }
 
-    private static List<Card> cardsForPlayer(Game game, UUID playerId) {
-        var cards = allPlayerCards(listOfPlayersBy(game), playerId);
-
-        switch (game.gamePhase()) {
-            case DEALING_CARDS -> {
-                return cards.stream()
-                        .limit(FIRST_CARD_DEAL_LIMIT)
-                        .toList();
-            }
-            case FIRST_EIGHT_CARDS_ARE_DEALT -> {
-                return cards;
-            }
-            default -> throw new IllegalStateException("unable to deal cards in the current game phase: " + game.gamePhase());
+    private static List<Card> cardsForPlayer(Player player) {
+        if (player.firstEightCardsReceived()) { // TODO here is an additional guard needed so that the player receives the cards only if the game is in the right state
+            return player.cards();
         }
+        return player.cards().stream()
+                .limit(FIRST_CARD_DEAL_LIMIT)
+                .toList();
     }
 
-    private static List<Card> allPlayerCards(List<Player> players, UUID playerId) {
-        return players.stream()
-                .filter(player -> player.uuid().equals(playerId))
-                .map(Player::cards)
-                .flatMap(Collection::stream)
-                .toList();
+    private static Player findPlayerById(Game game, UUID playerId) {
+        return listOfPlayersBy(game).stream()
+                .filter(p -> p.uuid().equals(playerId))
+                .findFirst()
+                .orElseThrow(IllegalStateException::new);
     }
 }
