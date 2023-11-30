@@ -50,7 +50,7 @@ class PlayerEntityMapperTest {
         var receivedCards = List.of(KING_STARS, TWO_SWORDS);
         var user = new UserEntity();
         user.setId(UUID.randomUUID());
-        var playerEntity = new PlayerEntity(uuid, user, false, false, cards, pushedCards, receivedCards);
+        var playerEntity = new PlayerEntity(uuid, user, false, false, false, cards, pushedCards, receivedCards);
 
         var result = PlayerEntityMapper.toDomain(playerEntity);
 

@@ -4,7 +4,7 @@ import { StompService } from '../../../stomp/stomp.service'
 import { combineLatest, first, mergeMap, Observable, of, Subject } from 'rxjs'
 import { getGameId, getPlayerId } from '../../../states/app/app.selector'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { DealCardsResponseMessage } from '../../../websocket-api/websocket.api'
+import { DealCardsResponseMessage, GrandTichuServerMessage } from '../../../websocket-api/websocket.api'
 
 @UntilDestroy()
 @Component({
@@ -19,6 +19,8 @@ export class GameBoardPageComponent implements OnInit {
   private readonly cardsSubject$: Subject<string[]> = new Subject<string[]>()
   cards$ = this.cardsSubject$.asObservable()
 
+  grandTichuCalledPlayers: string = ''
+
   constructor (
     private readonly store: Store,
     private readonly stompService: StompService
@@ -30,7 +32,38 @@ export class GameBoardPageComponent implements OnInit {
     this.playerId$ = this.store.select(getPlayerId)
 
     this.onDealCardsResponse()
+    this.onGrandTichuResponse()
     this.requestDealCards()
+  }
+
+  public callGrandTichu (): void {
+    combineLatest([this.gameId$, this.playerId$])
+      .pipe(
+        first(),
+        untilDestroyed(this))
+      .subscribe(([gameId, playerId]) => {
+        if (gameId != null && playerId != null) {
+          this.stompService.publish({
+            destination: '/app/' + gameId + '/grand-tichu/' + playerId,
+            body: JSON.stringify({ callGrandTichu: true })
+          })
+        }
+      })
+  }
+
+  public dontCallGrandTichu (): void {
+    combineLatest([this.gameId$, this.playerId$])
+      .pipe(
+        first(),
+        untilDestroyed(this))
+      .subscribe(([gameId, playerId]) => {
+        if (gameId != null && playerId != null) {
+          this.stompService.publish({
+            destination: '/app/' + gameId + '/grand-tichu/' + playerId,
+            body: JSON.stringify({ callGrandTichu: false })
+          })
+        }
+      })
   }
 
   private requestDealCards (): void {
@@ -61,6 +94,30 @@ export class GameBoardPageComponent implements OnInit {
       .subscribe(message => {
         const dealCardsResponse: DealCardsResponseMessage = JSON.parse(message.body)
         this.cardsSubject$.next(dealCardsResponse.cards)
+      })
+  }
+
+  private onGrandTichuResponse (): void {
+    combineLatest([this.gameId$, this.playerId$])
+      .pipe(
+        first(),
+        untilDestroyed(this),
+        mergeMap(([gameId, playerId]) => {
+          if (gameId != null && playerId != null) {
+            return this.stompService.watch('/topic/' + gameId + '/grand-tichu')
+          }
+          return of()
+        }))
+      .subscribe(message => {
+        const grandTichuServerMessage: GrandTichuServerMessage = JSON.parse(message.body)
+
+        if (grandTichuServerMessage.grandTichuCalled) {
+          if (this.grandTichuCalledPlayers === '') {
+            this.grandTichuCalledPlayers = `${grandTichuServerMessage.playerNumber}`
+          } else {
+            this.grandTichuCalledPlayers = `${this.grandTichuCalledPlayers}, ${grandTichuServerMessage.playerNumber}`
+          }
+        }
       })
   }
 }

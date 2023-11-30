@@ -11,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,7 +35,9 @@ class CreateTeamPersistenceAdapterTest {
     void createTeam() {
         when(teamRepository.save(any())).thenReturn(new TeamEntity());
         var user = new User(UUID.randomUUID(), "Eve");
-        var player = new Player(UUID.randomUUID(), user, List.of());
+        var player = new Player.Builder(UUID.randomUUID())
+                .user(user)
+                .build();
 
         createTeamPersistenceAdapter.createTeam(player);
 

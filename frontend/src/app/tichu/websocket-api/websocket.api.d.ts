@@ -6,3 +6,8 @@ export interface ReadyStatusMessage {
 export interface DealCardsResponseMessage {
   cards: string[]
 }
+
+export interface GrandTichuServerMessage {
+  playerNumber: number
+  grandTichuCalled: boolean
+}

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common'
 import { SharedModule } from '../../shared/shared.module'
 import { GameBoardPageComponent } from './game-board-page/game-board-page.component'
 import { GameBoardRoutingModule } from './game-board-routing.module'
+import { MatButtonModule } from '@angular/material/button'
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { GameBoardRoutingModule } from './game-board-routing.module'
   imports: [
     CommonModule,
     SharedModule,
-    GameBoardRoutingModule
+    GameBoardRoutingModule,
+    MatButtonModule
   ]
 })
 export class GameBoardModule { }

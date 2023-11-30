@@ -1,4 +1,22 @@
 <tichu-app-layout>
   <h1>Game</h1>
   <p *ngIf="cards$ | async as cards">{{ cards }}</p>
+
+  <div class="board-buttons">
+  <button
+  mat-raised-button
+  color="primary"
+  (click)="callGrandTichu()"
+  >Call Grand Tichu
+  </button>
+
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="dontCallGrandTichu()"
+  >Don't Call Grand Tichu
+  </button>
+  </div>
+
+  <p>These players called a big Tichu: {{ grandTichuCalledPlayers }}</p>
 </tichu-app-layout>
