@@ -32,7 +32,7 @@ class PlayerEntityMapperTest {
     @DisplayName("should create a player entity without setting the id")
     void map_nullUserId() {
         var user = new User(UUID.randomUUID(), null);
-        var domainPlayer = new Player.Builder(UUID.randomUUID())
+        var domainPlayer = new Player.Builder(null)
                 .user(user)
                 .cards(List.of(EIGHT_JADE, NINE_PAGODAS))
                 .build();

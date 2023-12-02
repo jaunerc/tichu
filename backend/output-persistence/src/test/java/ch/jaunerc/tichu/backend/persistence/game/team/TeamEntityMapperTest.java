@@ -2,6 +2,7 @@ package ch.jaunerc.tichu.backend.persistence.game.team;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.Team;
+import ch.jaunerc.tichu.backend.domain.user.model.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -16,8 +17,8 @@ class TeamEntityMapperTest {
         var uuidPlayerB = UUID.randomUUID();
         var uuidTeam = UUID.randomUUID();
         var team = new Team.Builder(uuidTeam)
-                .firstPlayer(new Player.Builder(uuidPlayerA).build())
-                .secondPlayer(new Player.Builder(uuidPlayerB).build())
+                .firstPlayer(new Player.Builder(uuidPlayerA).user(new User(null, null)).build())
+                .secondPlayer(new Player.Builder(uuidPlayerB).user(new User(null, null)).build())
                 .build();
 
         var result = TeamEntityMapper.map(team);

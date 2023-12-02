@@ -7,7 +7,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <groupId>ch.jaunerc.tichu.backend</groupId>
-    <artifactId>output-websocket</artifactId>
+    <artifactId>input-websocket</artifactId>
 
     <dependencies>
         <dependency>
