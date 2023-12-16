@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store'
 import { StompService } from '../../../stomp/stomp.service'
-import { combineLatest, first, mergeMap, Observable, of, Subject } from 'rxjs'
-import { getGameId, getPlayerId } from '../../../states/app/app.selector'
+import { combineLatest, first, map, mergeMap, Observable, of, Subject } from 'rxjs'
+import { getGameId, getGameState, getPlayerId } from '../../../states/app/app.selector'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { DealCardsResponseMessage, GameStateServerMessage } from '../../../websocket-api/websocket.api'
+import { DealCardsResponseMessage } from '../../../websocket-api/websocket.api'
+import { refreshGameState } from '../../../states/app/app.actions'
+import { Actions } from '@ngrx/effects'
 
 @UntilDestroy()
 @Component({
@@ -23,7 +25,8 @@ export class GameBoardPageComponent implements OnInit {
 
   constructor (
     private readonly store: Store,
-    private readonly stompService: StompService
+    private readonly stompService: StompService,
+    private readonly updates$: Actions
   ) {
   }
 
@@ -34,6 +37,8 @@ export class GameBoardPageComponent implements OnInit {
     this.onDealCardsResponse()
     this.onGameStateResponse()
     this.requestDealCards()
+
+    this.store.dispatch(refreshGameState())
   }
 
   public callGrandTichu (): void {
@@ -98,20 +103,22 @@ export class GameBoardPageComponent implements OnInit {
   }
 
   private onGameStateResponse (): void {
-    combineLatest([this.gameId$, this.playerId$])
-      .pipe(
-        first(),
-        untilDestroyed(this),
-        mergeMap(([gameId, playerId]) => {
-          if (gameId != null && playerId != null) {
-            return this.stompService.watch('/topic/' + gameId + '/state')
-          }
-          return of()
-        }))
-      .subscribe(message => {
-        const grandTichuServerMessage: GameStateServerMessage = JSON.parse(message.body)
+    this.updates$.subscribe(update => { console.log(update) })
 
-        this.grandTichuCalledPlayers = `${grandTichuServerMessage.game.players.filter(player => player.grandTichuCalled).length}`
+    this.store.select(getGameState)
+      .pipe(
+        untilDestroyed(this),
+        map(gameState => {
+          if (gameState != null) {
+            return gameState.players?.map(player => player.grandTichuCalled)
+          }
+          return []
+        })
+      )
+      .subscribe(grandTichus => {
+        if (grandTichus != null) {
+          this.grandTichuCalledPlayers = `${grandTichus.filter(grandTichu => grandTichu).length}`
+        }
       })
   }
 }

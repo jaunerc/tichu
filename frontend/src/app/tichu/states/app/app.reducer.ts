@@ -1,12 +1,13 @@
-import {Action, ActionCreator, createReducer, on, ReducerTypes} from '@ngrx/store'
-import {saveGameId, savePlayerId, saveUserId, saveUsername} from './app.actions'
-import {AppState} from './app.state'
+import { Action, ActionCreator, createReducer, on, ReducerTypes } from '@ngrx/store'
+import { saveGameId, saveGameState, savePlayerId, saveUserId, saveUsername } from './app.actions'
+import { AppState } from './app.state'
 
 export const initialAppState: AppState = {
   username: undefined,
   userId: undefined,
   gameId: undefined,
   playerId: undefined,
+  gameState: undefined
 }
 
 export const generalAppReducers: Array<ReducerTypes<AppState, ActionCreator[]>> = [
@@ -25,6 +26,10 @@ export const generalAppReducers: Array<ReducerTypes<AppState, ActionCreator[]>> 
   on(savePlayerId, (appState, payload) => ({
     ...appState,
     playerId: payload.playerId
+  })),
+  on(saveGameState, (appState, payload) => ({
+    ...appState,
+    gameState: payload.gameState
   }))
 ]
 
