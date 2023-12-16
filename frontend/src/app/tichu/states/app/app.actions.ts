@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store'
-import { GameDto } from '../../websocket-api/websocket.api'
+import { GameState } from './app.state'
 
 export const saveUsername = createAction(
   '[App] save username',
@@ -26,5 +26,5 @@ export const refreshGameState = createAction(
 
 export const saveGameState = createAction(
   '[App] save game state',
-  props<{ gameState: GameDto }>()
+  props<{ gameState: GameState }>()
 )

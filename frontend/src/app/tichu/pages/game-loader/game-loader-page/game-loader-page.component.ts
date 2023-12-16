@@ -3,7 +3,7 @@ import { StompService } from '../../../stomp/stomp.service'
 import { Store } from '@ngrx/store'
 import { getGameId, getPlayerId } from '../../../states/app/app.selector'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { combineLatest, first, mergeMap, Observable, of, Subject } from 'rxjs'
+import { combineLatest, first, mergeMap, Observable, Subject } from 'rxjs'
 import { ReadyStatusMessage } from '../../../websocket-api/websocket.api'
 import { Router } from '@angular/router'
 
@@ -14,8 +14,8 @@ import { Router } from '@angular/router'
   styleUrls: ['./game-loader-page.component.scss']
 })
 export class GameLoaderPageComponent implements OnInit {
-  private gameId$!: Observable<string | undefined>
-  private playerId$!: Observable<string | undefined>
+  private gameId$!: Observable<string>
+  private playerId$!: Observable<string>
   private readonly readyPlayersSubject$: Subject<number> = new Subject<number>()
 
   readyPlayers$: Observable<number> = this.readyPlayersSubject$.asObservable()
@@ -39,10 +39,7 @@ export class GameLoaderPageComponent implements OnInit {
         first(),
         untilDestroyed(this),
         mergeMap(gameId => {
-          if (gameId != null) {
-            return this.stompService.watch('/topic/player-ready-' + gameId)
-          }
-          return of()
+          return this.stompService.watch('/topic/player-ready-' + gameId)
         }))
       .subscribe(message => {
         const readyStatusDto: ReadyStatusMessage = JSON.parse(message.body)
@@ -59,12 +56,10 @@ export class GameLoaderPageComponent implements OnInit {
     combineLatest([this.gameId$, this.playerId$])
       .pipe(first(), untilDestroyed(this))
       .subscribe(([gameId, playerId]) => {
-        if (gameId != null && playerId != null) {
-          this.stompService.publish({
-            destination: '/app/player-ready-' + gameId,
-            body: JSON.stringify({ playerId })
-          })
-        }
+        this.stompService.publish({
+          destination: '/app/player-ready-' + gameId,
+          body: JSON.stringify({ playerId })
+        })
       })
   }
 }

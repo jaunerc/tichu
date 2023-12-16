@@ -19,7 +19,7 @@ export interface GameElement {
 })
 export class LobbyPageComponent implements OnInit {
   public username$!: Observable<string | undefined>
-  public userId$!: Observable<string | undefined>
+  public userId$!: Observable<string>
   private readonly gamesSubject$: Subject<Games> = new Subject<Games>()
   public selectedGame?: GameElement
   public dataSource: GameElement[] = []
@@ -39,10 +39,9 @@ export class LobbyPageComponent implements OnInit {
     this.gamesSubject$
       .pipe(untilDestroyed(this))
       .subscribe(games => {
-        this.dataSource = games.games
-          ?.map(game => {
-            return { id: game.id } satisfies GameElement
-          })
+        this.dataSource = games.games?.map(game => {
+          return { id: game.id } satisfies GameElement
+        })
       })
   }
 
@@ -62,7 +61,7 @@ export class LobbyPageComponent implements OnInit {
     this.userId$
       .pipe(first(), untilDestroyed(this))
       .subscribe(userId => {
-        if ((this.selectedGame != null) && (userId != null)) {
+        if ((this.selectedGame != null)) {
           const selectedGameId = this.selectedGame.id
           void this.gamesService.joinGame(
             selectedGameId,

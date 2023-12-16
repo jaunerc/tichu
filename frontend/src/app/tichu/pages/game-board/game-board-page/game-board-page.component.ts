@@ -6,7 +6,6 @@ import { getGameId, getGameState, getPlayerId } from '../../../states/app/app.se
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { DealCardsResponseMessage } from '../../../websocket-api/websocket.api'
 import { refreshGameState } from '../../../states/app/app.actions'
-import { Actions } from '@ngrx/effects'
 
 @UntilDestroy()
 @Component({
@@ -15,7 +14,7 @@ import { Actions } from '@ngrx/effects'
   styleUrls: ['./game-board-page.component.scss']
 })
 export class GameBoardPageComponent implements OnInit {
-  private gameId$!: Observable<string | undefined>
+  private gameId$!: Observable<string>
   private playerId$!: Observable<string | undefined>
 
   private readonly cardsSubject$: Subject<string[]> = new Subject<string[]>()
@@ -25,8 +24,7 @@ export class GameBoardPageComponent implements OnInit {
 
   constructor (
     private readonly store: Store,
-    private readonly stompService: StompService,
-    private readonly updates$: Actions
+    private readonly stompService: StompService
   ) {
   }
 
@@ -47,7 +45,7 @@ export class GameBoardPageComponent implements OnInit {
         first(),
         untilDestroyed(this))
       .subscribe(([gameId, playerId]) => {
-        if (gameId != null && playerId != null) {
+        if (playerId != null) {
           this.stompService.publish({
             destination: '/app/' + gameId + '/grand-tichu/' + playerId,
             body: JSON.stringify({ callGrandTichu: true })
@@ -62,7 +60,7 @@ export class GameBoardPageComponent implements OnInit {
         first(),
         untilDestroyed(this))
       .subscribe(([gameId, playerId]) => {
-        if (gameId != null && playerId != null) {
+        if (playerId != null) {
           this.stompService.publish({
             destination: '/app/' + gameId + '/grand-tichu/' + playerId,
             body: JSON.stringify({ callGrandTichu: false })
@@ -77,7 +75,7 @@ export class GameBoardPageComponent implements OnInit {
         first(),
         untilDestroyed(this))
       .subscribe(([gameId, playerId]) => {
-        if (gameId != null && playerId != null) {
+        if (playerId != null) {
           this.stompService.publish({
             destination: '/app/' + gameId + '/deal-cards/' + playerId
           })
@@ -91,7 +89,7 @@ export class GameBoardPageComponent implements OnInit {
         first(),
         untilDestroyed(this),
         mergeMap(([gameId, playerId]) => {
-          if (gameId != null && playerId != null) {
+          if (playerId != null) {
             return this.stompService.watch('/topic/' + gameId + '/deal-cards/' + playerId)
           }
           return of()
@@ -103,8 +101,6 @@ export class GameBoardPageComponent implements OnInit {
   }
 
   private onGameStateResponse (): void {
-    this.updates$.subscribe(update => { console.log(update) })
-
     this.store.select(getGameState)
       .pipe(
         untilDestroyed(this),
@@ -116,9 +112,7 @@ export class GameBoardPageComponent implements OnInit {
         })
       )
       .subscribe(grandTichus => {
-        if (grandTichus != null) {
-          this.grandTichuCalledPlayers = `${grandTichus.filter(grandTichu => grandTichu).length}`
-        }
+        this.grandTichuCalledPlayers = `${grandTichus.filter(grandTichu => grandTichu).length}`
       })
   }
 }
