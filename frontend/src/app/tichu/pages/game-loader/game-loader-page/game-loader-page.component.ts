@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core'
-import { StompService } from '../../../stomp/stomp.service'
 import { Store } from '@ngrx/store'
 import { getGameId, getPlayerId } from '../../../states/app/app.selector'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { combineLatest, first, mergeMap, Observable, Subject } from 'rxjs'
-import { ReadyStatusMessage } from '../../../websocket-api/websocket.api'
 import { Router } from '@angular/router'
+import { GameLoaderWebsocketService } from './service/game-loader-websocket.service'
 
 @UntilDestroy()
 @Component({
@@ -20,7 +19,8 @@ export class GameLoaderPageComponent implements OnInit {
 
   readyPlayers$: Observable<number> = this.readyPlayersSubject$.asObservable()
 
-  constructor (private readonly stompService: StompService,
+  constructor (
+    private readonly websocketService: GameLoaderWebsocketService,
     private readonly store: Store,
     private readonly router: Router) {
   }
@@ -39,11 +39,10 @@ export class GameLoaderPageComponent implements OnInit {
         first(),
         untilDestroyed(this),
         mergeMap(gameId => {
-          return this.stompService.watch('/topic/player-ready-' + gameId)
+          return this.websocketService.watchOnReadyMessage(gameId)
         }))
-      .subscribe(message => {
-        const readyStatusDto: ReadyStatusMessage = JSON.parse(message.body)
-        const playerCount = readyStatusDto.readyPlayers
+      .subscribe(readyStatus => {
+        const playerCount = readyStatus.readyPlayers
         this.readyPlayersSubject$.next(playerCount)
 
         if (playerCount === 4) {
@@ -56,10 +55,7 @@ export class GameLoaderPageComponent implements OnInit {
     combineLatest([this.gameId$, this.playerId$])
       .pipe(first(), untilDestroyed(this))
       .subscribe(([gameId, playerId]) => {
-        this.stompService.publish({
-          destination: '/app/player-ready-' + gameId,
-          body: JSON.stringify({ playerId })
-        })
+        this.websocketService.publishReadyMessage(gameId, playerId)
       })
   }
 }
