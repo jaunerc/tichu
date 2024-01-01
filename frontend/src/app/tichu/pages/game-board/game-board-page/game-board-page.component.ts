@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store'
 import { StompService } from '../../../stomp/stomp.service'
-import { combineLatest, first, map, mergeMap, Observable, of, Subject } from 'rxjs'
+import { combineLatest, first, map, mergeMap, Observable, Subject, withLatestFrom } from 'rxjs'
 import { getGameId, getGameState, getPlayerId } from '../../../states/app/app.selector'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { DealCardsResponseMessage } from '../../../websocket-api/websocket.api'
 import { refreshGameState } from '../../../states/app/app.actions'
+
+export interface ControlPanelIds {
+  gameId: string
+  playerId: string
+}
 
 @UntilDestroy()
 @Component({
@@ -14,8 +19,8 @@ import { refreshGameState } from '../../../states/app/app.actions'
   styleUrls: ['./game-board-page.component.scss']
 })
 export class GameBoardPageComponent implements OnInit {
-  private gameId$!: Observable<string>
-  private playerId$!: Observable<string | undefined>
+  gameId$!: Observable<string>
+  private playerId$!: Observable<string>
 
   private readonly cardsSubject$: Subject<string[]> = new Subject<string[]>()
   cards$ = this.cardsSubject$.asObservable()
@@ -39,34 +44,12 @@ export class GameBoardPageComponent implements OnInit {
     this.store.dispatch(refreshGameState())
   }
 
-  public callGrandTichu (): void {
-    combineLatest([this.gameId$, this.playerId$])
-      .pipe(
-        first(),
-        untilDestroyed(this))
-      .subscribe(([gameId, playerId]) => {
-        if (playerId != null) {
-          this.stompService.publish({
-            destination: '/app/' + gameId + '/grand-tichu/' + playerId,
-            body: JSON.stringify({ callGrandTichu: true })
-          })
-        }
-      })
-  }
-
-  public dontCallGrandTichu (): void {
-    combineLatest([this.gameId$, this.playerId$])
-      .pipe(
-        first(),
-        untilDestroyed(this))
-      .subscribe(([gameId, playerId]) => {
-        if (playerId != null) {
-          this.stompService.publish({
-            destination: '/app/' + gameId + '/grand-tichu/' + playerId,
-            body: JSON.stringify({ callGrandTichu: false })
-          })
-        }
-      })
+  controlPanelIds$ (): Observable<ControlPanelIds> {
+    return this.gameId$.pipe(
+      withLatestFrom(this.playerId$),
+      map(([gameId, playerId]) => {
+        return { gameId, playerId }
+      }))
   }
 
   private requestDealCards (): void {
@@ -75,11 +58,9 @@ export class GameBoardPageComponent implements OnInit {
         first(),
         untilDestroyed(this))
       .subscribe(([gameId, playerId]) => {
-        if (playerId != null) {
-          this.stompService.publish({
-            destination: '/app/' + gameId + '/deal-cards/' + playerId
-          })
-        }
+        this.stompService.publish({
+          destination: '/app/' + gameId + '/deal-cards/' + playerId
+        })
       })
   }
 
@@ -89,10 +70,7 @@ export class GameBoardPageComponent implements OnInit {
         first(),
         untilDestroyed(this),
         mergeMap(([gameId, playerId]) => {
-          if (playerId != null) {
-            return this.stompService.watch('/topic/' + gameId + '/deal-cards/' + playerId)
-          }
-          return of()
+          return this.stompService.watch('/topic/' + gameId + '/deal-cards/' + playerId)
         }))
       .subscribe(message => {
         const dealCardsResponse: DealCardsResponseMessage = JSON.parse(message.body)

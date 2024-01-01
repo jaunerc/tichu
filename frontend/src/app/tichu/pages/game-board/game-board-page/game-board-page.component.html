@@ -2,21 +2,12 @@
   <h1>Game</h1>
   <p *ngIf="cards$ | async as cards">{{ cards }}</p>
 
-  <div class="board-buttons">
-  <button
-  mat-raised-button
-  color="primary"
-  (click)="callGrandTichu()"
-  >Call Grand Tichu
-  </button>
-
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="dontCallGrandTichu()"
-  >Don't Call Grand Tichu
-  </button>
-  </div>
+  <ng-container *ngIf="controlPanelIds$() | async as controlPanelIds">
+    <tichu-game-board-control-panel
+      [gameId]="controlPanelIds.gameId"
+      [playerId]="controlPanelIds.playerId">
+    </tichu-game-board-control-panel>
+  </ng-container>
 
   <p>These players called a big Tichu: {{ grandTichuCalledPlayers }}</p>
 </tichu-app-layout>

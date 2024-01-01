@@ -53,6 +53,11 @@ public class WebsocketController {
                 UUID.fromString(playerId),
                 grandTichuPlayerMessage.callGrandTichu()
         );
+
+        var cards = dealCardsUseCase.dealCards(UUID.fromString(gameId), UUID.fromString(playerId));
+        simpMessagingTemplate.convertAndSend("/topic/" + gameId + "/deal-cards/" + playerId,
+                new DealCardsServerMessage(cards));
+
         return new GameStateServerMessage(GameDtoConverter.convert(updatedGame));
     }
 
