@@ -24,7 +24,7 @@
         <module>app</module>
         <module>domain</module>
         <module>output-persistence</module>
-        <module>output-websocket</module>
+        <module>input-websocket</module>
     </modules>
 
     <build>

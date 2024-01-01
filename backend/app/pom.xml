@@ -31,7 +31,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>output-websocket</artifactId>
+            <artifactId>input-websocket</artifactId>
             <version>${project.version}</version>
         </dependency>
 

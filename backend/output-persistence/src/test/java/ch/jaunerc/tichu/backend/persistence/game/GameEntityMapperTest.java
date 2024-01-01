@@ -10,7 +10,6 @@ import ch.jaunerc.tichu.backend.persistence.user.UserEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.UUID;
 
 import static ch.jaunerc.tichu.backend.domain.game.model.GamePhase.DEALING_CARDS;
@@ -44,8 +43,12 @@ class GameEntityMapperTest {
     @Test
     void map_game() {
         var gameId = UUID.randomUUID();
-        var firstPlayer = new Player(UUID.randomUUID(), new User(UUID.randomUUID(), null), List.of());
-        var secondPlayer = new Player(UUID.randomUUID(), new User(UUID.randomUUID(), null), List.of());
+        var firstPlayer = new Player.Builder(UUID.randomUUID())
+                .user(new User(UUID.randomUUID(), null))
+                .build();
+        var secondPlayer = new Player.Builder(UUID.randomUUID())
+                .user(new User(UUID.randomUUID(), null))
+                .build();
         var firstTeam = new Team(UUID.randomUUID(), firstPlayer, secondPlayer, 0);
         var game = new Game.Builder(gameId, DEALING_CARDS)
                 .firstTeam(firstTeam)

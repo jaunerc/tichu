@@ -4,15 +4,14 @@ import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.GamePhase;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.Team;
-import ch.jaunerc.tichu.backend.domain.game.port.ChangeGamePhaseUseCase;
 import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
+import ch.jaunerc.tichu.backend.domain.game.usecase.ChangeGamePhaseUseCase;
+import ch.jaunerc.tichu.backend.domain.game.usecase.ShuffleDeckUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,6 +25,8 @@ class CountReadyPlayersServiceTest {
     private FindGameByIdPort findGameByIdPort;
     @Mock
     private ChangeGamePhaseUseCase changeGamePhaseUseCase;
+    @Mock
+    private ShuffleDeckUseCase shuffleDeckUseCase;
     @InjectMocks
     private ReadyPlayerService countReadyPlayersService;
 
@@ -39,12 +40,13 @@ class CountReadyPlayersServiceTest {
     }
 
     @Test
-    void countReadyPlayers_allPlayersReady_updateGameState() {
+    void countReadyPlayers_allPlayersReady_updateGameStateAndShuffleDeck() {
         when(findGameByIdPort.findGameById(any())).thenReturn(createGameWithFourPlayers());
 
         var result = countReadyPlayersService.updateReadyPlayers(null);
 
         verify(changeGamePhaseUseCase).changeGamePhase(any());
+        verify(shuffleDeckUseCase).shuffleDeck(any());
         assertThat(result).isEqualTo(4);
     }
 
@@ -60,11 +62,11 @@ class CountReadyPlayersServiceTest {
     private Game createGameWithThreePlayers() {
         return new Game.Builder(null, GamePhase.DEALING_CARDS)
                 .firstTeam(new Team.Builder(null)
-                        .firstPlayer(new Player(null, null, List.of()))
-                        .secondPlayer(new Player(null, null, List.of()))
+                        .firstPlayer(mockPlayer())
+                        .secondPlayer(mockPlayer())
                         .build())
                 .secondTeam(new Team.Builder(null)
-                        .secondPlayer(new Player(null, null, List.of()))
+                        .secondPlayer(mockPlayer())
                         .build())
                 .build();
     }
@@ -72,12 +74,12 @@ class CountReadyPlayersServiceTest {
     private Game createGameWithFourPlayers() {
         return new Game.Builder(null, GamePhase.DEALING_CARDS)
                 .firstTeam(new Team.Builder(null)
-                        .firstPlayer(new Player(null, null, List.of()))
-                        .secondPlayer(new Player(null, null, List.of()))
+                        .firstPlayer(mockPlayer())
+                        .secondPlayer(mockPlayer())
                         .build())
                 .secondTeam(new Team.Builder(null)
-                        .firstPlayer(new Player(null, null, List.of()))
-                        .secondPlayer(new Player(null, null, List.of()))
+                        .firstPlayer(mockPlayer())
+                        .secondPlayer(mockPlayer())
                         .build())
                 .build();
     }
@@ -85,9 +87,13 @@ class CountReadyPlayersServiceTest {
     private Game createGameWithNullTeam() {
         return new Game.Builder(null, GamePhase.DEALING_CARDS)
                 .firstTeam(new Team.Builder(null)
-                        .firstPlayer(new Player(null, null, List.of()))
-                        .secondPlayer(new Player(null, null, List.of()))
+                        .firstPlayer(mockPlayer())
+                        .secondPlayer(mockPlayer())
                         .build())
                 .build();
+    }
+
+    private static Player mockPlayer() {
+        return new Player.Builder(null).build();
     }
 }

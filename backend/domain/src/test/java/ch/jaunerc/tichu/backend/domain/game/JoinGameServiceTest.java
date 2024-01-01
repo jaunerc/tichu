@@ -16,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.UUID;
 
 import static ch.jaunerc.tichu.backend.domain.game.model.GamePhase.GAME_IS_RUNNING;
@@ -49,11 +48,10 @@ class JoinGameServiceTest {
     @Test
     @DisplayName("should throw an exception when the requested game has no free capacity")
     void joinGame_noFreeCapacity_exception() {
-        var gameWithNoCapacity = new Game(
-                null,
-                new Team(null, createEmptyPlayer(), createEmptyPlayer(), 0),
-                new Team(null, createEmptyPlayer(), createEmptyPlayer(), 0),
-                GAME_IS_RUNNING);
+        var gameWithNoCapacity = new Game.Builder(null, GAME_IS_RUNNING)
+                .firstTeam(new Team(null, createEmptyPlayer(), createEmptyPlayer(), 0))
+                .secondTeam(new Team(null, createEmptyPlayer(), createEmptyPlayer(), 0))
+                .build();
         when(findGameByIdPort.findGameById(any())).thenReturn(gameWithNoCapacity);
 
         assertThrows(IllegalStateException.class, () -> joinGameService.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString()));
@@ -62,16 +60,14 @@ class JoinGameServiceTest {
     @Test
     @DisplayName("should create a new team when the team is null")
     void joinGame_teamIsNull_createTeam() {
-        var gameWithNoCapacity = new Game(
-                null,
-                null,
-                new Team(null, createEmptyPlayer(), createEmptyPlayer(), 0),
-                GAME_IS_RUNNING);
+        var gameWithNoCapacity = new Game.Builder(null, GAME_IS_RUNNING)
+                .secondTeam(new Team(null, createEmptyPlayer(), createEmptyPlayer(), 0))
+                .build();
         var playerId = UUID.randomUUID();
-        var player = new Player(playerId, null, List.of());
+        var player = new Player.Builder(playerId).build();
         when(findGameByIdPort.findGameById(any())).thenReturn(gameWithNoCapacity);
         when(createPlayerPort.createPlayer(any())).thenReturn(player);
-        when(saveGamePort.saveGame(any())).thenReturn(new Game(UUID.randomUUID(), null, null,  GAME_IS_RUNNING));
+        when(saveGamePort.saveGame(any())).thenReturn(new Game.Builder(UUID.randomUUID(), null).build());
 
         var result = joinGameService.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString());
 
@@ -81,16 +77,15 @@ class JoinGameServiceTest {
     @Test
     @DisplayName("should save the game when the teams have capacity")
     void joinGame_teamHasCapacity_saveGame() {
-        var gameWithNoCapacity = new Game(
-                null,
-                new Team(null, null, createEmptyPlayer(), 0),
-                new Team(null, createEmptyPlayer(), createEmptyPlayer(), 0),
-                GAME_IS_RUNNING);
+        var gameWithNoCapacity = new Game.Builder(null, GAME_IS_RUNNING)
+                .firstTeam(new Team(null, null, createEmptyPlayer(), 0))
+                .secondTeam(new Team(null, createEmptyPlayer(), createEmptyPlayer(), 0))
+                .build();
         var playerId = UUID.randomUUID();
-        var player = new Player(playerId, null, List.of());
+        var player = new Player.Builder(playerId).build();
         when(findGameByIdPort.findGameById(any())).thenReturn(gameWithNoCapacity);
         when(createPlayerPort.createPlayer(any())).thenReturn(player);
-        when(saveGamePort.saveGame(any())).thenReturn(new Game(UUID.randomUUID(), null, null,  GAME_IS_RUNNING));
+        when(saveGamePort.saveGame(any())).thenReturn(new Game.Builder(UUID.randomUUID(), null).build());
 
         var result = joinGameService.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString());
 
@@ -99,6 +94,6 @@ class JoinGameServiceTest {
     }
 
     private static Player createEmptyPlayer() {
-        return new Player(null, null, List.of());
+        return new Player.Builder(null).build();
     }
 }

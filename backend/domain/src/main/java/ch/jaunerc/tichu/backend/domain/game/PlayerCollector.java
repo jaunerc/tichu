@@ -26,4 +26,13 @@ public final class PlayerCollector {
         }
         return Stream.of(team.firstPlayer(), team.secondPlayer());
     }
+
+    public static List<Player> listOfPlayersOrderedBySeatPosition(Game game) {
+        return List.of(
+                game.firstTeam().firstPlayer(),
+                game.firstTeam().secondPlayer(),
+                game.secondTeam().firstPlayer(),
+                game.secondTeam().secondPlayer()
+        );
+    }
 }

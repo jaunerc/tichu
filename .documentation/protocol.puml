@@ -1,0 +1,21 @@
+@startuml
+participant Client as c
+participant Server as s
+
+group dealing cards
+    c -> s: request cards (private)
+    s -> c: response with 8 cards (private)
+    c -> s: call grand tichu?
+    c -> s: request cards (private)
+    s -> c: response with all cards (private)
+    c -> s: call small tichu?
+    note over c,s: broadcast game state to all players
+end
+
+group pushing cards
+    loop 3 times
+        c -> s: push card to player (private)
+    end
+    s -> c: receive cards from the other players (private)
+end
+@enduml

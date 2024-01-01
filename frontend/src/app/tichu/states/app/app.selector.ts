@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store'
 import { AppState } from './app.state'
+import { valueIfPresentOrError } from '../type-util'
 
 export const getAppState = createFeatureSelector<AppState>('app')
 
@@ -10,15 +11,20 @@ export const getUsername = createSelector(
 
 export const getUserId = createSelector(
   getAppState,
-  (state) => state.userId
+  (state) => valueIfPresentOrError(state.userId)
 )
 
 export const getGameId = createSelector(
   getAppState,
-  (state) => state.gameId
+  (state) => valueIfPresentOrError(state.gameId)
 )
 
 export const getPlayerId = createSelector(
   getAppState,
-  (state) => state.playerId
+  (state) => valueIfPresentOrError(state.playerId)
+)
+
+export const getGameState = createSelector(
+  getAppState,
+  (state) => state.gameState
 )

@@ -15,16 +15,31 @@ public class PlayerEntityMapper {
             playerEntity.setId(player.uuid());
         }
 
+        if (player.pushedCards() != null) {
+            playerEntity.setPushedCards(player.pushedCards());
+        }
+
+        if (player.receivedCards() != null) {
+            playerEntity.setReceivedCards(player.receivedCards());
+        }
+
+        playerEntity.setFirstEightCardsReceived(player.firstEightCardsReceived());
+        playerEntity.setGrandTichuCalled(player.grandTichuCalled());
+        playerEntity.setSmallTichuCalled(player.smallTichuCalled());
         playerEntity.setUser(UserEntityMapper.map(player.user()));
         playerEntity.setCards(player.cards());
         return playerEntity;
     }
 
     public static Player toDomain(PlayerEntity playerEntity) {
-        return new Player(
-                playerEntity.getId(),
-                UserEntityMapper.toDomain(playerEntity.getUser()),
-                playerEntity.getCards()
-        );
+        return new Player.Builder(playerEntity.getId())
+                .user(UserEntityMapper.toDomain(playerEntity.getUser()))
+                .firstEightCardsReceived(playerEntity.isFirstEightCardsReceived())
+                .grandTichuCalled(playerEntity.isGrandTichuCalled())
+                .smallTichuCalled(playerEntity.isSmallTichuCalled())
+                .cards(playerEntity.getCards())
+                .pushedCards(playerEntity.getPushedCards())
+                .receivedCards(playerEntity.getReceivedCards())
+                .build();
     }
 }

@@ -1,8 +1,8 @@
 package ch.jaunerc.tichu.backend.web.games;
 
-import ch.jaunerc.tichu.backend.domain.game.port.CreateGameUseCase;
-import ch.jaunerc.tichu.backend.domain.game.port.FindAllGamesUseCase;
-import ch.jaunerc.tichu.backend.domain.game.port.JoinGameUseCase;
+import ch.jaunerc.tichu.backend.domain.game.usecase.CreateGameUseCase;
+import ch.jaunerc.tichu.backend.domain.game.usecase.FindAllGamesUseCase;
+import ch.jaunerc.tichu.backend.domain.game.usecase.JoinGameUseCase;
 import ch.jaunerc.tichu.backend.web.api.controller.GamesApiDelegate;
 import ch.jaunerc.tichu.backend.web.api.model.GameDto;
 import ch.jaunerc.tichu.backend.web.api.model.GamesDto;

@@ -11,6 +11,8 @@ import { initialState, reducers } from './reducers'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { StompService } from './tichu/stomp/stomp.service'
 import { StompFactory } from './tichu/stomp/stomp.factory'
+import { EffectsModule } from '@ngrx/effects'
+import * as appEffects from './tichu/states/app/app.effects'
 
 export function apiConfiguration (): Configuration {
   const params: ConfigurationParameters = {
@@ -34,7 +36,8 @@ export function apiConfiguration (): Configuration {
     }),
     StoreDevtoolsModule.instrument({
       name: 'NgRx Tichu DevTools'
-    })
+    }),
+    EffectsModule.forRoot([appEffects])
   ],
   providers: [
     {
