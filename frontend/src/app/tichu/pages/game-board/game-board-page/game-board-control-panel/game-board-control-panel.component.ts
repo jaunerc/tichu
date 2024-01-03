@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core'
-import { StompService } from '../../../../stomp/stomp.service'
+import { GameBoardWebsocketService } from '../service/game-board-websocket.service'
 
 @Component({
   selector: 'tichu-game-board-control-panel',
@@ -11,7 +11,7 @@ export class GameBoardControlPanelComponent {
   @Input() playerId!: string
 
   constructor (
-    private readonly stompService: StompService
+    private readonly websocketService: GameBoardWebsocketService
   ) {
   }
 
@@ -24,9 +24,6 @@ export class GameBoardControlPanelComponent {
   }
 
   private sendGrandTichu (callGrandTichu: boolean = false): void {
-    this.stompService.publish({
-      destination: '/app/' + this.gameId + '/grand-tichu/' + this.playerId,
-      body: JSON.stringify({ callGrandTichu })
-    })
+    this.websocketService.publishGrandTichu(this.gameId, this.playerId, callGrandTichu)
   }
 }

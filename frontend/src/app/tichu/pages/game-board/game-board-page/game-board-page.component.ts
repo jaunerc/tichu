@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store'
-import { StompService } from '../../../stomp/stomp.service'
 import { combineLatest, first, map, mergeMap, Observable, Subject, withLatestFrom } from 'rxjs'
 import { getGameId, getGameState, getPlayerId } from '../../../states/app/app.selector'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { DealCardsResponseMessage } from '../../../websocket-api/websocket.api'
 import { refreshGameState } from '../../../states/app/app.actions'
+import { GameBoardWebsocketService } from './service/game-board-websocket.service'
 
 export interface ControlPanelIds {
   gameId: string
@@ -29,7 +28,7 @@ export class GameBoardPageComponent implements OnInit {
 
   constructor (
     private readonly store: Store,
-    private readonly stompService: StompService
+    private readonly websocketService: GameBoardWebsocketService
   ) {
   }
 
@@ -58,9 +57,7 @@ export class GameBoardPageComponent implements OnInit {
         first(),
         untilDestroyed(this))
       .subscribe(([gameId, playerId]) => {
-        this.stompService.publish({
-          destination: '/app/' + gameId + '/deal-cards/' + playerId
-        })
+        this.websocketService.publishRequestCards(gameId, playerId)
       })
   }
 
@@ -70,11 +67,10 @@ export class GameBoardPageComponent implements OnInit {
         first(),
         untilDestroyed(this),
         mergeMap(([gameId, playerId]) => {
-          return this.stompService.watch('/topic/' + gameId + '/deal-cards/' + playerId)
+          return this.websocketService.watchOnDealCardsMessage(gameId, playerId)
         }))
       .subscribe(message => {
-        const dealCardsResponse: DealCardsResponseMessage = JSON.parse(message.body)
-        this.cardsSubject$.next(dealCardsResponse.cards)
+        this.cardsSubject$.next(message.cards)
       })
   }
 
