@@ -34,3 +34,11 @@ export enum GamePhaseDto {
   GAME_IS_RUNNING = 'GAME_IS_RUNNING',
   GAME_ENDED = 'GAME_ENDED'
 }
+
+export interface PlayerPrivateMessage {
+  privateState: PlayerPrivateDto
+}
+
+export interface PlayerPrivateDto {
+  cards: string[]
+}
