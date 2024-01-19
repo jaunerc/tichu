@@ -36,7 +36,7 @@ export enum GamePhaseDto {
 }
 
 export interface PlayerPrivateMessage {
-  privateState: PlayerPrivateDto
+  playerPrivateState: PlayerPrivateDto
 }
 
 export interface PlayerPrivateDto {

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store'
-import { combineLatest, first, map, mergeMap, Observable, Subject, withLatestFrom } from 'rxjs'
-import { getGameId, getGameState, getPlayerId } from '../../../states/app/app.selector'
+import { combineLatest, first, map, Observable, Subject, withLatestFrom } from 'rxjs'
+import { getGameId, getGameState, getPlayerId, getPlayerPrivateState } from '../../../states/app/app.selector'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { refreshGameState } from '../../../states/app/app.actions'
+import { refreshGameState, refreshPlayerPrivateState } from '../../../states/app/app.actions'
 import { GameBoardWebsocketService } from './service/game-board-websocket.service'
 
 export interface ControlPanelIds {
@@ -36,11 +36,12 @@ export class GameBoardPageComponent implements OnInit {
     this.gameId$ = this.store.select(getGameId)
     this.playerId$ = this.store.select(getPlayerId)
 
-    this.onDealCardsResponse()
+    this.store.dispatch(refreshGameState())
+    this.store.dispatch(refreshPlayerPrivateState())
+
+    this.onPlayerPrivateStateResponse()
     this.onGameStateResponse()
     this.requestDealCards()
-
-    this.store.dispatch(refreshGameState())
   }
 
   controlPanelIds$ (): Observable<ControlPanelIds> {
@@ -61,16 +62,18 @@ export class GameBoardPageComponent implements OnInit {
       })
   }
 
-  private onDealCardsResponse (): void {
-    combineLatest([this.gameId$, this.playerId$])
+  private onPlayerPrivateStateResponse (): void {
+    this.store.select(getPlayerPrivateState)
       .pipe(
-        first(),
         untilDestroyed(this),
-        mergeMap(([gameId, playerId]) => {
-          return this.websocketService.watchOnDealCardsMessage(gameId, playerId)
+        map((playerPrivateState) => {
+          if (playerPrivateState != null) {
+            return playerPrivateState.cards
+          }
+          return []
         }))
-      .subscribe(message => {
-        this.cardsSubject$.next(message.cards)
+      .subscribe(cards => {
+        this.cardsSubject$.next(cards)
       })
   }
 
