@@ -8,6 +8,7 @@ import ch.jaunerc.tichu.backend.domain.game.usecase.ReadyPlayerUseCase;
 import ch.jaunerc.tichu.backend.websocket.message.*;
 import ch.jaunerc.tichu.backend.websocket.message.game.GameDtoConverter;
 import ch.jaunerc.tichu.backend.websocket.message.game.PlayerPrivateDtoConverter;
+import ch.jaunerc.tichu.backend.websocket.send.MessageSenderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -28,6 +29,7 @@ public class WebsocketController {
     private final PushCardUseCase pushCardUseCase;
 
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final MessageSenderService messageSenderService;
 
     @MessageMapping("/player-ready-{gameId}")
     @SendTo("/topic/player-ready-{gameId}")
@@ -59,10 +61,8 @@ public class WebsocketController {
                 grandTichuPlayerMessage.callGrandTichu()
         );
 
-        var cards = dealCardsUseCase.dealCards(UUID.fromString(gameId), UUID.fromString(playerId));
-        var playerPrivateDto = PlayerPrivateDtoConverter.convert(cards);
-        simpMessagingTemplate.convertAndSend("/topic/" + gameId + "/state/" + playerId,
-                new PlayerPrivateStateServerMessage(playerPrivateDto));
+        messageSenderService.sendPlayerPrivateStateMessage(gameId, playerId,
+                PlayerPrivateDtoConverter.convert(dealCardsUseCase.dealCards(UUID.fromString(gameId), UUID.fromString(playerId))));
 
         return new GameStateServerMessage(GameDtoConverter.convert(updatedGame));
     }
