@@ -17,7 +17,7 @@ public class MessageSenderService {
             String playerId,
             PlayerPrivateDto playerPrivateDto) {
         simpMessagingTemplate.convertAndSend(
-                "/topic/" + gameId + "/state/" + playerId,
+                STR."/topic/\{gameId}/state/\{playerId}",
                 new PlayerPrivateStateServerMessage(playerPrivateDto));
     }
 }
