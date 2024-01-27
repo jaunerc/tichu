@@ -1,5 +1,5 @@
-import { GamePhaseState, GameState, PlayerState, TeamIdentifierState } from './app.state'
-import { GameDto, GamePhaseDto, PlayerDto, TeamIdentifierDto } from '../../websocket-api/websocket.api'
+import { GamePhaseState, GameState, PlayerPrivateState, PlayerState, TeamIdentifierState } from './app.state'
+import { GameDto, GamePhaseDto, PlayerDto, PlayerPrivateDto, TeamIdentifierDto } from '../../websocket-api/websocket.api'
 
 export function mapToGameState (dto: GameDto): GameState {
   return {
@@ -42,5 +42,11 @@ function mapToTeamIdentifier (dto: TeamIdentifierDto): TeamIdentifierState {
       return TeamIdentifierState.FIRST_TEAM
     case TeamIdentifierDto.SECOND_TEAM:
       return TeamIdentifierState.SECOND_TEAM
+  }
+}
+
+export function mapToPlayerPrivateState (dto: PlayerPrivateDto): PlayerPrivateState {
+  return {
+    cards: dto.cards
   }
 }

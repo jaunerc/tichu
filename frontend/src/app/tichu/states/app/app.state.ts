@@ -4,6 +4,7 @@ export interface AppState {
   gameId: string | undefined
   playerId: string | undefined
   gameState: GameState | undefined
+  playerPrivateState: PlayerPrivateState | undefined
 }
 
 export interface GameState {
@@ -29,4 +30,8 @@ export enum GamePhaseState {
 export enum TeamIdentifierState {
   FIRST_TEAM = 'FIRST_TEAM',
   SECOND_TEAM = 'SECOND_TEAM'
+}
+
+export interface PlayerPrivateState {
+  cards: string[]
 }

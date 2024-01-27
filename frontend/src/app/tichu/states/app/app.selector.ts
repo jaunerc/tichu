@@ -28,3 +28,8 @@ export const getGameState = createSelector(
   getAppState,
   (state) => state.gameState
 )
+
+export const getPlayerPrivateState = createSelector(
+  getAppState,
+  (state) => state.playerPrivateState
+)

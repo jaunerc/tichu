@@ -7,6 +7,8 @@ import ch.jaunerc.tichu.backend.domain.game.usecase.PushCardUseCase;
 import ch.jaunerc.tichu.backend.domain.game.usecase.ReadyPlayerUseCase;
 import ch.jaunerc.tichu.backend.websocket.message.*;
 import ch.jaunerc.tichu.backend.websocket.message.game.GameDtoConverter;
+import ch.jaunerc.tichu.backend.websocket.message.game.PlayerPrivateDtoConverter;
+import ch.jaunerc.tichu.backend.websocket.send.MessageSenderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -27,6 +29,7 @@ public class WebsocketController {
     private final PushCardUseCase pushCardUseCase;
 
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final MessageSenderService messageSenderService;
 
     @MessageMapping("/player-ready-{gameId}")
     @SendTo("/topic/player-ready-{gameId}")
@@ -35,12 +38,16 @@ public class WebsocketController {
     }
 
     @MessageMapping("/{gameId}/deal-cards/{playerId}")
-    @SendTo("/topic/{gameId}/deal-cards/{playerId}")
-    public DealCardsServerMessage dealCardsToUser(@DestinationVariable("gameId") String gameId,
+    @SendTo("/topic/{gameId}/state/{playerId}")
+    public PlayerPrivateStateServerMessage dealCardsToUser(@DestinationVariable("gameId") String gameId,
                                                   @DestinationVariable("playerId") String playerId) {
-        return new DealCardsServerMessage(dealCardsUseCase.dealCards(
+        var cards = dealCardsUseCase.dealCards(
                 UUID.fromString(gameId),
-                UUID.fromString(playerId)));
+                UUID.fromString(playerId));
+
+        var playerPrivateDto = PlayerPrivateDtoConverter.convert(cards);
+
+        return new PlayerPrivateStateServerMessage(playerPrivateDto);
     }
 
     @MessageMapping("/{gameId}/grand-tichu/{playerId}")
@@ -54,9 +61,8 @@ public class WebsocketController {
                 grandTichuPlayerMessage.callGrandTichu()
         );
 
-        var cards = dealCardsUseCase.dealCards(UUID.fromString(gameId), UUID.fromString(playerId));
-        simpMessagingTemplate.convertAndSend("/topic/" + gameId + "/deal-cards/" + playerId,
-                new DealCardsServerMessage(cards));
+        messageSenderService.sendPlayerPrivateStateMessage(gameId, playerId,
+                PlayerPrivateDtoConverter.convert(dealCardsUseCase.dealCards(UUID.fromString(gameId), UUID.fromString(playerId))));
 
         return new GameStateServerMessage(GameDtoConverter.convert(updatedGame));
     }

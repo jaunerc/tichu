@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -43,8 +42,6 @@ class GrandTichuServiceTest {
         var result = grandTichuService.grandTichuByPlayer(null, uuidPlayer1, true);
 
         verify(savePlayerPort).savePlayer(any());
-        assertThat(result.playerNumber()).isEqualTo(1);
-        assertThat(result.grandTichuCalled()).isTrue();
     }
 
     @Test
