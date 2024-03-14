@@ -2,12 +2,22 @@
   <h1>Game</h1>
   <p *ngIf="cards$ | async as cards">{{ cards }}</p>
 
+  <ng-container *ngIf="gameState$ | async as gameState">
+    <div class="game-board">
+      <div class="player">Player {{ gameState.players[0].name }} from team {{ gameState.players[0].teamIdentifier }}</div>
+      <div class="second-row">
+        <div class="player">Player {{ gameState.players[1].name }} from team {{ gameState.players[1].teamIdentifier }}</div>
+        <div class="board">Board</div>
+        <div class="player">Player {{ gameState.players[2].name }} from team {{ gameState.players[2].teamIdentifier }}</div>
+      </div>
+      <div class="player">Player {{ gameState.players[3].name }} from team {{ gameState.players[3].teamIdentifier }}</div>
+    </div>
+  </ng-container>
+
   <ng-container *ngIf="controlPanelIds$() | async as controlPanelIds">
     <tichu-game-board-control-panel
       [gameId]="controlPanelIds.gameId"
       [playerId]="controlPanelIds.playerId">
     </tichu-game-board-control-panel>
   </ng-container>
-
-  <p>These players called a big Tichu: {{ grandTichuCalledPlayers }}</p>
 </tichu-app-layout>

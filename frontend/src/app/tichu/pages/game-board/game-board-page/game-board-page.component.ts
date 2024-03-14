@@ -5,6 +5,7 @@ import { getGameId, getGameState, getPlayerId, getPlayerPrivateState } from '../
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { refreshGameState, refreshPlayerPrivateState } from '../../../states/app/app.actions'
 import { GameBoardWebsocketService } from './service/game-board-websocket.service'
+import { GameState } from '../../../states/app/app.state'
 
 export interface ControlPanelIds {
   gameId: string
@@ -21,10 +22,11 @@ export class GameBoardPageComponent implements OnInit {
   gameId$!: Observable<string>
   private playerId$!: Observable<string>
 
+  private readonly gameStateSubject$: Subject<GameState> = new Subject<GameState>()
+  gameState$ = this.gameStateSubject$.asObservable()
+
   private readonly cardsSubject$: Subject<string[]> = new Subject<string[]>()
   cards$ = this.cardsSubject$.asObservable()
-
-  grandTichuCalledPlayers: string = ''
 
   constructor (
     private readonly store: Store,
@@ -42,14 +44,6 @@ export class GameBoardPageComponent implements OnInit {
     this.onPlayerPrivateStateResponse()
     this.onGameStateResponse()
     this.requestDealCards()
-  }
-
-  controlPanelIds$ (): Observable<ControlPanelIds> {
-    return this.gameId$.pipe(
-      withLatestFrom(this.playerId$),
-      map(([gameId, playerId]) => {
-        return { gameId, playerId }
-      }))
   }
 
   private requestDealCards (): void {
@@ -80,16 +74,20 @@ export class GameBoardPageComponent implements OnInit {
   private onGameStateResponse (): void {
     this.store.select(getGameState)
       .pipe(
-        untilDestroyed(this),
-        map(gameState => {
-          if (gameState != null) {
-            return gameState.players?.map(player => player.grandTichuCalled)
-          }
-          return []
-        })
+        untilDestroyed(this)
       )
-      .subscribe(grandTichus => {
-        this.grandTichuCalledPlayers = `${grandTichus.filter(grandTichu => grandTichu).length}`
+      .subscribe(gameState => {
+        if (gameState != null) {
+          this.gameStateSubject$.next(gameState)
+        }
       })
+  }
+
+  controlPanelIds$ (): Observable<ControlPanelIds> {
+    return this.gameId$.pipe(
+      withLatestFrom(this.playerId$),
+      map(([gameId, playerId]) => {
+        return { gameId, playerId }
+      }))
   }
 }

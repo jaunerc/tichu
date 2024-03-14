@@ -30,6 +30,7 @@ function mapToGamePhase (dto: GamePhaseDto): GamePhaseState {
 
 function mapToPlayer (dto: PlayerDto): PlayerState {
   return {
+    name: dto.name,
     grandTichuCalled: dto.grandTichuCalled,
     smallTichuCalled: dto.smallTichuCalled,
     teamIdentifier: mapToTeamIdentifier(dto.teamIdentifierDto)

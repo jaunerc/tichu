@@ -16,6 +16,7 @@ export interface GameDto {
 }
 
 export interface PlayerDto {
+  name: string
   grandTichuCalled: boolean
   smallTichuCalled: boolean
   teamIdentifierDto: TeamIdentifierDto

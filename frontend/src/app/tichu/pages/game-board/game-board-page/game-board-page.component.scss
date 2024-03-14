@@ -3,3 +3,18 @@
   display: flex;
   column-gap: 20px;
 }
+
+.game-board {
+  display: flex;
+  flex-direction: column;
+}
+
+.second-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.board {
+  flex-grow: 2;
+}
