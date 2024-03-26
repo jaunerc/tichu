@@ -1,5 +1,13 @@
 import { Action, ActionCreator, createReducer, on, ReducerTypes } from '@ngrx/store'
-import { saveGameId, saveGameState, savePlayerId, savePlayerPrivateState, saveUserId, saveUsername } from './app.actions'
+import {
+  saveGameId,
+  saveGameState,
+  savePlayerId,
+  savePlayerPrivateState,
+  savePlayerSeatId,
+  saveUserId,
+  saveUsername
+} from './app.actions'
 import { AppState } from './app.state'
 
 export const initialAppState: AppState = {
@@ -7,6 +15,7 @@ export const initialAppState: AppState = {
   userId: undefined,
   gameId: undefined,
   playerId: undefined,
+  playerSeatId: undefined,
   gameState: undefined,
   playerPrivateState: undefined
 }
@@ -27,6 +36,10 @@ export const generalAppReducers: Array<ReducerTypes<AppState, ActionCreator[]>> 
   on(savePlayerId, (appState, payload) => ({
     ...appState,
     playerId: payload.playerId
+  })),
+  on(savePlayerSeatId, (appState, payload) => ({
+    ...appState,
+    playerSeatId: payload.playerSeatId
   })),
   on(saveGameState, (appState, payload) => ({
     ...appState,

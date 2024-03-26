@@ -3,6 +3,7 @@ export interface AppState {
   userId: string | undefined
   gameId: string | undefined
   playerId: string | undefined
+  playerSeatId: string | undefined
   gameState: GameState | undefined
   playerPrivateState: PlayerPrivateState | undefined
 }

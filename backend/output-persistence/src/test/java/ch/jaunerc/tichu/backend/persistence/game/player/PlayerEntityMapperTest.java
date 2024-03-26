@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.UUID;
 
+import static ch.jaunerc.tichu.backend.domain.game.model.PlayerSeatId.FIRST;
 import static ch.jaunerc.tichu.backend.domain.game.model.card.Card.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -50,11 +51,12 @@ class PlayerEntityMapperTest {
         var receivedCards = List.of(KING_STARS, TWO_SWORDS);
         var user = new UserEntity();
         user.setId(UUID.randomUUID());
-        var playerEntity = new PlayerEntity(uuid, user, false, false, false, cards, pushedCards, receivedCards);
+        var playerEntity = new PlayerEntity(uuid, user, FIRST, false, false, false, cards, pushedCards, receivedCards);
 
         var result = PlayerEntityMapper.toDomain(playerEntity);
 
         assertThat(result.uuid()).isEqualTo(uuid);
+        assertThat(result.playerSeatId()).isEqualTo(FIRST);
         assertThat(result.cards()).containsExactly(JACK_JADE, JACK_SWORDS);
         assertThat(result.pushedCards()).containsExactly(JACK_SWORDS, NINE_PAGODAS);
         assertThat(result.receivedCards()).containsExactly(KING_STARS, TWO_SWORDS);

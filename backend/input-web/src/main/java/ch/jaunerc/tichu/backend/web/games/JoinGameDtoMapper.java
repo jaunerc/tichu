@@ -11,6 +11,7 @@ public class JoinGameDtoMapper {
     static JoinGameDto map(JoinGame joinGame) {
         return new JoinGameDto(
                 joinGame.gameId().toString(),
-                joinGame.playerId().toString());
+                joinGame.playerId().toString(),
+                JoinGameDto.PlayerSeatIdEnum.fromValue(joinGame.playerSeatId().toString()));
     }
 }

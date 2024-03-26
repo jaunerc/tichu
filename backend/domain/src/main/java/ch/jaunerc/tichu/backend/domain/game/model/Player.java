@@ -9,6 +9,7 @@ import java.util.UUID;
 public record Player(
         UUID uuid,
         User user,
+        PlayerSeatId playerSeatId,
         boolean grandTichuCalled,
         boolean smallTichuCalled,
         boolean firstEightCardsReceived,
@@ -20,6 +21,7 @@ public record Player(
     public final static class Builder {
         private final UUID playerId;
         private User user;
+        private PlayerSeatId playerSeatId;
         private boolean grandTichuCalled;
         private boolean smallTichuCalled;
         private boolean firstEightCardsReceived;
@@ -44,6 +46,11 @@ public record Player(
 
         public Builder user(User user) {
             this.user = user;
+            return this;
+        }
+
+        public Builder playerSeatId(PlayerSeatId playerSeatId) {
+            this.playerSeatId = playerSeatId;
             return this;
         }
 
@@ -81,6 +88,7 @@ public record Player(
             return new Player(
                     this.playerId,
                     this.user,
+                    this.playerSeatId,
                     this.grandTichuCalled,
                     this.smallTichuCalled,
                     this.firstEightCardsReceived,

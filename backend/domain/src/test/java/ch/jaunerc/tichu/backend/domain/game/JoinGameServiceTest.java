@@ -54,7 +54,7 @@ class JoinGameServiceTest {
                 .build();
         when(findGameByIdPort.findGameById(any())).thenReturn(gameWithNoCapacity);
 
-        assertThrows(IllegalStateException.class, () -> joinGameService.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString()));
+        assertThrows(IllegalArgumentException.class, () -> joinGameService.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString()));
     }
 
     @Test
@@ -66,7 +66,7 @@ class JoinGameServiceTest {
         var playerId = UUID.randomUUID();
         var player = new Player.Builder(playerId).build();
         when(findGameByIdPort.findGameById(any())).thenReturn(gameWithNoCapacity);
-        when(createPlayerPort.createPlayer(any())).thenReturn(player);
+        when(createPlayerPort.createPlayer(any(), any())).thenReturn(player);
         when(saveGamePort.saveGame(any())).thenReturn(new Game.Builder(UUID.randomUUID(), null).build());
 
         var result = joinGameService.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString());
@@ -84,7 +84,7 @@ class JoinGameServiceTest {
         var playerId = UUID.randomUUID();
         var player = new Player.Builder(playerId).build();
         when(findGameByIdPort.findGameById(any())).thenReturn(gameWithNoCapacity);
-        when(createPlayerPort.createPlayer(any())).thenReturn(player);
+        when(createPlayerPort.createPlayer(any(), any())).thenReturn(player);
         when(saveGamePort.saveGame(any())).thenReturn(new Game.Builder(UUID.randomUUID(), null).build());
 
         var result = joinGameService.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString());

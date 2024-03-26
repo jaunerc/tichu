@@ -20,6 +20,11 @@ export const savePlayerId = createAction(
   props<{ playerId: string }>()
 )
 
+export const savePlayerSeatId = createAction(
+  '[App] save player seat id',
+  props<{ playerSeatId: string }>()
+)
+
 export const refreshGameState = createAction(
   '[App] refresh game state'
 )

@@ -4,7 +4,7 @@ import { first, Observable, Subject } from 'rxjs'
 import { getUserId, getUsername } from '../../../states/app/app.selector'
 import { Games, GamesService } from '../../../api'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
-import { saveGameId, savePlayerId } from '../../../states/app/app.actions'
+import { saveGameId, savePlayerId, savePlayerSeatId } from '../../../states/app/app.actions'
 import { Router } from '@angular/router'
 
 export interface GameElement {
@@ -69,6 +69,7 @@ export class LobbyPageComponent implements OnInit {
           ).forEach(joinGame => {
             this.store.dispatch(saveGameId({ gameId: selectedGameId }))
             this.store.dispatch(savePlayerId(({ playerId: joinGame.playerId })))
+            this.store.dispatch(savePlayerSeatId(({ playerSeatId: joinGame.playerSeatId })))
             void this.router.navigate(['game-loader'])
           })
         }
