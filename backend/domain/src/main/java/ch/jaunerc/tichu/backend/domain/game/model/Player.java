@@ -39,6 +39,7 @@ public record Player(
                     .grandTichuCalled(player.grandTichuCalled)
                     .smallTichuCalled(player.smallTichuCalled)
                     .firstEightCardsReceived(player.firstEightCardsReceived)
+                    .playerSeatId(player.playerSeatId)
                     .pushedCards(player.pushedCards)
                     .receivedCards(player.receivedCards)
                     .cards(player.cards);

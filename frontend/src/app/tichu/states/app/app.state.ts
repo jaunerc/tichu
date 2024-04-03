@@ -17,6 +17,7 @@ export interface PlayerState {
   name: string
   grandTichuCalled: boolean
   smallTichuCalled: boolean
+  playerSeatId: string
   teamIdentifier: TeamIdentifierState
 }
 

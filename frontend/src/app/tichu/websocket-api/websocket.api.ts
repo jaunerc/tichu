@@ -19,6 +19,7 @@ export interface PlayerDto {
   name: string
   grandTichuCalled: boolean
   smallTichuCalled: boolean
+  playerSeatId: string
   teamIdentifierDto: TeamIdentifierDto
 }
 

@@ -33,6 +33,7 @@ function mapToPlayer (dto: PlayerDto): PlayerState {
     name: dto.name,
     grandTichuCalled: dto.grandTichuCalled,
     smallTichuCalled: dto.smallTichuCalled,
+    playerSeatId: dto.playerSeatId,
     teamIdentifier: mapToTeamIdentifier(dto.teamIdentifierDto)
   }
 }

@@ -12,6 +12,7 @@ public final class PlayerDtoConverter {
                 player.user().name(),
                 player.grandTichuCalled(),
                 player.smallTichuCalled(),
+                player.playerSeatId(),
                 teamIdentifierDto
         );
     }
