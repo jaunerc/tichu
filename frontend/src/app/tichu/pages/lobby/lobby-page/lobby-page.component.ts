@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store'
 import { first, Observable, Subject } from 'rxjs'
 import { getUserId, getUsername } from '../../../states/app/app.selector'
-import { Games, GamesService, JoinGame } from '../../../api'
+import { Games, GamesService } from '../../../api'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { saveGameId, savePlayerId, savePlayerSeatId } from '../../../states/app/app.actions'
 import { Router } from '@angular/router'
-import { PlayerSeatId } from '../../../states/app/app.state'
-import PlayerSeatIdEnum = JoinGame.PlayerSeatIdEnum
 
 export interface GameElement {
   id: string
@@ -71,24 +69,11 @@ export class LobbyPageComponent implements OnInit {
           ).forEach(joinGame => {
             this.store.dispatch(saveGameId({ gameId: selectedGameId }))
             this.store.dispatch(savePlayerId(({ playerId: joinGame.playerId })))
-            this.store.dispatch(savePlayerSeatId(({ playerSeatId: this.mapToPlayerSeatId(joinGame.playerSeatId) })))
+            this.store.dispatch(savePlayerSeatId(({ playerSeatId: joinGame.playerSeatId })))
             void this.router.navigate(['game-loader'])
           })
         }
       })
-  }
-
-  private mapToPlayerSeatId (playerSeatIdEnum: PlayerSeatIdEnum): PlayerSeatId {
-    switch (playerSeatIdEnum) {
-      case 'FIRST':
-        return PlayerSeatId.FIRST
-      case 'SECOND':
-        return PlayerSeatId.SECOND
-      case 'THIRD':
-        return PlayerSeatId.THIRD
-      case 'FOURTH':
-        return PlayerSeatId.FOURTH
-    }
   }
 
   private updateGames (): void {

@@ -50,7 +50,7 @@ export class GameBoardPlayersViewComponent {
   }
 
   private sortByPlayerSeatId (): PlayerState[] {
-    const seatOrder = [PlayerSeatId.FIRST, PlayerSeatId.SECOND, PlayerSeatId.THIRD, PlayerSeatId.FOURTH]
+    const seatOrder: PlayerSeatId[] = ['FIRST', 'SECOND', 'THIRD', 'FOURTH']
     return [...this.players].sort((p1, p2) => seatOrder.indexOf(p1.playerSeatId) - seatOrder.indexOf(p2.playerSeatId))
   }
 }

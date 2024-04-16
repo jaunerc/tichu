@@ -21,12 +21,7 @@ export interface PlayerState {
   teamIdentifier: TeamIdentifierState
 }
 
-export enum PlayerSeatId {
-  FIRST = 'FIRST',
-  SECOND = 'SECOND',
-  THIRD = 'THIRD',
-  FOURTH = 'FOURTH'
-}
+export type PlayerSeatId = 'FIRST' | 'SECOND' | 'THIRD' | 'FOURTH'
 
 export enum GamePhaseState {
   PLAYERS_JOINING = 'PLAYERS_JOINING',
