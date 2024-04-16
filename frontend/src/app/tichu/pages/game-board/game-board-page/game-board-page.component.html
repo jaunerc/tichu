@@ -2,16 +2,13 @@
   <h1>Game</h1>
   <p *ngIf="cards$ | async as cards">{{ cards }}</p>
 
-  <ng-container *ngIf="gameState$ | async as gameState">
-    <div class="game-board">
-      <div class="player">Player {{ gameState.players[0].name }} from team {{ gameState.players[0].teamIdentifier }}</div>
-      <div class="second-row">
-        <div class="player">Player {{ gameState.players[1].name }} from team {{ gameState.players[1].teamIdentifier }}</div>
-        <div class="board">Board</div>
-        <div class="player">Player {{ gameState.players[2].name }} from team {{ gameState.players[2].teamIdentifier }}</div>
-      </div>
-      <div class="player">Player {{ gameState.players[3].name }} from team {{ gameState.players[3].teamIdentifier }}</div>
-    </div>
+  <ng-container *ngIf="playerSeatId$ | async as playerSeatId">
+    <ng-container *ngIf="gameState$ | async as gameState">
+      <tichu-game-board-players-view
+        [players]="gameState.players"
+        [myPlayerSeatId]="playerSeatId">
+      </tichu-game-board-players-view>
+    </ng-container>
   </ng-container>
 
   <ng-container *ngIf="controlPanelIds$() | async as controlPanelIds">

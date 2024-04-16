@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store'
 import { combineLatest, first, map, Observable, Subject, withLatestFrom } from 'rxjs'
-import { getGameId, getGameState, getPlayerId, getPlayerPrivateState } from '../../../states/app/app.selector'
+import {
+  getGameId,
+  getGameState,
+  getPlayerId,
+  getPlayerPrivateState,
+  getPlayerSeatId
+} from '../../../states/app/app.selector'
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { refreshGameState, refreshPlayerPrivateState } from '../../../states/app/app.actions'
 import { GameBoardWebsocketService } from './service/game-board-websocket.service'
-import { GameState } from '../../../states/app/app.state'
+import { GameState, PlayerSeatId } from '../../../states/app/app.state'
 
 export interface ControlPanelIds {
   gameId: string
@@ -20,6 +26,7 @@ export interface ControlPanelIds {
 })
 export class GameBoardPageComponent implements OnInit {
   gameId$!: Observable<string>
+  playerSeatId$!: Observable<PlayerSeatId>
   private playerId$!: Observable<string>
 
   private readonly gameStateSubject$: Subject<GameState> = new Subject<GameState>()
@@ -37,6 +44,7 @@ export class GameBoardPageComponent implements OnInit {
   ngOnInit (): void {
     this.gameId$ = this.store.select(getGameId)
     this.playerId$ = this.store.select(getPlayerId)
+    this.playerSeatId$ = this.store.select(getPlayerSeatId)
 
     this.store.dispatch(refreshGameState())
     this.store.dispatch(refreshPlayerPrivateState())

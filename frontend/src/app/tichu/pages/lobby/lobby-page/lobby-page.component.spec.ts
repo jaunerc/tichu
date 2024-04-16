@@ -76,7 +76,7 @@ describe('LobbyPageComponent', () => {
   })
 
   it('should navigate to the game-loader page when successfully joining a game', () => {
-    when(gamesService.joinGame(anyString(), anyString())).thenReturn(of({ gameId: '1', playerId: '42' }))
+    when(gamesService.joinGame(anyString(), anyString())).thenReturn(of({ gameId: '1', playerId: '42', playerSeatId: 'FIRST' }))
     component.selectedGame = { id: '1' }
     component.userId$ = of('42')
 

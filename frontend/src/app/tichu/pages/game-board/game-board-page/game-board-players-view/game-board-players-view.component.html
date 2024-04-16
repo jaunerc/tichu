@@ -1,0 +1,29 @@
+<div class="game-board">
+  <div class="player">
+    <tichu-game-board-player-view
+      [playerName]="getMyPartnerPlayerState().name"
+      [seatId]="getMyPartnerPlayerState().playerSeatId">
+    </tichu-game-board-player-view>
+  </div>
+  <div class="second-row">
+    <div class="player">
+      <tichu-game-board-player-view
+        [playerName]="getLeftPlayerState().name"
+        [seatId]="getLeftPlayerState().playerSeatId">
+      </tichu-game-board-player-view>
+    </div>
+    <div class="board"> | Board | </div>
+    <div class="player">
+      <tichu-game-board-player-view
+        [playerName]="getRightPlayerState().name"
+        [seatId]="getRightPlayerState().playerSeatId">
+      </tichu-game-board-player-view>
+    </div>
+  </div>
+  <div class="player">
+    <tichu-game-board-player-view
+      [playerName]="getMyPlayerState().name"
+      [seatId]="getMyPlayerState().playerSeatId">
+    </tichu-game-board-player-view>
+  </div>
+</div>
