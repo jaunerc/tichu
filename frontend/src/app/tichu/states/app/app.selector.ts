@@ -24,6 +24,11 @@ export const getPlayerId = createSelector(
   (state) => valueIfPresentOrError(state.playerId)
 )
 
+export const getPlayerSeatId = createSelector(
+  getAppState,
+  (state) => valueIfPresentOrError(state.playerSeatId)
+)
+
 export const getGameState = createSelector(
   getAppState,
   (state) => state.gameState

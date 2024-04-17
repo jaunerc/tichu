@@ -1,6 +1,7 @@
 package ch.jaunerc.tichu.backend.persistence.game.player;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
+import ch.jaunerc.tichu.backend.domain.game.model.PlayerSeatId;
 import ch.jaunerc.tichu.backend.domain.game.port.CreatePlayerPort;
 import ch.jaunerc.tichu.backend.domain.user.model.User;
 import ch.jaunerc.tichu.backend.persistence.user.UserEntityMapper;
@@ -14,9 +15,10 @@ public class CreatePlayerPersistenceAdapter implements CreatePlayerPort {
     private final PlayerRepository playerRepository;
 
     @Override
-    public Player createPlayer(User user) {
+    public Player createPlayer(User user, PlayerSeatId playerSeatId) {
         var playerEntity = new PlayerEntity();
         playerEntity.setUser(UserEntityMapper.map(user));
+        playerEntity.setPlayerSeatId(playerSeatId);
         return PlayerEntityMapper.toDomain(playerRepository.save(playerEntity));
     }
 }

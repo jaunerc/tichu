@@ -16,14 +16,23 @@ export interface GameDto {
 }
 
 export interface PlayerDto {
+  name: string
   grandTichuCalled: boolean
   smallTichuCalled: boolean
+  playerSeatId: PlayerSeatIdDto
   teamIdentifierDto: TeamIdentifierDto
 }
 
 export enum TeamIdentifierDto {
   FIRST_TEAM = 'FIRST_TEAM',
   SECOND_TEAM = 'SECOND_TEAM'
+}
+
+export enum PlayerSeatIdDto {
+  FIRST = 'FIRST',
+  SECOND = 'SECOND',
+  THIRD = 'THIRD',
+  FOURTH = 'FOURTH'
 }
 
 export enum GamePhaseDto {

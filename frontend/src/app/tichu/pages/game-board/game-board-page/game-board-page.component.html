@@ -2,12 +2,19 @@
   <h1>Game</h1>
   <p *ngIf="cards$ | async as cards">{{ cards }}</p>
 
+  <ng-container *ngIf="playerSeatId$ | async as playerSeatId">
+    <ng-container *ngIf="gameState$ | async as gameState">
+      <tichu-game-board-players-view
+        [players]="gameState.players"
+        [myPlayerSeatId]="playerSeatId">
+      </tichu-game-board-players-view>
+    </ng-container>
+  </ng-container>
+
   <ng-container *ngIf="controlPanelIds$() | async as controlPanelIds">
     <tichu-game-board-control-panel
       [gameId]="controlPanelIds.gameId"
       [playerId]="controlPanelIds.playerId">
     </tichu-game-board-control-panel>
   </ng-container>
-
-  <p>These players called a big Tichu: {{ grandTichuCalledPlayers }}</p>
 </tichu-app-layout>

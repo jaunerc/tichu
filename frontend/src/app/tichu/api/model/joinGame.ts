@@ -14,5 +14,16 @@
 export interface JoinGame { 
     gameId: string;
     playerId: string;
+    playerSeatId: JoinGame.PlayerSeatIdEnum;
 }
+export namespace JoinGame {
+    export type PlayerSeatIdEnum = 'FIRST' | 'SECOND' | 'THIRD' | 'FOURTH';
+    export const PlayerSeatIdEnum = {
+        First: 'FIRST' as PlayerSeatIdEnum,
+        Second: 'SECOND' as PlayerSeatIdEnum,
+        Third: 'THIRD' as PlayerSeatIdEnum,
+        Fourth: 'FOURTH' as PlayerSeatIdEnum
+    };
+}
+
 

@@ -1,9 +1,6 @@
 package ch.jaunerc.tichu.backend.domain.game;
 
-import ch.jaunerc.tichu.backend.domain.game.model.Game;
-import ch.jaunerc.tichu.backend.domain.game.model.JoinGame;
-import ch.jaunerc.tichu.backend.domain.game.model.Player;
-import ch.jaunerc.tichu.backend.domain.game.model.Team;
+import ch.jaunerc.tichu.backend.domain.game.model.*;
 import ch.jaunerc.tichu.backend.domain.game.port.CreatePlayerPort;
 import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
 import ch.jaunerc.tichu.backend.domain.game.port.FindUserByIdPort;
@@ -15,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+import static ch.jaunerc.tichu.backend.domain.game.PlayerCollector.listOfPlayersBy;
 import static ch.jaunerc.tichu.backend.domain.game.TeamJoiner.joinFirstOrSecondTeam;
 
 @Service
@@ -31,12 +29,19 @@ public class JoinGameService implements JoinGameUseCase {
     public JoinGame joinGame(String gameId, String userId) {
         var game = findGameByIdPort.findGameById(UUID.fromString(gameId));
         var user = findUserByIdPort.findUserById(UUID.fromString(userId));
-        var player = createPlayerPort.createPlayer(user);
+        var player = createPlayerPort.createPlayer(user, nextPlayerSeatId(game));
 
         var gameJoined = tryToJoinTheGame(game, player);
         var persistedGame = saveGamePort.saveGame(gameJoined);
 
-        return new JoinGame(persistedGame.gameId(), player.uuid());
+        return new JoinGame(persistedGame.gameId(), player.uuid(), player.playerSeatId());
+    }
+
+    private PlayerSeatId nextPlayerSeatId(Game game) {
+        var playerCount = listOfPlayersBy(game).size();
+        return PlayerSeatId
+                .getByIndex(playerCount)
+                .orElseThrow(() -> new IllegalArgumentException("Cannot get the next player seat id for the playerCount=" + playerCount));
     }
 
     private Game tryToJoinTheGame(Game game, Player player) {

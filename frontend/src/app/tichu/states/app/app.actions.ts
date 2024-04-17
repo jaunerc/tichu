@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store'
-import { GameState, PlayerPrivateState } from './app.state'
+import { GameState, PlayerPrivateState, PlayerSeatId } from './app.state'
 
 export const saveUsername = createAction(
   '[App] save username',
@@ -18,6 +18,11 @@ export const saveGameId = createAction(
 export const savePlayerId = createAction(
   '[App] save player id',
   props<{ playerId: string }>()
+)
+
+export const savePlayerSeatId = createAction(
+  '[App] save player seat id',
+  props<{ playerSeatId: PlayerSeatId }>()
 )
 
 export const refreshGameState = createAction(

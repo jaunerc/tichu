@@ -121,6 +121,14 @@ components:
           type: string
         playerId:
           type: string
+        playerSeatId:
+          type: string
+          enum:
+            - FIRST
+            - SECOND
+            - THIRD
+            - FOURTH
       required:
         - gameId
         - playerId
+        - playerSeatId

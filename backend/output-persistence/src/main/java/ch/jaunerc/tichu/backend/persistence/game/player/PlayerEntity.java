@@ -1,6 +1,7 @@
 package ch.jaunerc.tichu.backend.persistence.game.player;
 
 
+import ch.jaunerc.tichu.backend.domain.game.model.PlayerSeatId;
 import ch.jaunerc.tichu.backend.domain.game.model.card.Card;
 import ch.jaunerc.tichu.backend.persistence.user.UserEntity;
 import jakarta.persistence.*;
@@ -25,6 +26,8 @@ public class PlayerEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private UserEntity user;
+
+    private PlayerSeatId playerSeatId;
 
     private boolean grandTichuCalled;
 

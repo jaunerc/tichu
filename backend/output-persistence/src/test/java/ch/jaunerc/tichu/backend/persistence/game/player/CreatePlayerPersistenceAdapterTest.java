@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.UUID;
 
+import static ch.jaunerc.tichu.backend.domain.game.model.PlayerSeatId.FIRST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -30,7 +31,7 @@ class CreatePlayerPersistenceAdapterTest {
         var playerEntity = createPlayerEntity(userId);
         when(playerRepository.save(any())).thenReturn(playerEntity);
 
-        var result = createPlayerPersistenceAdapter.createPlayer(user);
+        var result = createPlayerPersistenceAdapter.createPlayer(user, FIRST);
 
         assertThat(result.user().id()).isEqualTo(userId);
     }

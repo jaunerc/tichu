@@ -9,8 +9,10 @@ public final class PlayerDtoConverter {
 
     public static PlayerDto convert(Player player, TeamIdentifierDto teamIdentifierDto) {
         return new PlayerDto(
+                player.user().name(),
                 player.grandTichuCalled(),
                 player.smallTichuCalled(),
+                player.playerSeatId(),
                 teamIdentifierDto
         );
     }

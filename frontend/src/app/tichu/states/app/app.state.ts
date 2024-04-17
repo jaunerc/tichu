@@ -3,6 +3,7 @@ export interface AppState {
   userId: string | undefined
   gameId: string | undefined
   playerId: string | undefined
+  playerSeatId: PlayerSeatId | undefined
   gameState: GameState | undefined
   playerPrivateState: PlayerPrivateState | undefined
 }
@@ -13,10 +14,14 @@ export interface GameState {
 }
 
 export interface PlayerState {
+  name: string
   grandTichuCalled: boolean
   smallTichuCalled: boolean
+  playerSeatId: PlayerSeatId
   teamIdentifier: TeamIdentifierState
 }
+
+export type PlayerSeatId = 'FIRST' | 'SECOND' | 'THIRD' | 'FOURTH'
 
 export enum GamePhaseState {
   PLAYERS_JOINING = 'PLAYERS_JOINING',
