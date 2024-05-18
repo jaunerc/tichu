@@ -2,14 +2,14 @@ package ch.jaunerc.tichu.backend.persistence.game.team;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.Team;
-import ch.jaunerc.tichu.backend.domain.game.port.CreateTeamPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.CreateTeamOutputPort;
 import ch.jaunerc.tichu.backend.persistence.game.player.PlayerEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CreateTeamPersistenceAdapter implements CreateTeamPort {
+public class CreateTeamPersistenceAdapter implements CreateTeamOutputPort {
 
     private final TeamRepository teamRepository;
 

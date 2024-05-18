@@ -2,8 +2,8 @@ package ch.jaunerc.tichu.backend.domain.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.card.Card;
-import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
-import ch.jaunerc.tichu.backend.domain.game.port.SavePlayerPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.SavePlayerOutputPort;
 import ch.jaunerc.tichu.backend.domain.game.usecase.ShuffleDeckUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,8 @@ import static ch.jaunerc.tichu.backend.domain.game.model.Deck.createShuffledDeck
 @RequiredArgsConstructor
 public class ShuffleDeckService implements ShuffleDeckUseCase {
 
-    private final FindGameByIdPort findGameByIdPort;
-    private final SavePlayerPort savePlayerPort;
+    private final FindGameByIdOutputPort findGameByIdPort;
+    private final SavePlayerOutputPort savePlayerOutputPort;
 
     @Override
     public void shuffleDeck(UUID gameId) {
@@ -37,7 +37,7 @@ public class ShuffleDeckService implements ShuffleDeckUseCase {
     }
 
     private void savePlayer(Player player1, List<Card> deck) {
-        savePlayerPort.savePlayer(Player.Builder.of(player1)
+        savePlayerOutputPort.savePlayer(Player.Builder.of(player1)
                 .cards(deck)
                 .build());
     }

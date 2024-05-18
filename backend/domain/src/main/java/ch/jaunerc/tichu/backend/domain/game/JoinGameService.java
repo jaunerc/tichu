@@ -1,10 +1,10 @@
 package ch.jaunerc.tichu.backend.domain.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.*;
-import ch.jaunerc.tichu.backend.domain.game.port.CreatePlayerPort;
-import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
-import ch.jaunerc.tichu.backend.domain.game.port.FindUserByIdPort;
-import ch.jaunerc.tichu.backend.domain.game.port.SaveGamePort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.CreatePlayerOutputPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.FindUserByIdOutputPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.SaveGameOutputPort;
 import ch.jaunerc.tichu.backend.domain.game.usecase.JoinGameUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,20 +19,20 @@ import static ch.jaunerc.tichu.backend.domain.game.TeamJoiner.joinFirstOrSecondT
 @RequiredArgsConstructor
 public class JoinGameService implements JoinGameUseCase {
 
-    private final FindGameByIdPort findGameByIdPort;
-    private final FindUserByIdPort findUserByIdPort;
-    private final CreatePlayerPort createPlayerPort;
-    private final SaveGamePort saveGamePort;
+    private final FindGameByIdOutputPort findGameByIdPort;
+    private final FindUserByIdOutputPort findUserByIdOutputPort;
+    private final CreatePlayerOutputPort createPlayerOutputPort;
+    private final SaveGameOutputPort saveGameOutputPort;
 
     @Override
     @Transactional
     public JoinGame joinGame(String gameId, String userId) {
         var game = findGameByIdPort.findGameById(UUID.fromString(gameId));
-        var user = findUserByIdPort.findUserById(UUID.fromString(userId));
-        var player = createPlayerPort.createPlayer(user, nextPlayerSeatId(game));
+        var user = findUserByIdOutputPort.findUserById(UUID.fromString(userId));
+        var player = createPlayerOutputPort.createPlayer(user, nextPlayerSeatId(game));
 
         var gameJoined = tryToJoinTheGame(game, player);
-        var persistedGame = saveGamePort.saveGame(gameJoined);
+        var persistedGame = saveGameOutputPort.saveGame(gameJoined);
 
         return new JoinGame(persistedGame.gameId(), player.uuid(), player.playerSeatId());
     }

@@ -4,8 +4,8 @@ import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.GamePhase;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.Team;
-import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
-import ch.jaunerc.tichu.backend.domain.game.port.SavePlayerPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.SavePlayerOutputPort;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,9 +23,9 @@ import static org.mockito.Mockito.when;
 class GrandTichuServiceTest {
 
     @Mock
-    private FindGameByIdPort findGameByIdPort;
+    private FindGameByIdOutputPort findGameByIdOutputPort;
     @Mock
-    private SavePlayerPort savePlayerPort;
+    private SavePlayerOutputPort savePlayerPort;
     @InjectMocks
     private GrandTichuService grandTichuService;
 
@@ -36,7 +36,7 @@ class GrandTichuServiceTest {
         var uuidPlayer3 = UUID.randomUUID();
         var uuidPlayer4 = UUID.randomUUID();
 
-        when(findGameByIdPort.findGameById(any())).thenReturn(
+        when(findGameByIdOutputPort.findGameById(any())).thenReturn(
                 createGameWithFourPlayers(uuidPlayer1, uuidPlayer2, uuidPlayer3, uuidPlayer4));
 
         var result = grandTichuService.grandTichuByPlayer(null, uuidPlayer1, true);
@@ -51,7 +51,7 @@ class GrandTichuServiceTest {
         var uuidPlayer3 = UUID.randomUUID();
         var uuidPlayer4 = UUID.randomUUID();
 
-        when(findGameByIdPort.findGameById(any())).thenReturn(
+        when(findGameByIdOutputPort.findGameById(any())).thenReturn(
                 createGameWithFourPlayers(uuidPlayer1, uuidPlayer2, uuidPlayer3, uuidPlayer4));
 
         assertThatThrownBy(() -> grandTichuService.grandTichuByPlayer(null, UUID.randomUUID(), true))

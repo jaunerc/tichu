@@ -1,13 +1,13 @@
 package ch.jaunerc.tichu.backend.persistence.game.player;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
-import ch.jaunerc.tichu.backend.domain.game.port.SavePlayerPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.SavePlayerOutputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class SavePlayerPersistenceAdapter implements SavePlayerPort {
+public class SavePlayerPersistenceAdapter implements SavePlayerOutputPort {
 
     private final PlayerRepository playerRepository;
 

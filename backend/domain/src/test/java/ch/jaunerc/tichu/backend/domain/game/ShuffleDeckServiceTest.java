@@ -4,8 +4,8 @@ import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.GamePhase;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.Team;
-import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
-import ch.jaunerc.tichu.backend.domain.game.port.SavePlayerPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.SavePlayerOutputPort;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,9 +24,9 @@ import static org.mockito.Mockito.*;
 class ShuffleDeckServiceTest {
 
     @Mock
-    private FindGameByIdPort findGameByIdPort;
+    private FindGameByIdOutputPort findGameByIdPort;
     @Mock
-    private SavePlayerPort savePlayerPort;
+    private SavePlayerOutputPort savePlayerPort;
     @InjectMocks
     private ShuffleDeckService shuffleDeckService;
 

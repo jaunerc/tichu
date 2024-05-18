@@ -1,7 +1,7 @@
 package ch.jaunerc.tichu.backend.domain.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
-import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
 import ch.jaunerc.tichu.backend.domain.game.usecase.ChangeGamePhaseUseCase;
 import ch.jaunerc.tichu.backend.domain.game.usecase.ReadyPlayerUseCase;
 import ch.jaunerc.tichu.backend.domain.game.usecase.ShuffleDeckUseCase;
@@ -20,7 +20,7 @@ public class ReadyPlayerService implements ReadyPlayerUseCase {
 
     public static final int ALL_PLAYERS_READY_COUNT = 4;
 
-    private final FindGameByIdPort findGameByIdPort;
+    private final FindGameByIdOutputPort findGameByIdPort;
     private final ChangeGamePhaseUseCase changeGamePhaseUseCase;
     private final ShuffleDeckUseCase shuffleDeckUseCase;
 

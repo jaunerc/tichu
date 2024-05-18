@@ -2,13 +2,13 @@ package ch.jaunerc.tichu.backend.persistence.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.GamePhase;
-import ch.jaunerc.tichu.backend.domain.game.port.CreateGamePort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.CreateGameOutputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CreateGamePersistenceAdapter implements CreateGamePort {
+public class CreateGamePersistenceAdapter implements CreateGameOutputPort {
 
     private final GameRepository gameRepository;
 

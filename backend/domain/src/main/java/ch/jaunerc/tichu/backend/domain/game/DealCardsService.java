@@ -3,8 +3,8 @@ package ch.jaunerc.tichu.backend.domain.game;
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.card.Card;
-import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
-import ch.jaunerc.tichu.backend.domain.game.port.SavePlayerPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.SavePlayerOutputPort;
 import ch.jaunerc.tichu.backend.domain.game.usecase.DealCardsUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,8 @@ public class DealCardsService implements DealCardsUseCase {
 
     private static final int FIRST_CARD_DEAL_LIMIT = 8;
 
-    private final FindGameByIdPort findGameByIdPort;
-    private final SavePlayerPort savePlayerPort;
+    private final FindGameByIdOutputPort findGameByIdPort;
+    private final SavePlayerOutputPort savePlayerOutputPort;
 
     @Override
     public List<Card> dealCards(UUID gameId, UUID playerId) {
@@ -32,7 +32,7 @@ public class DealCardsService implements DealCardsUseCase {
                 .firstEightCardsReceived(true)
                 .build();
 
-        savePlayerPort.savePlayer(updatedPlayer);
+        savePlayerOutputPort.savePlayer(updatedPlayer);
 
         return cardsForPlayer(player);
     }

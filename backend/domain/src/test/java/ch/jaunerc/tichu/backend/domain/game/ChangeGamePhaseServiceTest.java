@@ -2,8 +2,8 @@ package ch.jaunerc.tichu.backend.domain.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.GamePhase;
-import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
-import ch.jaunerc.tichu.backend.domain.game.port.SaveGamePort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.SaveGameOutputPort;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,9 +27,9 @@ import static org.mockito.Mockito.when;
 class ChangeGamePhaseServiceTest {
 
     @Mock
-    private FindGameByIdPort findGameByIdPort;
+    private FindGameByIdOutputPort findGameByIdPort;
     @Mock
-    private SaveGamePort saveGamePort;
+    private SaveGameOutputPort saveGamePort;
     @InjectMocks
     private ChangeGamePhaseService changeGamePhaseService;
 

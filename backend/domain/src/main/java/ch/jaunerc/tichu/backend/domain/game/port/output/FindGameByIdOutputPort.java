@@ -1,10 +1,10 @@
-package ch.jaunerc.tichu.backend.domain.game.port;
+package ch.jaunerc.tichu.backend.domain.game.port.output;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
 
 import java.util.UUID;
 
-public interface FindGameByIdPort {
+public interface FindGameByIdOutputPort {
 
     Game findGameById(UUID gameId);
 }

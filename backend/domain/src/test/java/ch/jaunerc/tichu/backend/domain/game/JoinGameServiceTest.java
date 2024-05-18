@@ -3,10 +3,10 @@ package ch.jaunerc.tichu.backend.domain.game;
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.Team;
-import ch.jaunerc.tichu.backend.domain.game.port.CreatePlayerPort;
-import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
-import ch.jaunerc.tichu.backend.domain.game.port.FindUserByIdPort;
-import ch.jaunerc.tichu.backend.domain.game.port.SaveGamePort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.CreatePlayerOutputPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.FindUserByIdOutputPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.SaveGameOutputPort;
 import ch.jaunerc.tichu.backend.domain.user.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,20 +29,20 @@ import static org.mockito.Mockito.when;
 class JoinGameServiceTest {
 
     @Mock
-    private FindGameByIdPort findGameByIdPort;
+    private FindGameByIdOutputPort findGameByIdPort;
     @Mock
-    private FindUserByIdPort findUserByIdPort;
+    private FindUserByIdOutputPort findUserByIdOutputPort;
     @Mock
-    private CreatePlayerPort createPlayerPort;
+    private CreatePlayerOutputPort createPlayerOutputPort;
     @Mock
-    private SaveGamePort saveGamePort;
+    private SaveGameOutputPort saveGamePort;
 
     @InjectMocks
     private JoinGameService joinGameService;
 
     @BeforeEach
     void setup() {
-        when(findUserByIdPort.findUserById(any())).thenReturn(new User(UUID.randomUUID(), "Adam"));
+        when(findUserByIdOutputPort.findUserById(any())).thenReturn(new User(UUID.randomUUID(), "Adam"));
     }
 
     @Test
@@ -66,7 +66,7 @@ class JoinGameServiceTest {
         var playerId = UUID.randomUUID();
         var player = new Player.Builder(playerId).build();
         when(findGameByIdPort.findGameById(any())).thenReturn(gameWithNoCapacity);
-        when(createPlayerPort.createPlayer(any(), any())).thenReturn(player);
+        when(createPlayerOutputPort.createPlayer(any(), any())).thenReturn(player);
         when(saveGamePort.saveGame(any())).thenReturn(new Game.Builder(UUID.randomUUID(), null).build());
 
         var result = joinGameService.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString());
@@ -84,7 +84,7 @@ class JoinGameServiceTest {
         var playerId = UUID.randomUUID();
         var player = new Player.Builder(playerId).build();
         when(findGameByIdPort.findGameById(any())).thenReturn(gameWithNoCapacity);
-        when(createPlayerPort.createPlayer(any(), any())).thenReturn(player);
+        when(createPlayerOutputPort.createPlayer(any(), any())).thenReturn(player);
         when(saveGamePort.saveGame(any())).thenReturn(new Game.Builder(UUID.randomUUID(), null).build());
 
         var result = joinGameService.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString());

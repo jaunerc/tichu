@@ -2,7 +2,7 @@ package ch.jaunerc.tichu.backend.persistence.game.player;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.PlayerSeatId;
-import ch.jaunerc.tichu.backend.domain.game.port.CreatePlayerPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.CreatePlayerOutputPort;
 import ch.jaunerc.tichu.backend.domain.user.model.User;
 import ch.jaunerc.tichu.backend.persistence.user.UserEntityMapper;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CreatePlayerPersistenceAdapter implements CreatePlayerPort {
+public class CreatePlayerPersistenceAdapter implements CreatePlayerOutputPort {
 
     private final PlayerRepository playerRepository;
 

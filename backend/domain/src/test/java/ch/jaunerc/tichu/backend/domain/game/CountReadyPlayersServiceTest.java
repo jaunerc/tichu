@@ -4,7 +4,7 @@ import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.GamePhase;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.Team;
-import ch.jaunerc.tichu.backend.domain.game.port.FindGameByIdPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
 import ch.jaunerc.tichu.backend.domain.game.usecase.ChangeGamePhaseUseCase;
 import ch.jaunerc.tichu.backend.domain.game.usecase.ShuffleDeckUseCase;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 class CountReadyPlayersServiceTest {
 
     @Mock
-    private FindGameByIdPort findGameByIdPort;
+    private FindGameByIdOutputPort findGameByIdOutputPort;
     @Mock
     private ChangeGamePhaseUseCase changeGamePhaseUseCase;
     @Mock
@@ -32,7 +32,7 @@ class CountReadyPlayersServiceTest {
 
     @Test
     void countReadyPlayers() {
-        when(findGameByIdPort.findGameById(any())).thenReturn(createGameWithThreePlayers());
+        when(findGameByIdOutputPort.findGameById(any())).thenReturn(createGameWithThreePlayers());
 
         var result = countReadyPlayersService.updateReadyPlayers(null);
 
@@ -41,7 +41,7 @@ class CountReadyPlayersServiceTest {
 
     @Test
     void countReadyPlayers_allPlayersReady_updateGameStateAndShuffleDeck() {
-        when(findGameByIdPort.findGameById(any())).thenReturn(createGameWithFourPlayers());
+        when(findGameByIdOutputPort.findGameById(any())).thenReturn(createGameWithFourPlayers());
 
         var result = countReadyPlayersService.updateReadyPlayers(null);
 
@@ -52,7 +52,7 @@ class CountReadyPlayersServiceTest {
 
     @Test
     void countReadyPlayers_nullTeam() {
-        when(findGameByIdPort.findGameById(any())).thenReturn(createGameWithNullTeam());
+        when(findGameByIdOutputPort.findGameById(any())).thenReturn(createGameWithNullTeam());
 
         var result = countReadyPlayersService.updateReadyPlayers(null);
 
