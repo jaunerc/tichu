@@ -1,11 +1,11 @@
 package ch.jaunerc.tichu.backend.domain.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.*;
+import ch.jaunerc.tichu.backend.domain.game.port.input.JoinGameInputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.output.CreatePlayerOutputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.output.FindUserByIdOutputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.output.SaveGameOutputPort;
-import ch.jaunerc.tichu.backend.domain.game.usecase.JoinGameUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +17,7 @@ import static ch.jaunerc.tichu.backend.domain.game.TeamJoiner.joinFirstOrSecondT
 
 @Service
 @RequiredArgsConstructor
-public class JoinGameService implements JoinGameUseCase {
+public class JoinGameUseCase implements JoinGameInputPort {
 
     private final FindGameByIdOutputPort findGameByIdPort;
     private final FindUserByIdOutputPort findUserByIdOutputPort;

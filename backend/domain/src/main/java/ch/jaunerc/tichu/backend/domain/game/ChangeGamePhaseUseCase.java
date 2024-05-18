@@ -1,9 +1,9 @@
 package ch.jaunerc.tichu.backend.domain.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
+import ch.jaunerc.tichu.backend.domain.game.port.input.ChangeGamePhaseInputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.output.SaveGameOutputPort;
-import ch.jaunerc.tichu.backend.domain.game.usecase.ChangeGamePhaseUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import static ch.jaunerc.tichu.backend.domain.game.model.GamePhase.*;
 
 @Service
 @RequiredArgsConstructor
-public class ChangeGamePhaseService implements ChangeGamePhaseUseCase {
+public class ChangeGamePhaseUseCase implements ChangeGamePhaseInputPort {
 
     private final FindGameByIdOutputPort findGameByIdPort;
     private final SaveGameOutputPort saveGameOutputPort;

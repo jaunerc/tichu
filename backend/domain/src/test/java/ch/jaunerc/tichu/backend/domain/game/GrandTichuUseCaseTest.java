@@ -20,14 +20,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class GrandTichuServiceTest {
+class GrandTichuUseCaseTest {
 
     @Mock
     private FindGameByIdOutputPort findGameByIdOutputPort;
     @Mock
     private SavePlayerOutputPort savePlayerPort;
     @InjectMocks
-    private GrandTichuService grandTichuService;
+    private GrandTichuUseCase grandTichuUseCase;
 
     @Test
     void grandTichuByPlayer() {
@@ -39,7 +39,7 @@ class GrandTichuServiceTest {
         when(findGameByIdOutputPort.findGameById(any())).thenReturn(
                 createGameWithFourPlayers(uuidPlayer1, uuidPlayer2, uuidPlayer3, uuidPlayer4));
 
-        var result = grandTichuService.grandTichuByPlayer(null, uuidPlayer1, true);
+        var result = grandTichuUseCase.grandTichuByPlayer(null, uuidPlayer1, true);
 
         verify(savePlayerPort).savePlayer(any());
     }
@@ -54,7 +54,7 @@ class GrandTichuServiceTest {
         when(findGameByIdOutputPort.findGameById(any())).thenReturn(
                 createGameWithFourPlayers(uuidPlayer1, uuidPlayer2, uuidPlayer3, uuidPlayer4));
 
-        assertThatThrownBy(() -> grandTichuService.grandTichuByPlayer(null, UUID.randomUUID(), true))
+        assertThatThrownBy(() -> grandTichuUseCase.grandTichuByPlayer(null, UUID.randomUUID(), true))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 

@@ -1,8 +1,8 @@
 package ch.jaunerc.tichu.backend.websocket.controller;
 
-import ch.jaunerc.tichu.backend.domain.game.GrandTichuService;
+import ch.jaunerc.tichu.backend.domain.game.GrandTichuUseCase;
 import ch.jaunerc.tichu.backend.domain.game.model.card.Card;
-import ch.jaunerc.tichu.backend.domain.game.usecase.DealCardsUseCase;
+import ch.jaunerc.tichu.backend.domain.game.port.input.DealCardsInputPort;
 import ch.jaunerc.tichu.backend.websocket.message.GameStateServerMessage;
 import ch.jaunerc.tichu.backend.websocket.message.GrandTichuPlayerMessage;
 import ch.jaunerc.tichu.backend.websocket.message.PlayerPrivateStateServerMessage;
@@ -23,8 +23,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class DealCardsWebsocketController {
 
-    private final DealCardsUseCase dealCardsUseCase;
-    private final GrandTichuService grandTichuService;
+    private final DealCardsInputPort dealCardsInputPort;
+    private final GrandTichuUseCase grandTichuUseCase;
     private final MessageSenderService messageSenderService;
 
     @MessageMapping("/{gameId}/deal-cards/{playerId}")
@@ -41,7 +41,7 @@ public class DealCardsWebsocketController {
     public GameStateServerMessage grandTichu(@DestinationVariable("gameId") String gameId,
                                              @DestinationVariable("playerId") String playerId,
                                              @Payload GrandTichuPlayerMessage grandTichuPlayerMessage) {
-        var updatedGame = grandTichuService.grandTichuByPlayer(
+        var updatedGame = grandTichuUseCase.grandTichuByPlayer(
                 UUID.fromString(gameId),
                 UUID.fromString(playerId),
                 grandTichuPlayerMessage.callGrandTichu()
@@ -54,6 +54,6 @@ public class DealCardsWebsocketController {
     }
 
     private List<Card> dealCards(String gameId, String playerId) {
-        return dealCardsUseCase.dealCards(UUID.fromString(gameId), UUID.fromString(playerId));
+        return dealCardsInputPort.dealCards(UUID.fromString(gameId), UUID.fromString(playerId));
     }
 }

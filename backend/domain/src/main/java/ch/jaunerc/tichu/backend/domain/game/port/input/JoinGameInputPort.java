@@ -1,8 +1,8 @@
-package ch.jaunerc.tichu.backend.domain.game.usecase;
+package ch.jaunerc.tichu.backend.domain.game.port.input;
 
 import ch.jaunerc.tichu.backend.domain.game.model.JoinGame;
 
-public interface JoinGameUseCase {
+public interface JoinGameInputPort {
 
     JoinGame joinGame(String gameId, String userId);
 }

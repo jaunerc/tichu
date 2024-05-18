@@ -1,7 +1,7 @@
 package ch.jaunerc.tichu.backend.web.games;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
-import ch.jaunerc.tichu.backend.domain.game.usecase.CreateGameUseCase;
+import ch.jaunerc.tichu.backend.domain.game.port.input.CreateGameInputPort;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,14 +18,14 @@ import static org.mockito.Mockito.when;
 class GamesWebAdapterTest {
 
     @Mock
-    private CreateGameUseCase createGameUseCase;
+    private CreateGameInputPort createGameInputPort;
     @InjectMocks
     private GamesWebAdapter gamesWebAdapter;
 
     @Test
     void createGame() {
         var uuid = "00000000-0000-0000-0000-000000000000";
-        when(createGameUseCase.createGame())
+        when(createGameInputPort.createGame())
                 .thenReturn(new Game(UUID.fromString(uuid), null, null, null));
 
         // act

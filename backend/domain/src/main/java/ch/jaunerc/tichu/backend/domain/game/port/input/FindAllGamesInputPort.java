@@ -1,10 +1,10 @@
-package ch.jaunerc.tichu.backend.domain.game.usecase;
+package ch.jaunerc.tichu.backend.domain.game.port.input;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
 
 import java.util.List;
 
-public interface FindAllGamesUseCase {
+public interface FindAllGamesInputPort {
 
     List<Game> findAllGames();
 }

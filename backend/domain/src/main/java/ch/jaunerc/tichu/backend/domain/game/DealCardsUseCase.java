@@ -3,9 +3,9 @@ package ch.jaunerc.tichu.backend.domain.game;
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.card.Card;
+import ch.jaunerc.tichu.backend.domain.game.port.input.DealCardsInputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.output.SavePlayerOutputPort;
-import ch.jaunerc.tichu.backend.domain.game.usecase.DealCardsUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import static ch.jaunerc.tichu.backend.domain.game.PlayerCollector.listOfPlayers
 
 @Service
 @RequiredArgsConstructor
-public class DealCardsService implements DealCardsUseCase {
+public class DealCardsUseCase implements DealCardsInputPort {
 
     private static final int FIRST_CARD_DEAL_LIMIT = 8;
 

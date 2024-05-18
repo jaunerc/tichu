@@ -2,9 +2,9 @@ package ch.jaunerc.tichu.backend.domain.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.card.Card;
+import ch.jaunerc.tichu.backend.domain.game.port.input.PushCardInputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.output.SavePlayerOutputPort;
-import ch.jaunerc.tichu.backend.domain.game.usecase.PushCardUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class PushCardService implements PushCardUseCase {
+public class PushCardUseCase implements PushCardInputPort {
 
     private final FindGameByIdOutputPort findGameByIdPort;
     private final SavePlayerOutputPort savePlayerPort;

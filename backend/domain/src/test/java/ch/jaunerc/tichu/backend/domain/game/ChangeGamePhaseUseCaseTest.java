@@ -24,14 +24,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ChangeGamePhaseServiceTest {
+class ChangeGamePhaseUseCaseTest {
 
     @Mock
     private FindGameByIdOutputPort findGameByIdPort;
     @Mock
     private SaveGameOutputPort saveGamePort;
     @InjectMocks
-    private ChangeGamePhaseService changeGamePhaseService;
+    private ChangeGamePhaseUseCase changeGamePhaseUseCase;
 
     @ParameterizedTest
     @MethodSource("provideGamePhases")
@@ -41,7 +41,7 @@ class ChangeGamePhaseServiceTest {
                 new Game.Builder(null, from).build()
         );
 
-        changeGamePhaseService.changeGamePhase(null);
+        changeGamePhaseUseCase.changeGamePhase(null);
 
         verify(saveGamePort).saveGame(gameCaptor.capture());
         assertThat(gameCaptor.getValue().gamePhase()).isEqualTo(to);
@@ -53,7 +53,7 @@ class ChangeGamePhaseServiceTest {
                 new Game.Builder(null, GAME_ENDED).build()
         );
 
-        assertThatThrownBy(() -> changeGamePhaseService.changeGamePhase(null))
+        assertThatThrownBy(() -> changeGamePhaseUseCase.changeGamePhase(null))
                 .isInstanceOf(IllegalStateException.class);
     }
 

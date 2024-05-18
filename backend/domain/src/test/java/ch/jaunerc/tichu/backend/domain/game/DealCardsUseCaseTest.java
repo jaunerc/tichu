@@ -23,14 +23,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class DealCardsServiceTest {
+class DealCardsUseCaseTest {
 
     @Mock
     private FindGameByIdOutputPort findGameByIdPort;
     @Mock
     private SavePlayerOutputPort savePlayerPort;
     @InjectMocks
-    private DealCardsService dealCardsService;
+    private DealCardsUseCase dealCardsUseCase;
 
     @Test
     void dealCards_firstDealingRound_onlyEightCards() {
@@ -38,7 +38,7 @@ class DealCardsServiceTest {
         when(findGameByIdPort.findGameById(any())).thenReturn(
                 mockGame(playerId, GamePhase.DEALING_CARDS, false));
 
-        var result = dealCardsService.dealCards(null, playerId);
+        var result = dealCardsUseCase.dealCards(null, playerId);
 
         assertThat(result.size()).isEqualTo(8);
         verify(savePlayerPort).savePlayer(any());
@@ -50,7 +50,7 @@ class DealCardsServiceTest {
         when(findGameByIdPort.findGameById(any())).thenReturn(
                 mockGame(playerId, GamePhase.FIRST_EIGHT_CARDS_ARE_DEALT, true));
 
-        var result = dealCardsService.dealCards(null, playerId);
+        var result = dealCardsUseCase.dealCards(null, playerId);
 
         assertThat(result.size()).isEqualTo(14);
         verify(savePlayerPort).savePlayer(any());
@@ -62,7 +62,7 @@ class DealCardsServiceTest {
         when(findGameByIdPort.findGameById(any())).thenReturn(
                 mockGame(playerId, GamePhase.DEALING_CARDS, false));
 
-        assertThatThrownBy(() -> dealCardsService.dealCards(null, UUID.randomUUID()))
+        assertThatThrownBy(() -> dealCardsUseCase.dealCards(null, UUID.randomUUID()))
                 .isInstanceOf(IllegalStateException.class);
     }
 

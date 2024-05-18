@@ -26,7 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class JoinGameServiceTest {
+class JoinGameUseCaseTest {
 
     @Mock
     private FindGameByIdOutputPort findGameByIdPort;
@@ -38,7 +38,7 @@ class JoinGameServiceTest {
     private SaveGameOutputPort saveGamePort;
 
     @InjectMocks
-    private JoinGameService joinGameService;
+    private JoinGameUseCase joinGameUseCase;
 
     @BeforeEach
     void setup() {
@@ -54,7 +54,7 @@ class JoinGameServiceTest {
                 .build();
         when(findGameByIdPort.findGameById(any())).thenReturn(gameWithNoCapacity);
 
-        assertThrows(IllegalArgumentException.class, () -> joinGameService.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString()));
+        assertThrows(IllegalArgumentException.class, () -> joinGameUseCase.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString()));
     }
 
     @Test
@@ -69,7 +69,7 @@ class JoinGameServiceTest {
         when(createPlayerOutputPort.createPlayer(any(), any())).thenReturn(player);
         when(saveGamePort.saveGame(any())).thenReturn(new Game.Builder(UUID.randomUUID(), null).build());
 
-        var result = joinGameService.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        var result = joinGameUseCase.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString());
 
         assertThat(result.playerId()).isEqualTo(playerId);
     }
@@ -87,7 +87,7 @@ class JoinGameServiceTest {
         when(createPlayerOutputPort.createPlayer(any(), any())).thenReturn(player);
         when(saveGamePort.saveGame(any())).thenReturn(new Game.Builder(UUID.randomUUID(), null).build());
 
-        var result = joinGameService.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        var result = joinGameUseCase.joinGame(UUID.randomUUID().toString(), UUID.randomUUID().toString());
 
         verify(saveGamePort).saveGame(any());
         assertThat(result.playerId()).isEqualTo(playerId);

@@ -4,9 +4,9 @@ import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.GamePhase;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.model.Team;
+import ch.jaunerc.tichu.backend.domain.game.port.input.ChangeGamePhaseInputPort;
+import ch.jaunerc.tichu.backend.domain.game.port.input.ShuffleDeckInputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
-import ch.jaunerc.tichu.backend.domain.game.usecase.ChangeGamePhaseUseCase;
-import ch.jaunerc.tichu.backend.domain.game.usecase.ShuffleDeckUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,11 +24,11 @@ class CountReadyPlayersServiceTest {
     @Mock
     private FindGameByIdOutputPort findGameByIdOutputPort;
     @Mock
-    private ChangeGamePhaseUseCase changeGamePhaseUseCase;
+    private ChangeGamePhaseInputPort changeGamePhaseInputPort;
     @Mock
-    private ShuffleDeckUseCase shuffleDeckUseCase;
+    private ShuffleDeckInputPort shuffleDeckInputPort;
     @InjectMocks
-    private ReadyPlayerService countReadyPlayersService;
+    private ReadyPlayerUseCase countReadyPlayersService;
 
     @Test
     void countReadyPlayers() {
@@ -45,8 +45,8 @@ class CountReadyPlayersServiceTest {
 
         var result = countReadyPlayersService.updateReadyPlayers(null);
 
-        verify(changeGamePhaseUseCase).changeGamePhase(any());
-        verify(shuffleDeckUseCase).shuffleDeck(any());
+        verify(changeGamePhaseInputPort).changeGamePhase(any());
+        verify(shuffleDeckInputPort).shuffleDeck(any());
         assertThat(result).isEqualTo(4);
     }
 

@@ -1,7 +1,7 @@
 package ch.jaunerc.tichu.backend.websocket;
 
 import ch.jaunerc.tichu.backend.domain.game.model.card.Card;
-import ch.jaunerc.tichu.backend.domain.game.usecase.PushCardUseCase;
+import ch.jaunerc.tichu.backend.domain.game.port.input.PushCardInputPort;
 import ch.jaunerc.tichu.backend.websocket.message.PushCardPlayerMessage;
 import ch.jaunerc.tichu.backend.websocket.message.PushCardsServerMessage;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class WebsocketController {
 
-    private final PushCardUseCase pushCardUseCase;
+    private final PushCardInputPort pushCardInputPort;
 
     private final SimpMessagingTemplate simpMessagingTemplate;
 
@@ -33,7 +33,7 @@ public class WebsocketController {
     public void pushCard(@DestinationVariable("gameId") String gameId,
                          @DestinationVariable("playerId") String playerId,
                          @Payload PushCardPlayerMessage pushCardPlayerMessage) {
-        var receivedCards = pushCardUseCase.pushCard(
+        var receivedCards = pushCardInputPort.pushCard(
                 UUID.fromString(gameId),
                 Card.valueOf(pushCardPlayerMessage.cardName()),
                 UUID.fromString(playerId),

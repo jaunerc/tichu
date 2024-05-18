@@ -21,14 +21,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ShuffleDeckServiceTest {
+class ShuffleDeckUseCaseTest {
 
     @Mock
     private FindGameByIdOutputPort findGameByIdPort;
     @Mock
     private SavePlayerOutputPort savePlayerPort;
     @InjectMocks
-    private ShuffleDeckService shuffleDeckService;
+    private ShuffleDeckUseCase shuffleDeckUseCase;
 
     @Test
     @DisplayName("should deal 14 cards to each player")
@@ -36,7 +36,7 @@ class ShuffleDeckServiceTest {
         when(findGameByIdPort.findGameById(any())).thenReturn(createGameWithFourPlayers());
         var playerArgumentCaptor = ArgumentCaptor.forClass(Player.class);
 
-        shuffleDeckService.shuffleDeck(null);
+        shuffleDeckUseCase.shuffleDeck(null);
 
         verify(savePlayerPort, times(4)).savePlayer(playerArgumentCaptor.capture());
         var players = playerArgumentCaptor.getAllValues();
