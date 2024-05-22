@@ -6,6 +6,7 @@ import ch.jaunerc.tichu.backend.domain.game.model.card.Card;
 import ch.jaunerc.tichu.backend.domain.game.port.input.DealCardsInputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.output.SavePlayerOutputPort;
+import ch.jaunerc.tichu.backend.domain.game.port.output.SendGameStateOutputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class DealCardsUseCase implements DealCardsInputPort {
 
     private final FindGameByIdOutputPort findGameByIdPort;
     private final SavePlayerOutputPort savePlayerOutputPort;
+    private final SendGameStateOutputPort sendGameStateOutputPort;
 
     @Override
     public List<Card> dealCards(UUID gameId, UUID playerId) {
@@ -33,6 +35,7 @@ public class DealCardsUseCase implements DealCardsInputPort {
                 .build();
 
         savePlayerOutputPort.savePlayer(updatedPlayer);
+        sendGameStateOutputPort.sendGameState(game);
 
         return cardsForPlayer(player);
     }
