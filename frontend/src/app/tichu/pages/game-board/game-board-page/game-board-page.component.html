@@ -12,9 +12,11 @@
   </ng-container>
 
   <ng-container *ngIf="controlPanelIds$() | async as controlPanelIds">
-    <tichu-game-board-control-panel
-      [gameId]="controlPanelIds.gameId"
-      [playerId]="controlPanelIds.playerId">
-    </tichu-game-board-control-panel>
+    <ng-container *ngIf="controlPanelIds.gameId !== undefined && controlPanelIds.playerId !== undefined">
+      <tichu-game-board-control-panel
+        [gameId]="controlPanelIds.gameId"
+        [playerId]="controlPanelIds.playerId">
+      </tichu-game-board-control-panel>
+    </ng-container>
   </ng-container>
 </tichu-app-layout>

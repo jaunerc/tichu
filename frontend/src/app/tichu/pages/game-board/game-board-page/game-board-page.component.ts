@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store'
-import { combineLatest, first, map, Observable, Subject, withLatestFrom } from 'rxjs'
+import { combineLatest, map, Observable, Subject, withLatestFrom } from 'rxjs'
 import {
   getGameId,
   getGameState,
@@ -12,10 +12,11 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { refreshGameState, refreshPlayerPrivateState } from '../../../states/app/app.actions'
 import { GameBoardWebsocketService } from './service/game-board-websocket.service'
 import { GameState, PlayerSeatId } from '../../../states/app/app.state'
+import { filterUndefinedOrNull, filterUndefinedOrNullForCombinedValues } from '../../../states/type-util'
 
 export interface ControlPanelIds {
-  gameId: string
-  playerId: string
+  gameId?: string
+  playerId?: string
 }
 
 @UntilDestroy()
@@ -25,9 +26,9 @@ export interface ControlPanelIds {
   styleUrls: ['./game-board-page.component.scss']
 })
 export class GameBoardPageComponent implements OnInit {
-  gameId$!: Observable<string>
-  playerSeatId$!: Observable<PlayerSeatId>
-  private playerId$!: Observable<string>
+  gameId$!: Observable<string | undefined>
+  playerSeatId$!: Observable<PlayerSeatId | undefined>
+  private playerId$!: Observable<string | undefined>
 
   private readonly gameStateSubject$: Subject<GameState> = new Subject<GameState>()
   gameState$ = this.gameStateSubject$.asObservable()
@@ -57,8 +58,8 @@ export class GameBoardPageComponent implements OnInit {
   private requestDealCards (): void {
     combineLatest([this.gameId$, this.playerId$])
       .pipe(
-        first(),
-        untilDestroyed(this))
+        untilDestroyed(this),
+        filterUndefinedOrNullForCombinedValues())
       .subscribe(([gameId, playerId]) => {
         this.websocketService.publishRequestCards(gameId, playerId)
       })
@@ -68,11 +69,9 @@ export class GameBoardPageComponent implements OnInit {
     this.store.select(getPlayerPrivateState)
       .pipe(
         untilDestroyed(this),
+        filterUndefinedOrNull(),
         map((playerPrivateState) => {
-          if (playerPrivateState != null) {
-            return playerPrivateState.cards
-          }
-          return []
+          return playerPrivateState.cards
         }))
       .subscribe(cards => {
         this.cardsSubject$.next(cards)
@@ -82,12 +81,11 @@ export class GameBoardPageComponent implements OnInit {
   private onGameStateResponse (): void {
     this.store.select(getGameState)
       .pipe(
-        untilDestroyed(this)
+        untilDestroyed(this),
+        filterUndefinedOrNull()
       )
       .subscribe(gameState => {
-        if (gameState != null) {
-          this.gameStateSubject$.next(gameState)
-        }
+        this.gameStateSubject$.next(gameState)
       })
   }
 

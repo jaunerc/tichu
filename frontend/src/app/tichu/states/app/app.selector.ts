@@ -16,17 +16,17 @@ export const getUserId = createSelector(
 
 export const getGameId = createSelector(
   getAppState,
-  (state) => valueIfPresentOrError(state.gameId)
+  (state) => state.gameId
 )
 
 export const getPlayerId = createSelector(
   getAppState,
-  (state) => valueIfPresentOrError(state.playerId)
+  (state) => state.playerId
 )
 
 export const getPlayerSeatId = createSelector(
   getAppState,
-  (state) => valueIfPresentOrError(state.playerSeatId)
+  (state) => state.playerSeatId
 )
 
 export const getGameState = createSelector(
