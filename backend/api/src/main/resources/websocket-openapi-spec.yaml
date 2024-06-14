@@ -1,0 +1,27 @@
+openapi: 3.0.3
+info:
+  title: Tichu websocket api
+  description: Api for the Tichu websocket communication
+  version: 0.0.1
+
+# This openapi spec only defines models
+paths: {}
+
+components:
+  schemas:
+    Player:
+      type: object
+      properties:
+        name:
+          type: string
+        grandTichuCalled:
+          type: boolean
+        smallTichuCalled:
+          type: boolean
+        playerSeatId:
+          type: string
+          enum:
+            - FIRST
+            - SECOND
+            - THIRD
+            - FOURTH
