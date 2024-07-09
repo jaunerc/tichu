@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { StompService } from '../../../../stomp/stomp.service'
 import { map, Observable } from 'rxjs'
-import { ReadyStatusMessage } from '../../../../websocket-api/websocket.api'
+import { ReadyStatusServerMessage } from '../../../../websocket-api/model/readyStatusServerMessage'
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class GameLoaderWebsocketService {
     private readonly stompService: StompService
   ) { }
 
-  watchOnReadyMessage (gameId: string): Observable<ReadyStatusMessage> {
+  watchOnReadyMessage (gameId: string): Observable<ReadyStatusServerMessage> {
     return this.stompService.watch(`/topic/player-ready-${gameId}`)
       .pipe(map(message => this.parseReadyStatusMessage(message.body)))
   }
@@ -23,7 +23,7 @@ export class GameLoaderWebsocketService {
     })
   }
 
-  private parseReadyStatusMessage (json: string): ReadyStatusMessage {
+  private parseReadyStatusMessage (json: string): ReadyStatusServerMessage {
     return JSON.parse(json)
   }
 }

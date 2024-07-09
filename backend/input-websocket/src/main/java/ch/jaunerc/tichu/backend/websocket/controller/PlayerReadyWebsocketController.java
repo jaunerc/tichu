@@ -1,7 +1,7 @@
 package ch.jaunerc.tichu.backend.websocket.controller;
 
 import ch.jaunerc.tichu.backend.domain.game.port.input.ReadyPlayerInputPort;
-import ch.jaunerc.tichu.backend.websocket.message.ReadyStatusServerMessage;
+import ch.jaunerc.tichu.backend.websocket.api.model.ReadyStatusServerMessageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -18,7 +18,7 @@ public class PlayerReadyWebsocketController {
 
     @MessageMapping("/player-ready-{gameId}")
     @SendTo("/topic/player-ready-{gameId}")
-    public ReadyStatusServerMessage playerIsReady(@DestinationVariable("gameId") String gameId) {
-        return new ReadyStatusServerMessage(readyPlayerInputPort.updateReadyPlayers(UUID.fromString(gameId)));
+    public ReadyStatusServerMessageDto playerIsReady(@DestinationVariable("gameId") String gameId) {
+        return new ReadyStatusServerMessageDto().readyPlayers(readyPlayerInputPort.updateReadyPlayers(UUID.fromString(gameId)));
     }
 }

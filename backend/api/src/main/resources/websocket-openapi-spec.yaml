@@ -18,6 +18,11 @@ components:
           type: boolean
         smallTichuCalled:
           type: boolean
+        teamIdentifier:
+          type: string
+          enum:
+            - FIRST_TEAM
+            - SECOND_TEAM
         playerSeatId:
           type: string
           enum:
@@ -25,3 +30,83 @@ components:
             - SECOND
             - THIRD
             - FOURTH
+      required:
+        - name
+        - grandTichuCalled
+        - smallTichuCalled
+        - teamIdentifier
+        - playerSeatId
+    Game:
+      type: object
+      properties:
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/Player'
+        gamePhase:
+          type: string
+          enum:
+            - PLAYERS_JOINING
+            - PLAYERS_ON_THE_TABLE
+            - DEALING_CARDS
+            - FIRST_EIGHT_CARDS_ARE_DEALT
+            - ALL_CARDS_ARE_DEALT
+            - GAME_IS_RUNNING
+            - GAME_ENDED
+      required:
+        - players
+        - gamePhase
+    PlayerPrivateState:
+      type: object
+      properties:
+        cards:
+          type: array
+          items:
+            type: string
+        receivedCards:
+          type: array
+          items:
+            type: string
+      required:
+        - cards
+        - receivedCards
+
+    # Messages
+    ReadyStatusServerMessage:
+      type: object
+      properties:
+        readyPlayers:
+          type: integer
+      required:
+        - readyPlayers
+    GameStateServerMessage:
+      type: object
+      properties:
+        game:
+          $ref: '#/components/schemas/Game'
+      required:
+        - game
+    PlayerPrivateStateServerMessage:
+      type: object
+      properties:
+        playerPrivateState:
+          $ref: '#/components/schemas/PlayerPrivateState'
+      required:
+        - playerPrivateState
+    GrandTichuPlayerMessage:
+      type: object
+      properties:
+        callGrandTichu:
+          type: boolean
+      required:
+        - callGrandTichu
+    PushCardPlayerMessage:
+      type: object
+      properties:
+        cardName:
+          type: string
+        recipientPlayerNumber:
+          type: number
+      required:
+        - cardName
+        - recipientPlayerNumber

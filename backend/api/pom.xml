@@ -23,7 +23,6 @@
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-core</artifactId>
-            <version>2.2.10</version>
         </dependency>
     </dependencies>
 
@@ -58,6 +57,23 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <id>web-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>websocket-api</id>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/websocket-openapi-spec.yaml</inputSpec>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                            <configOptions>
+                                <basePackage>${project.groupId}.websocket.api</basePackage>
+                                <apiPackage>${project.groupId}.websocket.api.controller</apiPackage>
+                                <modelPackage>${project.groupId}.websocket.api.model</modelPackage>
+                                <invokerPackage>${project.groupId}.websocket.api.invoker</invokerPackage>
+                            </configOptions>
+                        </configuration>
                         <goals>
                             <goal>generate</goal>
                         </goals>
