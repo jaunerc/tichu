@@ -2,7 +2,7 @@ package ch.jaunerc.tichu.backend.websocket.send;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
 import ch.jaunerc.tichu.backend.domain.game.port.output.SendPlayerPrivateStateOutputPort;
-import ch.jaunerc.tichu.backend.websocket.message.game.PlayerPrivateDtoConverter;
+import ch.jaunerc.tichu.backend.websocket.converter.PlayerPrivateDtoConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

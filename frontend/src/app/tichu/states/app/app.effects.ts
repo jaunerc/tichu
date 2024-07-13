@@ -5,9 +5,10 @@ import { exhaustMap, map, mergeMap, switchMap, withLatestFrom } from 'rxjs'
 import { getGameId, getPlayerId } from './app.selector'
 import { Store } from '@ngrx/store'
 import { refreshGameState, refreshPlayerPrivateState, saveGameState, savePlayerPrivateState } from './app.actions'
-import { GameStateServerMessage, PlayerPrivateMessage } from '../../websocket-api/websocket.api'
-import { mapToGameState, mapToPlayerPrivateState } from './app.state.mapper'
+import { mapToGameState } from './app.state.mapper'
 import { filterUndefinedOrNull, filterUndefinedOrNullForCombinedValues } from '../type-util'
+import { GameStateServerMessage } from '../../websocket-api/model/gameStateServerMessage'
+import { PlayerPrivateStateServerMessage } from '../../websocket-api/model/playerPrivateStateServerMessage'
 
 export const refreshGameStateEffect = createEffect(
   (actions$ = inject(Actions), stompService = inject(StompService), store = inject(Store)) => {
@@ -41,8 +42,8 @@ export const refreshPlayerPrivateStateEffect = createEffect(
       switchMap(([playerId, gameId]) => {
         return stompService.watch(`/topic/${gameId}/state/${playerId}`).pipe(
           map(message => {
-            const playerPrivateStateServerMessage: PlayerPrivateMessage = JSON.parse(message.body)
-            return savePlayerPrivateState(({ playerPrivateState: mapToPlayerPrivateState(playerPrivateStateServerMessage.playerPrivateState) }))
+            const playerPrivateStateServerMessage: PlayerPrivateStateServerMessage = JSON.parse(message.body)
+            return savePlayerPrivateState(({ playerPrivateState: playerPrivateStateServerMessage.playerPrivateState }))
           })
         )
       }

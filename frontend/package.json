@@ -7,6 +7,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:rest-api": "openapi-generator-cli generate -i ../backend/api/src/main/resources/openapi-spec.yaml -g typescript-angular -o src/app/tichu/api --additional-properties=supportsES6=true,withInterfaces=true",
+    "build:websocket-api": "openapi-generator-cli generate -i ../backend/api/src/main/resources/websocket-openapi-spec.yaml -g typescript-angular -o src/app/tichu/websocket-api --additional-properties=supportsES6=true --global-property=models",
     "watch": "ng build --watch --configuration development",
     "test": "jest"
   },

@@ -1,9 +1,9 @@
 package ch.jaunerc.tichu.backend.websocket.controller;
 
 import ch.jaunerc.tichu.backend.domain.game.port.input.GrandTichuInputPort;
-import ch.jaunerc.tichu.backend.websocket.message.GameStateServerMessage;
-import ch.jaunerc.tichu.backend.websocket.message.GrandTichuPlayerMessage;
-import ch.jaunerc.tichu.backend.websocket.message.game.GameDtoConverter;
+import ch.jaunerc.tichu.backend.websocket.api.model.GameStateServerMessageDto;
+import ch.jaunerc.tichu.backend.websocket.api.model.GrandTichuPlayerMessageDto;
+import ch.jaunerc.tichu.backend.websocket.converter.GameDtoConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,15 +21,15 @@ public class GrandTichuWebsocketController {
 
     @MessageMapping("/{gameId}/grand-tichu/{playerId}")
     @SendTo("/topic/{gameId}/state")
-    public GameStateServerMessage grandTichu(@DestinationVariable("gameId") String gameId,
-                                             @DestinationVariable("playerId") String playerId,
-                                             @Payload GrandTichuPlayerMessage grandTichuPlayerMessage) {
+    public GameStateServerMessageDto grandTichu(@DestinationVariable("gameId") String gameId,
+                                                @DestinationVariable("playerId") String playerId,
+                                                @Payload GrandTichuPlayerMessageDto grandTichuPlayerMessage) {
         var updatedGame = grandTichuInputPort.grandTichuByPlayer(
                 UUID.fromString(gameId),
                 UUID.fromString(playerId),
-                grandTichuPlayerMessage.callGrandTichu()
+                grandTichuPlayerMessage.getCallGrandTichu()
         );
 
-        return new GameStateServerMessage(GameDtoConverter.convert(updatedGame));
+        return new GameStateServerMessageDto().game(GameDtoConverter.convert(updatedGame));
     }
 }

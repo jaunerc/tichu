@@ -40,3 +40,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Generated websocket api models
+/src/app/tichu/websocket-api/

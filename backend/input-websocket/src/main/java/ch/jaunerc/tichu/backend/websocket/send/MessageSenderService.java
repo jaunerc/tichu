@@ -1,9 +1,9 @@
 package ch.jaunerc.tichu.backend.websocket.send;
 
-import ch.jaunerc.tichu.backend.websocket.message.GameStateServerMessage;
-import ch.jaunerc.tichu.backend.websocket.message.PlayerPrivateStateServerMessage;
-import ch.jaunerc.tichu.backend.websocket.message.game.GameDto;
-import ch.jaunerc.tichu.backend.websocket.message.game.PlayerPrivateDto;
+import ch.jaunerc.tichu.backend.websocket.api.model.GameDto;
+import ch.jaunerc.tichu.backend.websocket.api.model.GameStateServerMessageDto;
+import ch.jaunerc.tichu.backend.websocket.api.model.PlayerPrivateStateDto;
+import ch.jaunerc.tichu.backend.websocket.api.model.PlayerPrivateStateServerMessageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -17,10 +17,10 @@ public class MessageSenderService {
     public void sendPlayerPrivateStateMessage(
             String gameId,
             String playerId,
-            PlayerPrivateDto playerPrivateDto) {
+            PlayerPrivateStateDto playerPrivateStateDto) {
         simpMessagingTemplate.convertAndSend(
                 "/topic/%s/state/%s".formatted(gameId, playerId),
-                new PlayerPrivateStateServerMessage(playerPrivateDto));
+                new PlayerPrivateStateServerMessageDto().playerPrivateState(playerPrivateStateDto));
     }
 
     public void sendGameStateMessage(
@@ -28,6 +28,6 @@ public class MessageSenderService {
             GameDto gameDto) {
         simpMessagingTemplate.convertAndSend(
                 "/topic/%s/state".formatted(gameId),
-                new GameStateServerMessage(gameDto));
+                new GameStateServerMessageDto().game(gameDto));
     }
 }
