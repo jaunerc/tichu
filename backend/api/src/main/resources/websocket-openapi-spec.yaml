@@ -15,9 +15,9 @@ components:
         name:
           type: string
         grandTichuCalled:
-          type: boolean
+          $ref: '#/components/schemas/TichuCalled'
         smallTichuCalled:
-          type: boolean
+          $ref: '#/components/schemas/TichuCalled'
         teamIdentifier:
           type: string
           enum:
@@ -36,6 +36,12 @@ components:
         - smallTichuCalled
         - teamIdentifier
         - playerSeatId
+    TichuCalled:
+      type: string
+      enum:
+        - NOT_ANSWERED
+        - CALLED
+        - NOT_CALLED
     Game:
       type: object
       properties:

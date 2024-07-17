@@ -2,6 +2,7 @@ package ch.jaunerc.tichu.backend.domain.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
+import ch.jaunerc.tichu.backend.domain.game.model.TichuCalled;
 import ch.jaunerc.tichu.backend.domain.game.port.input.DealCardsInputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.input.GrandTichuInputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.output.FindGameByIdOutputPort;
@@ -28,7 +29,7 @@ public class GrandTichuUseCase implements GrandTichuInputPort {
         var player = findPlayerByIdOutputPort.findPlayerById(playerId);
 
         var updatedPlayer = Player.Builder.of(player)
-                .grandTichuCalled(isGrandTichuCalled)
+                .grandTichuCalled(mapTichuCalled(isGrandTichuCalled))
                 .build();
 
         sendPlayerPrivateStateOutputPort.sendPlayerPrivateState(
@@ -40,5 +41,9 @@ public class GrandTichuUseCase implements GrandTichuInputPort {
         savePlayerPort.savePlayer(updatedPlayer);
 
         return findGameByIdPort.findGameById(gameId);
+    }
+
+    private static TichuCalled mapTichuCalled(boolean isGrandTichuCalled) {
+        return isGrandTichuCalled ? TichuCalled.CALLED : TichuCalled.NOT_CALLED;
     }
 }

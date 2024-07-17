@@ -10,8 +10,8 @@ public record Player(
         UUID uuid,
         User user,
         PlayerSeatId playerSeatId,
-        boolean grandTichuCalled,
-        boolean smallTichuCalled,
+        TichuCalled grandTichuCalled,
+        TichuCalled smallTichuCalled,
         boolean firstEightCardsReceived,
         List<Card> pushedCards,
 
@@ -22,8 +22,8 @@ public record Player(
         private final UUID playerId;
         private User user;
         private PlayerSeatId playerSeatId;
-        private boolean grandTichuCalled;
-        private boolean smallTichuCalled;
+        private TichuCalled grandTichuCalled;
+        private TichuCalled smallTichuCalled;
         private boolean firstEightCardsReceived;
         private List<Card> pushedCards;
         private List<Card> receivedCards;
@@ -55,12 +55,12 @@ public record Player(
             return this;
         }
 
-        public Builder grandTichuCalled(boolean grandTichuCalled) {
+        public Builder grandTichuCalled(TichuCalled grandTichuCalled) {
             this.grandTichuCalled = grandTichuCalled;
             return this;
         }
 
-        public Builder smallTichuCalled(boolean smallTichuCalled) {
+        public Builder smallTichuCalled(TichuCalled smallTichuCalled) {
             this.smallTichuCalled = smallTichuCalled;
             return this;
         }
