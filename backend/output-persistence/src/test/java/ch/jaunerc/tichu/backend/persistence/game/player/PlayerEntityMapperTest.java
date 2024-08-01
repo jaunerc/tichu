@@ -1,6 +1,7 @@
 package ch.jaunerc.tichu.backend.persistence.game.player;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
+import ch.jaunerc.tichu.backend.domain.game.model.TichuCall;
 import ch.jaunerc.tichu.backend.domain.game.model.TichuCalled;
 import ch.jaunerc.tichu.backend.domain.user.model.User;
 import ch.jaunerc.tichu.backend.persistence.user.UserEntity;
@@ -52,7 +53,7 @@ class PlayerEntityMapperTest {
         var receivedCards = List.of(KING_STARS, TWO_SWORDS);
         var user = new UserEntity();
         user.setId(UUID.randomUUID());
-        var playerEntity = new PlayerEntity(uuid, user, FIRST, TichuCalled.NOT_CALLED, TichuCalled.NOT_CALLED, false, cards, pushedCards, receivedCards);
+        var playerEntity = new PlayerEntity(uuid, user, FIRST, TichuCall.NOT_ANSWERED,TichuCalled.NOT_CALLED, TichuCalled.NOT_CALLED, false, cards, pushedCards, receivedCards);
 
         var result = PlayerEntityMapper.toDomain(playerEntity);
 

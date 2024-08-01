@@ -2,6 +2,7 @@ package ch.jaunerc.tichu.backend.domain.game;
 
 import ch.jaunerc.tichu.backend.domain.game.model.Game;
 import ch.jaunerc.tichu.backend.domain.game.model.Player;
+import ch.jaunerc.tichu.backend.domain.game.model.TichuCall;
 import ch.jaunerc.tichu.backend.domain.game.model.TichuCalled;
 import ch.jaunerc.tichu.backend.domain.game.port.input.DealCardsInputPort;
 import ch.jaunerc.tichu.backend.domain.game.port.input.TichuCallInputPort;
@@ -55,6 +56,11 @@ public class TichuCallUseCase implements TichuCallInputPort {
 
         return findGameByIdPort.findGameById(gameId);
 
+    }
+
+    @Override
+    public Game tichuCallByPlayer(UUID gameId, UUID playerId, TichuCall tichuCall) {
+        return null;
     }
 
     private static TichuCalled mapTichuCalled(boolean tichuCalled) {
