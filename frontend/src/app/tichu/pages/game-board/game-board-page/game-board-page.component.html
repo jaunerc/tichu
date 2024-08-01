@@ -13,10 +13,13 @@
 
   <ng-container *ngIf="controlPanelIds$() | async as controlPanelIds">
     <ng-container *ngIf="controlPanelIds.gameId !== undefined && controlPanelIds.playerId !== undefined">
-      <tichu-game-board-control-panel
-        [gameId]="controlPanelIds.gameId"
-        [playerId]="controlPanelIds.playerId">
-      </tichu-game-board-control-panel>
+      <ng-container *ngIf="controlPanelState$ | async as controlPanelState">
+        <tichu-game-board-control-panel
+          [gameId]="controlPanelIds.gameId"
+          [playerId]="controlPanelIds.playerId"
+          [controlPanelState]="controlPanelState">
+        </tichu-game-board-control-panel>
+      </ng-container>
     </ng-container>
   </ng-container>
 </tichu-app-layout>

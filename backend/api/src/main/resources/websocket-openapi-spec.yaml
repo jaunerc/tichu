@@ -106,6 +106,13 @@ components:
           type: boolean
       required:
         - callGrandTichu
+    SmallTichuPlayerMessage:
+      type: object
+      properties:
+        callSmallTichu:
+          type: boolean
+      required:
+        - callSmallTichu
     PushCardPlayerMessage:
       type: object
       properties:

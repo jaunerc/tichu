@@ -1,15 +1,33 @@
 <div class="control-buttons">
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="callGrandTichu()"
-  >Call Grand Tichu
-  </button>
+  <ng-container *ngIf="controlPanelState === 'GRAND_TICHU'">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="callGrandTichu()"
+    >Call Grand Tichu
+    </button>
 
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="dontCallGrandTichu()"
-  >Don't Call Grand Tichu
-  </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="dontCallGrandTichu()"
+    >Don't Call Grand Tichu
+    </button>
+  </ng-container>
+  <ng-container *ngIf="controlPanelState === 'SMALL_TICHU'">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="callSmallTichu()"
+    >Call Small Tichu
+    </button>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="dontCallSmallTichu()"
+    >Don't Call Small Tichu
+    </button>
+
+  </ng-container>
 </div>

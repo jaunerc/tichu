@@ -16,6 +16,13 @@ export class GameBoardWebsocketService {
     })
   }
 
+  publishSmallTichu (gameId: string, playerId: string, callSmallTichu: boolean): void {
+    this.stompService.publish({
+      destination: `/app/${gameId}/small-tichu/${playerId}`,
+      body: JSON.stringify({ callSmallTichu })
+    })
+  }
+
   publishRequestCards (gameId: string, playerId: string): void {
     this.stompService.publish({
       destination: `/app/${gameId}/deal-cards/${playerId}`

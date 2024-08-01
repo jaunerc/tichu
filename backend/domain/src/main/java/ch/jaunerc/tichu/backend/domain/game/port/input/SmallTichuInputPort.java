@@ -4,7 +4,7 @@ import ch.jaunerc.tichu.backend.domain.game.model.Game;
 
 import java.util.UUID;
 
-public interface GrandTichuInputPort {
+public interface SmallTichuInputPort {
 
-    Game grandTichuByPlayer(UUID gameId, UUID playerId, boolean isGrandTichuCalled);
+    Game smallTichuByPlayer(UUID gameId, UUID playerId, boolean isSmallTichuCalled);
 }

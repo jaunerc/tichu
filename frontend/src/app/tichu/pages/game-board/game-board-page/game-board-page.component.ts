@@ -11,8 +11,9 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { refreshGameState, refreshPlayerPrivateState } from '../../../states/app/app.actions'
 import { GameBoardWebsocketService } from './service/game-board-websocket.service'
-import { GameState, PlayerSeatId } from '../../../states/app/app.state'
+import { GameState, PlayerSeatId, TichuCalled } from '../../../states/app/app.state'
 import { filterUndefinedOrNull, filterUndefinedOrNullForCombinedValues } from '../../../states/type-util'
+import { ControlPanelState } from './model/control-panel-state'
 
 export interface ControlPanelIds {
   gameId?: string
@@ -36,6 +37,9 @@ export class GameBoardPageComponent implements OnInit {
   private readonly cardsSubject$: Subject<string[]> = new Subject<string[]>()
   cards$ = this.cardsSubject$.asObservable()
 
+  private readonly controlPanelStateSubject$: Subject<ControlPanelState> = new Subject<ControlPanelState>()
+  controlPanelState$ = this.controlPanelStateSubject$.asObservable()
+
   constructor (
     private readonly store: Store,
     private readonly websocketService: GameBoardWebsocketService
@@ -52,6 +56,7 @@ export class GameBoardPageComponent implements OnInit {
 
     this.onPlayerPrivateStateResponse()
     this.onGameStateResponse()
+    this.onTichuCalled()
     this.requestDealCards()
   }
 
@@ -95,5 +100,29 @@ export class GameBoardPageComponent implements OnInit {
       map(([gameId, playerId]) => {
         return { gameId, playerId }
       }))
+  }
+
+  onTichuCalled (): void {
+    this.gameState$.pipe(
+      withLatestFrom(this.playerSeatId$),
+      filterUndefinedOrNullForCombinedValues(),
+      map(([gameState, playerSeatId]) => gameState.players.find(player => player.playerSeatId === playerSeatId)),
+      filterUndefinedOrNull(),
+      map(myPlayer => this.mapToControlPanelState(myPlayer.grandTichuCalled, myPlayer.smallTichuCalled))
+    ).subscribe(controlPanelState => {
+      this.controlPanelStateSubject$.next(controlPanelState)
+    })
+  }
+
+  private mapToControlPanelState (grandTichuCalled: TichuCalled, smallTichuCalled: TichuCalled): ControlPanelState {
+    if (grandTichuCalled !== 'NOT_ANSWERED') {
+      if (smallTichuCalled !== 'NOT_ANSWERED') {
+        return 'PLAYING'
+      } else {
+        return 'SMALL_TICHU'
+      }
+    } else {
+      return 'GRAND_TICHU'
+    }
   }
 }
