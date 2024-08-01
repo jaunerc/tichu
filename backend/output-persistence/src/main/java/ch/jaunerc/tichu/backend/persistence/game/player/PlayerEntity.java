@@ -3,7 +3,6 @@ package ch.jaunerc.tichu.backend.persistence.game.player;
 
 import ch.jaunerc.tichu.backend.domain.game.model.PlayerSeatId;
 import ch.jaunerc.tichu.backend.domain.game.model.TichuCall;
-import ch.jaunerc.tichu.backend.domain.game.model.TichuCalled;
 import ch.jaunerc.tichu.backend.domain.game.model.card.Card;
 import ch.jaunerc.tichu.backend.persistence.user.UserEntity;
 import jakarta.persistence.*;
@@ -32,10 +31,6 @@ public class PlayerEntity {
     private PlayerSeatId playerSeatId;
 
     private TichuCall tichuCall;
-
-    private TichuCalled grandTichuCalled;
-
-    private TichuCalled smallTichuCalled;
 
     private boolean firstEightCardsReceived;
 

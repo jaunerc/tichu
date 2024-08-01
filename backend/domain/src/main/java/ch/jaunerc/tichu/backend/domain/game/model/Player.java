@@ -11,8 +11,6 @@ public record Player(
         User user,
         PlayerSeatId playerSeatId,
         TichuCall tichuCall,
-        TichuCalled grandTichuCalled,
-        TichuCalled smallTichuCalled,
         boolean firstEightCardsReceived,
         List<Card> pushedCards,
 
@@ -24,8 +22,6 @@ public record Player(
         private User user;
         private PlayerSeatId playerSeatId;
         private TichuCall tichuCall;
-        private TichuCalled grandTichuCalled;
-        private TichuCalled smallTichuCalled;
         private boolean firstEightCardsReceived;
         private List<Card> pushedCards;
         private List<Card> receivedCards;
@@ -39,8 +35,6 @@ public record Player(
             return new Builder(player.uuid)
                     .user(player.user)
                     .tichuCall(player.tichuCall)
-                    .grandTichuCalled(player.grandTichuCalled)
-                    .smallTichuCalled(player.smallTichuCalled)
                     .firstEightCardsReceived(player.firstEightCardsReceived)
                     .playerSeatId(player.playerSeatId)
                     .pushedCards(player.pushedCards)
@@ -60,16 +54,6 @@ public record Player(
 
         public Builder tichuCall(TichuCall tichuCall) {
             this.tichuCall = tichuCall;
-            return this;
-        }
-
-        public Builder grandTichuCalled(TichuCalled grandTichuCalled) {
-            this.grandTichuCalled = grandTichuCalled;
-            return this;
-        }
-
-        public Builder smallTichuCalled(TichuCalled smallTichuCalled) {
-            this.smallTichuCalled = smallTichuCalled;
             return this;
         }
 
@@ -99,8 +83,6 @@ public record Player(
                     this.user,
                     this.playerSeatId,
                     this.tichuCall,
-                    this.grandTichuCalled,
-                    this.smallTichuCalled,
                     this.firstEightCardsReceived,
                     this.pushedCards,
                     this.receivedCards,

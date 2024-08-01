@@ -16,10 +16,6 @@ components:
           type: string
         tichuCall:
           $ref: '#/components/schemas/TichuCall'
-        grandTichuCalled:
-          $ref: '#/components/schemas/TichuCalled'
-        smallTichuCalled:
-          $ref: '#/components/schemas/TichuCalled'
         teamIdentifier:
           type: string
           enum:
@@ -35,8 +31,6 @@ components:
       required:
         - name
         - tichuCall
-        - grandTichuCalled
-        - smallTichuCalled
         - teamIdentifier
         - playerSeatId
     TichuCall:
@@ -52,12 +46,6 @@ components:
         - GRAND_NOT_CALLED
         - SMALL_CALLED
         - NONE_CALLED
-    TichuCalled:
-      type: string
-      enum:
-        - NOT_ANSWERED
-        - CALLED
-        - NOT_CALLED
     Game:
       type: object
       properties:
@@ -122,20 +110,6 @@ components:
           $ref: '#/components/schemas/TichuCallResult'
       required:
         - tichuCall
-    GrandTichuPlayerMessage:
-      type: object
-      properties:
-        callGrandTichu:
-          type: boolean
-      required:
-        - callGrandTichu
-    SmallTichuPlayerMessage:
-      type: object
-      properties:
-        callSmallTichu:
-          type: boolean
-      required:
-        - callSmallTichu
     PushCardPlayerMessage:
       type: object
       properties:
