@@ -11,7 +11,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy'
 import { refreshGameState, refreshPlayerPrivateState } from '../../../states/app/app.actions'
 import { GameBoardWebsocketService } from './service/game-board-websocket.service'
-import { GameState, PlayerSeatId, TichuCalled } from '../../../states/app/app.state'
+import { GameState, PlayerSeatId, PlayerState, TichuCall } from '../../../states/app/app.state'
 import { filterUndefinedOrNull, filterUndefinedOrNullForCombinedValues } from '../../../states/type-util'
 import { ControlPanelState } from './model/control-panel-state'
 
@@ -27,17 +27,20 @@ export interface ControlPanelIds {
   styleUrls: ['./game-board-page.component.scss']
 })
 export class GameBoardPageComponent implements OnInit {
+  private readonly FIRST_DEAL_CARD_LIMIT: number = 8
+
   gameId$!: Observable<string | undefined>
   playerSeatId$!: Observable<PlayerSeatId | undefined>
+
   private playerId$!: Observable<string | undefined>
-
   private readonly gameStateSubject$: Subject<GameState> = new Subject<GameState>()
+
   gameState$ = this.gameStateSubject$.asObservable()
-
   private readonly cardsSubject$: Subject<string[]> = new Subject<string[]>()
-  cards$ = this.cardsSubject$.asObservable()
 
+  cards$ = this.cardsSubject$.asObservable()
   private readonly controlPanelStateSubject$: Subject<ControlPanelState> = new Subject<ControlPanelState>()
+
   controlPanelState$ = this.controlPanelStateSubject$.asObservable()
 
   constructor (
@@ -103,26 +106,27 @@ export class GameBoardPageComponent implements OnInit {
   }
 
   onTichuCalled (): void {
-    this.gameState$.pipe(
-      withLatestFrom(this.playerSeatId$),
-      filterUndefinedOrNullForCombinedValues(),
-      map(([gameState, playerSeatId]) => gameState.players.find(player => player.playerSeatId === playerSeatId)),
-      filterUndefinedOrNull(),
-      map(myPlayer => this.mapToControlPanelState(myPlayer.grandTichuCalled, myPlayer.smallTichuCalled))
-    ).subscribe(controlPanelState => {
-      this.controlPanelStateSubject$.next(controlPanelState)
-    })
+    combineLatest([this.gameState$, this.playerSeatId$, this.cardsSubject$])
+      .pipe(
+        untilDestroyed(this),
+        map(([gameState, playerSeatId, cards]) => this.mapPlayerAndCards(gameState, cards, playerSeatId)),
+        map(result => this.mapToControlPanelState(result.numberOfCards, result.playerState?.tichuCall))
+      ).subscribe(controlPanelState => {
+        this.controlPanelStateSubject$.next(controlPanelState)
+      })
   }
 
-  private mapToControlPanelState (grandTichuCalled: TichuCalled, smallTichuCalled: TichuCalled): ControlPanelState {
-    if (grandTichuCalled !== 'NOT_ANSWERED') {
-      if (smallTichuCalled !== 'NOT_ANSWERED') {
-        return 'PLAYING'
-      } else {
-        return 'SMALL_TICHU'
+  private mapPlayerAndCards (gameState: GameState, cards: string[], playerSeatId?: PlayerSeatId): { playerState?: PlayerState, numberOfCards: number } {
+    return { playerState: gameState.players.find(player => player.playerSeatId === playerSeatId), numberOfCards: cards.length }
+  }
+
+  private mapToControlPanelState (numberOfCards: number, tichuCall?: TichuCall): ControlPanelState {
+    if (tichuCall === null || tichuCall === undefined) {
+      if (numberOfCards > this.FIRST_DEAL_CARD_LIMIT) {
+        return 'ASK_FOR_SMALL_TICHU'
       }
-    } else {
-      return 'GRAND_TICHU'
+      return 'ASK_FOR_GRAND_TICHU'
     }
+    return 'PLAYING'
   }
 }

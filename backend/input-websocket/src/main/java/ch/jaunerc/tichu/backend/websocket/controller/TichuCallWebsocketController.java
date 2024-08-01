@@ -5,7 +5,7 @@ import ch.jaunerc.tichu.backend.domain.game.port.input.TichuCallInputPort;
 import ch.jaunerc.tichu.backend.websocket.api.model.GameStateServerMessageDto;
 import ch.jaunerc.tichu.backend.websocket.api.model.TichuCallPlayerMessageDto;
 import ch.jaunerc.tichu.backend.websocket.converter.GameDtoConverter;
-import ch.jaunerc.tichu.backend.websocket.converter.TichuCallDtoConverter;
+import ch.jaunerc.tichu.backend.websocket.converter.TichuCallResultDtoConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,7 +21,7 @@ public class TichuCallWebsocketController {
 
     private final TichuCallInputPort tichuCallInputPort;
 
-    @MessageMapping("/{gameId}/small-tichu/{playerId}")
+    @MessageMapping("/{gameId}/tichu-call/{playerId}")
     @SendTo("/topic/{gameId}/state")
     public GameStateServerMessageDto tichuCalled(@DestinationVariable("gameId") String gameId,
                                                  @DestinationVariable("playerId") String playerId,
@@ -29,7 +29,7 @@ public class TichuCallWebsocketController {
         var updatedGame = tichuCallInputPort.tichuCallByPlayer(
                 UUID.fromString(gameId),
                 UUID.fromString(playerId),
-                TichuCallDtoConverter.toDomain(tichuCallPlayerMessageDto.getTichuCall())
+                TichuCallResultDtoConverter.toDomain(tichuCallPlayerMessageDto.getTichuCall())
         );
 
         return new GameStateServerMessageDto(GameDtoConverter.convert(updatedGame));

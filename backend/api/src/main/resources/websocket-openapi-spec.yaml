@@ -42,10 +42,16 @@ components:
     TichuCall:
       type: string
       enum:
-        - NOT_ANSWERED
         - GRAND
         - SMALL
         - NONE
+    TichuCallResult:
+      type: string
+      enum:
+        - GRAND_CALLED
+        - GRAND_NOT_CALLED
+        - SMALL_CALLED
+        - NONE_CALLED
     TichuCalled:
       type: string
       enum:
@@ -113,7 +119,7 @@ components:
       type: object
       properties:
         tichuCall:
-          $ref: '#/components/schemas/TichuCall'
+          $ref: '#/components/schemas/TichuCallResult'
       required:
         - tichuCall
     GrandTichuPlayerMessage:

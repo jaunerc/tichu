@@ -14,7 +14,7 @@ public final class PlayerDtoConverter {
     public static PlayerDto convert(Player player, TeamIdentifierEnum teamIdentifier) {
         return new PlayerDto(
                 player.user().name(),
-                TichuCallDtoConverter.toDto(player.tichuCall()),
+                TichuCallDtoConverter.convert(player.tichuCall()),
                 TichuCalledDto.NOT_CALLED,
                 TichuCalledDto.NOT_CALLED,
                 teamIdentifier,

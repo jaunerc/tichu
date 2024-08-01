@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core'
 import { StompService } from '../../../../stomp/stomp.service'
+import { TichuCallResult } from '../../../../websocket-api/model/tichuCallResult'
 
 @Injectable({
   providedIn: 'root'
@@ -9,17 +10,10 @@ export class GameBoardWebsocketService {
     private readonly stompService: StompService
   ) { }
 
-  publishGrandTichu (gameId: string, playerId: string, callGrandTichu: boolean): void {
+  publishTichuCall (gameId: string, playerId: string, tichuCallResult: TichuCallResult): void {
     this.stompService.publish({
-      destination: `/app/${gameId}/grand-tichu/${playerId}`,
-      body: JSON.stringify({ callGrandTichu })
-    })
-  }
-
-  publishSmallTichu (gameId: string, playerId: string, callSmallTichu: boolean): void {
-    this.stompService.publish({
-      destination: `/app/${gameId}/small-tichu/${playerId}`,
-      body: JSON.stringify({ callSmallTichu })
+      destination: `/app/${gameId}/tichu-call/${playerId}`,
+      body: JSON.stringify({ tichuCall: tichuCallResult })
     })
   }
 

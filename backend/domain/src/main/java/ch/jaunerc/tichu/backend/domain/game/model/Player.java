@@ -33,10 +33,6 @@ public record Player(
 
         public Builder(UUID playerId) {
             this.playerId = playerId;
-            tichuCall = TichuCall.NOT_ANSWERED;
-            pushedCards = List.of();
-            receivedCards = List.of();
-            cards = List.of();
         }
 
         public static Builder of(Player player) {
