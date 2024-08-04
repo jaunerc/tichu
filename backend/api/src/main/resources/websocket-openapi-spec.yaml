@@ -14,10 +14,8 @@ components:
       properties:
         name:
           type: string
-        grandTichuCalled:
-          $ref: '#/components/schemas/TichuCalled'
-        smallTichuCalled:
-          $ref: '#/components/schemas/TichuCalled'
+        tichuCall:
+          $ref: '#/components/schemas/TichuCall'
         teamIdentifier:
           type: string
           enum:
@@ -32,16 +30,22 @@ components:
             - FOURTH
       required:
         - name
-        - grandTichuCalled
-        - smallTichuCalled
+        - tichuCall
         - teamIdentifier
         - playerSeatId
-    TichuCalled:
+    TichuCall:
       type: string
       enum:
-        - NOT_ANSWERED
-        - CALLED
-        - NOT_CALLED
+        - GRAND
+        - SMALL
+        - NONE
+    TichuCallResult:
+      type: string
+      enum:
+        - GRAND_CALLED
+        - GRAND_NOT_CALLED
+        - SMALL_CALLED
+        - NONE_CALLED
     Game:
       type: object
       properties:
@@ -99,20 +103,13 @@ components:
           $ref: '#/components/schemas/PlayerPrivateState'
       required:
         - playerPrivateState
-    GrandTichuPlayerMessage:
+    TichuCallPlayerMessage:
       type: object
       properties:
-        callGrandTichu:
-          type: boolean
+        tichuCall:
+          $ref: '#/components/schemas/TichuCallResult'
       required:
-        - callGrandTichu
-    SmallTichuPlayerMessage:
-      type: object
-      properties:
-        callSmallTichu:
-          type: boolean
-      required:
-        - callSmallTichu
+        - tichuCall
     PushCardPlayerMessage:
       type: object
       properties:

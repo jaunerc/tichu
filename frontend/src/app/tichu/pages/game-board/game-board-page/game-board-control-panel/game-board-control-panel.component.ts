@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core'
 import { GameBoardWebsocketService } from '../service/game-board-websocket.service'
 import { ControlPanelState } from '../model/control-panel-state'
+import { TichuCallResult } from '../../../../websocket-api/model/tichuCallResult'
 
 @Component({
   selector: 'tichu-game-board-control-panel',
@@ -18,27 +19,15 @@ export class GameBoardControlPanelComponent {
     this.controlPanelState = 'INITIAL'
   }
 
-  callGrandTichu (): void {
-    this.sendGrandTichu(true)
+  onGrandTichuClick (tichuCallResult: TichuCallResult): void {
+    this.sendTichuCall(tichuCallResult)
   }
 
-  dontCallGrandTichu (): void {
-    this.sendGrandTichu(false)
+  onSmallTichuClick (tichuCallResult: TichuCallResult): void {
+    this.sendTichuCall(tichuCallResult)
   }
 
-  callSmallTichu (): void {
-    this.sendSmallTichu(true)
-  }
-
-  dontCallSmallTichu (): void {
-    this.sendSmallTichu(false)
-  }
-
-  private sendGrandTichu (callGrandTichu: boolean = false): void {
-    this.websocketService.publishGrandTichu(this.gameId, this.playerId, callGrandTichu)
-  }
-
-  private sendSmallTichu (callSmallTichu: boolean = false): void {
-    this.websocketService.publishSmallTichu(this.gameId, this.playerId, callSmallTichu)
+  private sendTichuCall (tichuCallResult: TichuCallResult): void {
+    this.websocketService.publishTichuCall(this.gameId, this.playerId, tichuCallResult)
   }
 }

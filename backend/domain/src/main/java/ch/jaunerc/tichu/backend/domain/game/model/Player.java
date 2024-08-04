@@ -10,8 +10,7 @@ public record Player(
         UUID uuid,
         User user,
         PlayerSeatId playerSeatId,
-        TichuCalled grandTichuCalled,
-        TichuCalled smallTichuCalled,
+        TichuCall tichuCall,
         boolean firstEightCardsReceived,
         List<Card> pushedCards,
 
@@ -22,8 +21,7 @@ public record Player(
         private final UUID playerId;
         private User user;
         private PlayerSeatId playerSeatId;
-        private TichuCalled grandTichuCalled;
-        private TichuCalled smallTichuCalled;
+        private TichuCall tichuCall;
         private boolean firstEightCardsReceived;
         private List<Card> pushedCards;
         private List<Card> receivedCards;
@@ -36,8 +34,7 @@ public record Player(
         public static Builder of(Player player) {
             return new Builder(player.uuid)
                     .user(player.user)
-                    .grandTichuCalled(player.grandTichuCalled)
-                    .smallTichuCalled(player.smallTichuCalled)
+                    .tichuCall(player.tichuCall)
                     .firstEightCardsReceived(player.firstEightCardsReceived)
                     .playerSeatId(player.playerSeatId)
                     .pushedCards(player.pushedCards)
@@ -55,13 +52,8 @@ public record Player(
             return this;
         }
 
-        public Builder grandTichuCalled(TichuCalled grandTichuCalled) {
-            this.grandTichuCalled = grandTichuCalled;
-            return this;
-        }
-
-        public Builder smallTichuCalled(TichuCalled smallTichuCalled) {
-            this.smallTichuCalled = smallTichuCalled;
+        public Builder tichuCall(TichuCall tichuCall) {
+            this.tichuCall = tichuCall;
             return this;
         }
 
@@ -90,8 +82,7 @@ public record Player(
                     this.playerId,
                     this.user,
                     this.playerSeatId,
-                    this.grandTichuCalled,
-                    this.smallTichuCalled,
+                    this.tichuCall,
                     this.firstEightCardsReceived,
                     this.pushedCards,
                     this.receivedCards,

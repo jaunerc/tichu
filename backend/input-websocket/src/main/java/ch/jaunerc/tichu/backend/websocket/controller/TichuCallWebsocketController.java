@@ -1,9 +1,11 @@
 package ch.jaunerc.tichu.backend.websocket.controller;
 
+
 import ch.jaunerc.tichu.backend.domain.game.port.input.TichuCallInputPort;
 import ch.jaunerc.tichu.backend.websocket.api.model.GameStateServerMessageDto;
-import ch.jaunerc.tichu.backend.websocket.api.model.SmallTichuPlayerMessageDto;
+import ch.jaunerc.tichu.backend.websocket.api.model.TichuCallPlayerMessageDto;
 import ch.jaunerc.tichu.backend.websocket.converter.GameDtoConverter;
+import ch.jaunerc.tichu.backend.websocket.converter.TichuCallResultDtoConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -15,19 +17,20 @@ import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
-public class SmallTichuWebsocketController {
+public class TichuCallWebsocketController {
 
     private final TichuCallInputPort tichuCallInputPort;
 
-    @MessageMapping("/{gameId}/small-tichu/{playerId}")
+    @MessageMapping("/{gameId}/tichu-call/{playerId}")
     @SendTo("/topic/{gameId}/state")
-    public GameStateServerMessageDto smallTichu(@DestinationVariable("gameId") String gameId,
-                                                @DestinationVariable("playerId") String playerId,
-                                                @Payload SmallTichuPlayerMessageDto smallTichuPlayerMessageDto) {
-        var updatedGame = tichuCallInputPort.smallTichuByPlayer(
+    public GameStateServerMessageDto tichuCalled(@DestinationVariable("gameId") String gameId,
+                                                 @DestinationVariable("playerId") String playerId,
+                                                 @Payload TichuCallPlayerMessageDto tichuCallPlayerMessageDto) {
+        var updatedGame = tichuCallInputPort.tichuCallByPlayer(
                 UUID.fromString(gameId),
                 UUID.fromString(playerId),
-                smallTichuPlayerMessageDto.getCallSmallTichu());
+                TichuCallResultDtoConverter.toDomain(tichuCallPlayerMessageDto.getTichuCall())
+        );
 
         return new GameStateServerMessageDto(GameDtoConverter.convert(updatedGame));
     }

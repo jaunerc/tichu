@@ -25,8 +25,7 @@ public class PlayerEntityMapper {
 
         playerEntity.setPlayerSeatId(player.playerSeatId());
         playerEntity.setFirstEightCardsReceived(player.firstEightCardsReceived());
-        playerEntity.setGrandTichuCalled(player.grandTichuCalled());
-        playerEntity.setSmallTichuCalled(player.smallTichuCalled());
+        playerEntity.setTichuCall(player.tichuCall());
         playerEntity.setUser(UserEntityMapper.map(player.user()));
         playerEntity.setCards(player.cards());
         return playerEntity;
@@ -37,8 +36,7 @@ public class PlayerEntityMapper {
                 .user(UserEntityMapper.toDomain(playerEntity.getUser()))
                 .playerSeatId(playerEntity.getPlayerSeatId())
                 .firstEightCardsReceived(playerEntity.isFirstEightCardsReceived())
-                .grandTichuCalled(playerEntity.getGrandTichuCalled())
-                .smallTichuCalled(playerEntity.getSmallTichuCalled())
+                .tichuCall(playerEntity.getTichuCall())
                 .cards(playerEntity.getCards())
                 .pushedCards(playerEntity.getPushedCards())
                 .receivedCards(playerEntity.getReceivedCards())

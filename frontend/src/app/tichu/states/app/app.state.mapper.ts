@@ -12,8 +12,7 @@ export function mapToGameState (dto: Game): GameState {
 function mapToPlayer (dto: Player): PlayerState {
   return {
     name: dto.name,
-    grandTichuCalled: dto.grandTichuCalled,
-    smallTichuCalled: dto.smallTichuCalled,
+    tichuCall: dto.tichuCall,
     playerSeatId: dto.playerSeatId,
     teamIdentifier: dto.teamIdentifier
   }

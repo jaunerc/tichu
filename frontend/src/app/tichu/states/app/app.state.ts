@@ -15,8 +15,7 @@ export interface GameState {
 
 export interface PlayerState {
   name: string
-  grandTichuCalled: TichuCalled
-  smallTichuCalled: TichuCalled
+  tichuCall: TichuCall
   playerSeatId: PlayerSeatId
   teamIdentifier: TeamIdentifierState
 }
@@ -27,7 +26,7 @@ export type GamePhaseState = 'PLAYERS_JOINING' | 'PLAYERS_ON_THE_TABLE' | 'DEALI
 
 export type TeamIdentifierState = 'FIRST_TEAM' | 'SECOND_TEAM'
 
-export type TichuCalled = 'NOT_ANSWERED' | 'CALLED' | 'NOT_CALLED'
+export type TichuCall = 'GRAND' | 'SMALL' | 'NONE'
 
 export interface PlayerPrivateState {
   cards: string[]
